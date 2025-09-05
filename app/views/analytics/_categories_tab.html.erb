@@ -1,0 +1,301 @@
+<!-- Resumo de Categorias -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white shadow rounded-lg p-6 border-l-4 border-indigo-500">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-600">Categorias Ativas</p>
+        <p class="text-2xl font-bold text-indigo-600"><%= @category_performance.count %></p>
+      </div>
+      <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-6 border-l-4 border-green-500">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-600">Melhor Categoria</p>
+        <p class="text-lg font-bold text-green-600 truncate"><%= @category_performance.first[0] rescue 'N/A' %></p>
+        <p class="text-sm text-gray-500">R$ <%= number_with_precision(@category_performance.first[1][:commission], precision: 2, delimiter: '.', separator: ',') rescue '0,00' %></p>
+      </div>
+      <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-6 border-l-4 border-blue-500">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-600">Total Comissões</p>
+        <p class="text-2xl font-bold text-blue-600">R$ <%= number_with_precision(@total_commissions, precision: 2, delimiter: '.', separator: ',') %></p>
+      </div>
+      <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-6 border-l-4 border-purple-500">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-600">Total Pedidos</p>
+        <p class="text-2xl font-bold text-purple-600"><%= @total_orders %></p>
+      </div>
+      <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gráficos de Categorias -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+  <!-- Gráfico de Barras - Top Categorias -->
+  <div class="bg-white shadow rounded-lg p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-gray-900">Categoria por Nicho</h3>
+      <div class="text-sm text-gray-500">Comissões por categoria</div>
+    </div>
+    <div class="h-80">
+      <canvas id="categoryBarChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Gráfico de Pizza - Distribuição -->
+  <div class="bg-white shadow rounded-lg p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-gray-900">Categoria por Sub-Nicho</h3>
+      <div class="text-sm text-gray-500">Distribuição percentual</div>
+    </div>
+    <div class="h-80">
+      <canvas id="categoryPieChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Tabela Detalhada de Categorias -->
+<div class="bg-white shadow rounded-lg p-6">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-lg font-semibold text-gray-900">Análise Detalhada por Categoria</h3>
+    <div class="flex items-center space-x-4">
+      <div class="text-sm text-gray-500">Ordenar por:</div>
+      <select id="categorySort" class="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <option value="commission">Comissão</option>
+        <option value="sales">Vendas</option>
+        <option value="orders">Pedidos</option>
+        <option value="name">Nome</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200" id="categoryTable">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoria</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comissões</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendas</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedidos</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gasto em Ads</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Performance</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @category_performance.each_with_index do |(category, data), index| %>
+          <tr class="hover:bg-gray-50 category-row" 
+              data-commission="<%= data[:commission] %>"
+              data-sales="<%= data[:sales] %>"
+              data-orders="<%= data[:orders] %>"
+              data-name="<%= category %>">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                    <span class="text-white font-medium text-sm"><%= index + 1 %></span>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    <%= category.present? ? category.truncate(40) : 'Categoria não informada' %>
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    <%= number_with_precision(data[:percentage], precision: 1) %>% do total
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-green-600">R$ <%= number_with_precision(data[:commission], precision: 2, delimiter: '.', separator: ',') %></div>
+              <% avg_commission = data[:orders] > 0 ? data[:commission] / data[:orders] : 0 %>
+              <div class="text-sm text-gray-500">R$ <%= number_with_precision(avg_commission, precision: 2, delimiter: '.', separator: ',') %>/pedido</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">R$ <%= number_with_precision(data[:sales], precision: 2, delimiter: '.', separator: ',') %></div>
+              <% avg_sale = data[:orders] > 0 ? data[:sales] / data[:orders] : 0 %>
+              <div class="text-sm text-gray-500">R$ <%= number_with_precision(avg_sale, precision: 2, delimiter: '.', separator: ',') %>/pedido</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900"><%= data[:orders] %></div>
+              <div class="text-sm text-gray-500">pedidos</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">R$ 0,00</div>
+              <div class="text-sm text-gray-500">0.0%</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-1 bg-gray-200 rounded-full h-2 mr-2">
+                  <div class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full" 
+                       style="width: <%= [data[:percentage], 100].min %>%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-900">
+                  <%= number_with_precision(data[:percentage], precision: 1) %>%
+                </span>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const categoryData = <%= raw @category_performance.to_json %>;
+  
+  // Gráfico de Barras - Categorias
+  const categoryBarCtx = document.getElementById('categoryBarChart').getContext('2d');
+  const top15Categories = Object.entries(categoryData).slice(0, 15);
+  
+  new Chart(categoryBarCtx, {
+    type: 'bar',
+    data: {
+      labels: top15Categories.map(([name, data]) => name.length > 20 ? name.substring(0, 20) + '...' : name),
+      datasets: [{
+        label: 'Comissões (R$)',
+        data: top15Categories.map(([name, data]) => data.commission),
+        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+        borderColor: 'rgba(59, 130, 246, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return 'R$ ' + value.toFixed(2);
+            }
+          }
+        },
+        x: {
+          ticks: {
+            maxRotation: 45,
+            minRotation: 45
+          }
+        }
+      }
+    }
+  });
+
+  // Gráfico de Pizza - Top 10 Categorias
+  const categoryPieCtx = document.getElementById('categoryPieChart').getContext('2d');
+  const top10Categories = Object.entries(categoryData).slice(0, 10);
+  
+  new Chart(categoryPieCtx, {
+    type: 'doughnut',
+    data: {
+      labels: top10Categories.map(([name, data]) => name.length > 15 ? name.substring(0, 15) + '...' : name),
+      datasets: [{
+        data: top10Categories.map(([name, data]) => data.commission),
+        backgroundColor: [
+          '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
+          '#F97316', '#06B6D4', '#84CC16', '#F43F5E', '#6366F1'
+        ],
+        borderWidth: 2,
+        borderColor: '#ffffff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            padding: 20,
+            usePointStyle: true,
+            font: {
+              size: 12
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Funcionalidade de ordenação da tabela
+  const sortSelect = document.getElementById('categorySort');
+  const tableBody = document.querySelector('#categoryTable tbody');
+  
+  sortSelect.addEventListener('change', function() {
+    const sortBy = this.value;
+    const rows = Array.from(tableBody.querySelectorAll('.category-row'));
+    
+    rows.sort((a, b) => {
+      let aVal, bVal;
+      
+      switch(sortBy) {
+        case 'commission':
+          aVal = parseFloat(a.dataset.commission);
+          bVal = parseFloat(b.dataset.commission);
+          return bVal - aVal; // Decrescente
+        case 'sales':
+          aVal = parseFloat(a.dataset.sales);
+          bVal = parseFloat(b.dataset.sales);
+          return bVal - aVal; // Decrescente
+        case 'orders':
+          aVal = parseInt(a.dataset.orders);
+          bVal = parseInt(b.dataset.orders);
+          return bVal - aVal; // Decrescente
+        case 'name':
+          aVal = a.dataset.name.toLowerCase();
+          bVal = b.dataset.name.toLowerCase();
+          return aVal.localeCompare(bVal); // Crescente
+        default:
+          return 0;
+      }
+    });
+    
+    // Reordena as linhas na tabela
+    rows.forEach(row => tableBody.appendChild(row));
+    
+    // Atualiza os números das posições
+    rows.forEach((row, index) => {
+      const numberSpan = row.querySelector('.h-10 span');
+      if (numberSpan) {
+        numberSpan.textContent = index + 1;
+      }
+    });
+  });
+});
+</script>

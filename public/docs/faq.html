@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perguntas Frequentes - LinkFlow Documentação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#1F2937'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-primary">LinkFlow</a>
+                    <span class="ml-2 text-sm text-gray-500">/ Perguntas Frequentes</span>
+                </div>
+                <a href="../" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Voltar ao Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                <li><a href="index.html" class="hover:text-primary">Documentação</a></li>
+                <li>→</li>
+                <li class="text-gray-900 font-medium">Perguntas Frequentes</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">❓ Perguntas Frequentes</h1>
+            <p class="text-xl text-gray-600">Encontre respostas para as dúvidas mais comuns sobre o LinkFlow</p>
+        </div>
+
+        <!-- Content -->
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Navigation Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow p-6 sticky top-8">
+                    <h3 class="font-semibold text-gray-900 mb-4">Categorias</h3>
+                    <nav class="space-y-2 text-sm">
+                        <a href="#general" class="block text-gray-600 hover:text-primary">Geral</a>
+                        <a href="#accounts" class="block text-gray-600 hover:text-primary">Contas & Planos</a>
+                        <a href="#links" class="block text-gray-600 hover:text-primary">Links</a>
+                        <a href="#analytics" class="block text-gray-600 hover:text-primary">Analytics</a>
+                        <a href="#shopee" class="block text-gray-600 hover:text-primary">Shopee</a>
+                        <a href="#billing" class="block text-gray-600 hover:text-primary">Pagamentos</a>
+                        <a href="#technical" class="block text-gray-600 hover:text-primary">Técnico</a>
+                        <a href="#support" class="block text-gray-600 hover:text-primary">Suporte</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Quick Search -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">🔍 Busca Rápida</h2>
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Digite sua dúvida aqui..." 
+                            class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            id="searchInput"
+                            oninput="searchFAQ()"
+                        >
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- General Questions -->
+                <section id="general" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">🌟 Perguntas Gerais</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-1')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">O que é o LinkFlow?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-1">
+                                O LinkFlow é uma plataforma completa para afiliados da Shopee que permite criar links de redirecionamento, 
+                                analisar comissões, acompanhar cliques e otimizar estratégias de marketing para maximizar resultados.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-2')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Como funciona o período de teste?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-2">
+                                Novos usuários recebem 14 dias grátis do plano Pro. Durante este período, você tem acesso completo 
+                                a todas as funcionalidades sem precisar inserir cartão de crédito. Após o período, você pode 
+                                escolher um plano ou cancelar gratuitamente.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-3')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">É seguro usar o LinkFlow?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-3">
+                                Sim, totalmente seguro. Utilizamos criptografia SSL 256-bit, processamento de pagamentos via Stripe 
+                                (uma das plataformas mais seguras do mundo) e não armazenamos dados sensíveis como informações de cartão.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Accounts & Plans -->
+                <section id="accounts" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">👤 Contas & Planos</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-4')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Qual plano escolher?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-4">
+                                <strong>Starter (R$ 59,90):</strong> Para iniciantes com até 15 links<br>
+                                <strong>Pro (R$ 97,90):</strong> Para afiliados ativos com até 50 links e analytics avançados<br>
+                                <strong>Elite (R$ 147,90):</strong> Para profissionais com links ilimitados e suporte estratégico
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-5')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Posso trocar de plano depois?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-5">
+                                Sim! Você pode fazer upgrade ou downgrade a qualquer momento. No upgrade, você paga apenas a diferença 
+                                proporcional. No downgrade, o crédito é aplicado no próximo ciclo de cobrança.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-6')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Como cancelar minha assinatura?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-6">
+                                Acesse "Planos & Preços" no menu, clique em "Gerenciar Assinatura" e selecione "Cancelar". 
+                                Você pode cancelar a qualquer momento e continuará tendo acesso até o final do período pago.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Links -->
+                <section id="links" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">🔗 Links de Redirecionamento</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-7')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Como criar um link personalizado?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-7">
+                                Vá em "Links" → "Criar Novo Link", cole a URL da Shopee com seu código de afiliado, 
+                                escolha um nome personalizado e clique em "Criar". Pronto! Seu link estará disponível para uso.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-8')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Os links funcionam em redes sociais?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-8">
+                                Sim! Os links funcionam perfeitamente no Instagram, Facebook, TikTok, WhatsApp e outras redes sociais. 
+                                Eles são otimizados para funcionarem em qualquer plataforma e dispositivo.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-9')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Posso editar um link depois de criado?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-9">
+                                Sim! Você pode editar o nome, descrição e URL de destino de qualquer link. 
+                                O URL curto permanece o mesmo, então você não precisa atualizar onde já compartilhou.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics -->
+                <section id="analytics" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Analytics & Relatórios</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-10')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Como importar dados da Shopee?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-10">
+                                Baixe o relatório de comissões da Shopee (formato CSV), vá em "Analytics" → "Importar Dados", 
+                                selecione o arquivo e clique em "Importar". O sistema processará automaticamente os dados.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-11')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Como calcular ROI de anúncios?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-11" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-11">
+                                No "Analytics de Cliques" (planos Pro e Elite), adicione o valor gasto em anúncios por período. 
+                                O sistema calculará automaticamente o ROI comparando comissões ganhas vs valor investido.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-12')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Posso exportar relatórios?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-12">
+                                Sim! Usuários dos planos Pro e Elite podem exportar relatórios em PDF com gráficos e análises completas. 
+                                Usuários Starter podem exportar dados básicos em CSV.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Shopee -->
+                <section id="shopee" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">🛒 Integração Shopee</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-13')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Preciso ser afiliado da Shopee?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-13">
+                                Sim, você precisa estar inscrito no programa de afiliados da Shopee para aproveitar totalmente o LinkFlow. 
+                                Se ainda não é afiliado, acesse o Shopee Affiliate Program para se cadastrar.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-14')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Como obter meu código de afiliado?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-14">
+                                No painel de afiliado da Shopee, vá em "Links" e gere um link para qualquer produto. 
+                                Seu código estará na URL (ex: sub_aff_id=SEUCODIGO). Use este código nos links do LinkFlow.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-15')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Os dados ficam sincronizados?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-15">
+                                O LinkFlow não se conecta automaticamente com a Shopee. Você precisa importar os relatórios 
+                                de comissão periodicamente para manter os dados atualizados. Recomendamos importar semanalmente.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Billing -->
+                <section id="billing" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">💳 Pagamentos & Faturamento</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-16')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Quando sou cobrado?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-16">
+                                A cobrança é mensal, sempre no mesmo dia que você assinou. Por exemplo, se assinou dia 15, 
+                                será cobrado todo dia 15. Você recebe um email de confirmação após cada cobrança.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-17')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Aceitam PIX ou boleto?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-17">
+                                Atualmente aceitamos apenas cartão de crédito (Visa, Mastercard) processados pelo Stripe. 
+                                Estamos trabalhando para adicionar PIX em breve. Entre em contato se precisar de uma solução alternativa.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-18')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">E se meu cartão for recusado?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-18">
+                                Você receberá um email notificando sobre a falha. Tem 3 dias para atualizar os dados do cartão 
+                                antes que a conta seja suspensa. Acesse "Planos & Preços" → "Atualizar Cartão" para resolver.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technical -->
+                <section id="technical" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">⚙️ Questões Técnicas</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-19')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Meus links não estão funcionando</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-19" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-19">
+                                Verifique se: 1) A URL original da Shopee está correta, 2) Seu código de afiliado está válido, 
+                                3) O link não foi pausado ou excluído. Se o problema persistir, entre em contato com o suporte.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-20')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Erro ao importar arquivo CSV</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-20">
+                                Certifique-se de baixar o arquivo diretamente da Shopee sem modificações. O arquivo deve estar 
+                                em formato CSV padrão. Se editou no Excel, salve novamente como CSV antes de importar.
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-21')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Site lento ou não carrega</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-21" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-21">
+                                Tente: 1) Limpar cache do navegador, 2) Usar modo anônimo/privado, 3) Verificar sua conexão, 
+                                4) Tentar outro navegador. Se o problema persistir, pode ser manutenção programada.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Support -->
+                <section id="support" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">🎧 Suporte & Contato</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-22')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Como entrar em contato?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-22">
+                                <strong>WhatsApp:</strong> Disponível para todos os planos (link no rodapé)<br>
+                                <strong>Email:</strong> suporte@linkflow.com.br<br>
+                                <strong>Chat:</strong> Widget no canto inferior direito da tela
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-23')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Qual o horário de atendimento?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-23" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-23">
+                                <strong>Segunda a Sexta:</strong> 9h às 18h<br>
+                                <strong>Sábado:</strong> 9h às 14h<br>
+                                <strong>Plano Elite:</strong> Atendimento prioritário com resposta em até 2h (horário comercial)
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="w-full px-4 py-3 text-left focus:outline-none" onclick="toggleFAQ('faq-24')">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">O que é o suporte estratégico do Elite?</span>
+                                    <svg class="h-5 w-5 text-gray-500 transform transition-transform" id="icon-faq-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="hidden px-4 pb-3 text-gray-600" id="content-faq-24">
+                                Sessões mensais com especialistas para análise de performance, otimização de estratégias, 
+                                identificação de oportunidades e consultoria personalizada para maximizar seus resultados como afiliado.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Still have questions -->
+                <div class="bg-gradient-to-r from-primary to-orange-600 rounded-lg shadow p-8 text-white text-center">
+                    <h3 class="text-2xl font-bold mb-4">Ainda tem dúvidas?</h3>
+                    <p class="mb-6">Nossa equipe está pronta para ajudar você a ter sucesso com o LinkFlow!</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#" class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                            💬 WhatsApp
+                        </a>
+                        <a href="mailto:suporte@linkflow.com.br" class="bg-white bg-opacity-20 border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-30 transition-colors">
+                            📧 Email
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="flex justify-between pt-8 border-t">
+                    <a href="plans.html" class="flex items-center text-gray-600 hover:text-primary">
+                        ← Anterior: Planos & Funcionalidades
+                    </a>
+                    <a href="index.html" class="flex items-center text-gray-600 hover:text-primary">
+                        Voltar ao Início →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFAQ(id) {
+            const content = document.getElementById('content-' + id);
+            const icon = document.getElementById('icon-' + id);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function searchFAQ() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const faqItems = document.querySelectorAll('[id^="content-faq-"]');
+            
+            faqItems.forEach(item => {
+                const button = item.previousElementSibling;
+                const text = (button.textContent + ' ' + item.textContent).toLowerCase();
+                const parent = item.closest('.border');
+                
+                if (text.includes(searchTerm) || searchTerm === '') {
+                    parent.style.display = 'block';
+                } else {
+                    parent.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

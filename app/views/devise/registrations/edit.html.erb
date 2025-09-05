@@ -1,0 +1,215 @@
+<% content_for :title, "Configurações da Conta" %>
+
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white shadow rounded-lg">
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">⚙️ Configurações da Conta</h1>
+          <p class="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações de segurança</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <% if current_user.subscription&.plan %>
+            <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                        <%= current_user.subscription.plan.name.include?('Elite') ? 'bg-yellow-100 text-yellow-800' :
+                            current_user.subscription.plan.name.include?('Pro') ? 'bg-green-100 text-green-800' :
+                            'bg-blue-100 text-blue-800' %>">
+              <%= current_user.subscription.plan.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <!-- Informações Básicas -->
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">📧 Informações Básicas</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Email -->
+            <div class="md:col-span-2">
+              <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= f.email_field :email, 
+                  autofocus: true, 
+                  autocomplete: "email",
+                  class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+              
+              <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                <div class="mt-2 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-yellow-700">
+                        <strong>Aguardando confirmação para:</strong> <%= resource.unconfirmed_email %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alterar Senha -->
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">🔒 Alterar Senha</h2>
+          <p class="text-sm text-gray-600 mb-4">Deixe em branco se não quiser alterar sua senha</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Nova Senha -->
+            <div>
+              <%= f.label :password, "Nova Senha", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= f.password_field :password, 
+                  autocomplete: "new-password",
+                  placeholder: "Deixe em branco para manter a atual",
+                  class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+              <% if @minimum_password_length %>
+                <p class="mt-1 text-sm text-gray-500">
+                  Mínimo de <%= @minimum_password_length %> caracteres
+                </p>
+              <% end %>
+            </div>
+
+            <!-- Confirmar Nova Senha -->
+            <div>
+              <%= f.label :password_confirmation, "Confirmar Nova Senha", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= f.password_field :password_confirmation, 
+                  autocomplete: "new-password",
+                  placeholder: "Confirme a nova senha",
+                  class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirmação de Segurança -->
+        <div class="bg-red-50 rounded-lg p-6 border border-red-200">
+          <h2 class="text-lg font-semibold text-red-900 mb-4">🛡️ Confirmação de Segurança</h2>
+          <p class="text-sm text-red-700 mb-4">Confirme sua senha atual para salvar as alterações</p>
+          
+          <div>
+            <%= f.label :current_password, "Senha Atual", class: "block text-sm font-medium text-red-700 mb-2" %>
+            <%= f.password_field :current_password, 
+                autocomplete: "current-password",
+                required: true,
+                class: "w-full px-4 py-3 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" %>
+            <p class="mt-1 text-sm text-red-600">
+              Precisamos da sua senha atual para confirmar as alterações
+            </p>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-6 border-t border-gray-200">
+          <div class="flex items-center space-x-4">
+            <%= f.submit "💾 Salvar Alterações", 
+                class: "bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-medium" %>
+            <%= link_to "Cancelar", :back, 
+                class: "bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors font-medium" %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Zona de Perigo -->
+      <div class="mt-8 pt-8 border-t border-gray-200">
+        <div class="bg-red-50 rounded-lg p-6 border border-red-200">
+          <h3 class="text-lg font-semibold text-red-900 mb-2">⚠️ Zona de Perigo</h3>
+          <p class="text-sm text-red-700 mb-4">
+            Ações irreversíveis que afetarão permanentemente sua conta
+          </p>
+          
+          <details class="group">
+            <summary class="cursor-pointer text-sm font-medium text-red-800 hover:text-red-900 mb-4 list-none">
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-2 transform group-open:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+                Cancelar minha conta
+              </div>
+            </summary>
+            
+            <div class="bg-white rounded-lg p-4 border border-red-300">
+              <p class="text-sm text-gray-700 mb-4">
+                <strong>Não está satisfeito?</strong> Cancelar sua conta irá:
+              </p>
+              <ul class="text-sm text-gray-600 space-y-1 mb-4 ml-4">
+                <li>• Excluir permanentemente todos os seus dados</li>
+                <li>• Cancelar sua assinatura ativa</li>
+                <li>• Remover todos os links e analytics</li>
+                <li>• Esta ação não pode ser desfeita</li>
+              </ul>
+              
+              <div class="flex items-center space-x-4">
+                <%= button_to "🗑️ Cancelar Conta", 
+                    registration_path(resource_name), 
+                    data: { 
+                      confirm: "⚠️ ATENÇÃO!\n\nVocê tem certeza que deseja cancelar sua conta?\n\nEsta ação irá:\n• Excluir TODOS os seus dados\n• Cancelar sua assinatura\n• Remover todos os links\n\nEsta ação NÃO PODE ser desfeita!\n\nDigite 'CANCELAR' para confirmar:", 
+                      turbo_confirm: "Tem certeza que deseja cancelar sua conta? Esta ação não pode ser desfeita!" 
+                    }, 
+                    method: :delete,
+                    class: "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium text-sm" %>
+                
+                <div class="text-sm text-gray-600">
+                  Ou <%= link_to "entre em contato conosco", "#", class: "text-orange-600 hover:text-orange-700 font-medium" %> para resolver problemas
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Informações Adicionais -->
+      <div class="mt-8 bg-blue-50 rounded-lg p-4 border border-blue-200">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-blue-800">💡 Dicas de Segurança</h3>
+            <div class="mt-2 text-sm text-blue-700">
+              <ul class="space-y-1">
+                <li>• Use uma senha forte com pelo menos 8 caracteres</li>
+                <li>• Mantenha seu email sempre atualizado</li>
+                <li>• Não compartilhe suas credenciais de acesso</li>
+                <li>• Entre em contato se suspeitar de atividade suspeita</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Adicionar confirmação extra para cancelamento de conta
+document.addEventListener('DOMContentLoaded', function() {
+  const cancelButton = document.querySelector('[data-confirm]');
+  if (cancelButton) {
+    cancelButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const userConfirmation = prompt('⚠️ CONFIRMAÇÃO FINAL!\n\nPara cancelar sua conta, digite "CANCELAR" (em maiúsculas):');
+      
+      if (userConfirmation === 'CANCELAR') {
+        if (confirm('Última chance! Tem ABSOLUTA CERTEZA que deseja cancelar sua conta?\n\nTodos os dados serão perdidos permanentemente!')) {
+          // Submeter o formulário
+          this.closest('form').submit();
+        }
+      } else if (userConfirmation !== null) {
+        alert('Confirmação incorreta. Ação cancelada por segurança.');
+      }
+    });
+  }
+});
+</script>

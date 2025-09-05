@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/* Button Classes for Shopee Integration */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  color: white;
+  background-color: #2563eb;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  color: #374151;
+  background-color: white;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+}
+
+.btn-success {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  color: white;
+  background-color: #059669;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-success:hover {
+  background-color: #047857;
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  color: white;
+  background-color: #dc2626;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  color: white;
+  background-color: #7c3aed;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-accent:hover {
+  background-color: #6d28d9;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  color: #374151;
+  background-color: white;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-outline:hover {
+  background-color: #f9fafb;
+}

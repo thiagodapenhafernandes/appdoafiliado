@@ -1,0 +1,136 @@
+<% content_for :title, "Configurações do Sistema" %>
+
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-6">
+    <div class="min-w-0 flex-1">
+      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        Configurações do Sistema
+      </h2>
+      <p class="mt-1 text-sm text-gray-500">
+        Gerencie as configurações globais da aplicação
+      </p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <%= link_to 'Restaurar Padrões', admin_settings_reset_defaults_path, 
+          method: :post,
+          data: { confirm: 'Tem certeza? Isso irá restaurar todas as configurações padrão.' },
+          class: "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Configurações Existentes -->
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Configurações Atuais</h3>
+        
+        <% if @settings.any? %>
+          <div class="space-y-4">
+            <% @settings.each do |setting| %>
+              <div class="border border-gray-200 rounded-lg p-4">
+                <%= form_with model: [:admin, setting], local: true, class: "space-y-3" do |form| %>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700">
+                      <%= setting.key %>
+                    </label>
+                    <% if setting.description.present? %>
+                      <p class="text-xs text-gray-500 mt-1"><%= setting.description %></p>
+                    <% end %>
+                  </div>
+                  
+                  <div class="flex gap-2">
+                    <% if ['true', 'false'].include?(setting.value) %>
+                      <%= form.select :value, 
+                          options_for_select([['Sim', 'true'], ['Não', 'false']], setting.value),
+                          {}, 
+                          { class: "flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+                    <% elsif setting.value =~ /^\d+$/ %>
+                      <%= form.number_field :value, 
+                          value: setting.value,
+                          class: "flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                    <% else %>
+                      <%= form.text_field :value, 
+                          value: setting.value,
+                          class: "flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                    <% end %>
+                    
+                    <div class="flex gap-1">
+                      <%= form.submit "Salvar", 
+                          class: "inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" %>
+                      <%= link_to "Excluir", 
+                          admin_setting_path(setting), 
+                          method: :delete,
+                          data: { confirm: 'Tem certeza?' },
+                          class: "inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-gray-500">Nenhuma configuração encontrada.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Nova Configuração -->
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Nova Configuração</h3>
+        
+        <%= form_with model: [:admin, @new_setting], local: true, class: "space-y-4" do |form| %>
+          <div>
+            <%= form.label :key, "Chave", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :key, 
+                placeholder: "ex: max_files_per_upload",
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+          
+          <div>
+            <%= form.label :value, "Valor", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :value, 
+                placeholder: "ex: 10",
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+          
+          <div>
+            <%= form.label :description, "Descrição", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_area :description, 
+                placeholder: "Descreva o que esta configuração faz...",
+                rows: 2,
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+          
+          <div>
+            <%= form.submit "Criar Configuração", 
+                class: "w-full inline-flex justify-center items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configurações Importantes -->
+  <div class="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-yellow-800">Configurações Importantes</h3>
+        <div class="mt-2 text-sm text-yellow-700">
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>require_payment_on_signup</strong>: Se true, exige pagamento obrigatório no cadastro</li>
+            <li><strong>allow_simple_signup</strong>: Se true, permite cadastro sem pagamento (apenas se require_payment_on_signup for false)</li>
+            <li><strong>trial_days</strong>: Número de dias de trial gratuito para novos usuários</li>
+            <li><strong>stripe_webhook_enabled</strong>: Habilita ou desabilita processamento de webhooks do Stripe</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

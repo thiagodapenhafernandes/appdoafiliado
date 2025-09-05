@@ -1,0 +1,310 @@
+<% content_for :title, "Performance Avançada" %>
+
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">📈 Performance Avançada</h1>
+      <p class="text-gray-600 mt-1">Análise detalhada de performance por canal, categoria e subID</p>
+    </div>
+    
+    <div class="flex space-x-3">
+      <%= link_to analytics_path, class: "bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors" do %>
+        ← Voltar ao Analytics
+      <% end %>
+      
+      <% if current_user.can_export_pdf? %>
+        <%= link_to analytics_export_pdf_path(format: :pdf), 
+            class: "bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors flex items-center",
+            target: "_blank" do %>
+          📄 Exportar PDF
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Performance por Canal -->
+  <div class="bg-white rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">🎯 Performance por Canal</h2>
+      <p class="text-sm text-gray-600">Compare o desempenho entre diferentes canais de tráfego</p>
+    </div>
+    <div class="p-6">
+      <% if @performance_by_channel.present? %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Canal</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comissões</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendas</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedidos</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ticket Médio</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ROI</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @performance_by_channel.each do |channel_data| %>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <span class="text-2xl mr-2">
+                        <%= case channel_data[:channel].downcase
+                            when 'instagram' then '📱'
+                            when 'facebook' then '📘'
+                            when 'tiktok' then '🎵'
+                            when 'whatsapp' then '💬'
+                            when 'youtube' then '📺'
+                            else '🌐'
+                            end %>
+                      </span>
+                      <div>
+                        <div class="text-sm font-medium text-gray-900"><%= channel_data[:channel] %></div>
+                        <div class="text-sm text-gray-500"><%= channel_data[:orders] %> pedidos</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-green-600">R$ <%= number_with_precision(channel_data[:commissions], precision: 2, delimiter: '.', separator: ',') %></div>
+                    <div class="text-xs text-gray-500"><%= number_with_precision((channel_data[:commissions] / @total_commissions * 100), precision: 1) %>% do total</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">R$ <%= number_with_precision(channel_data[:sales], precision: 2, delimiter: '.', separator: ',') %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <%= channel_data[:orders] %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    R$ <%= number_with_precision(channel_data[:avg_ticket], precision: 2, delimiter: '.', separator: ',') %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <% roi_percentage = channel_data[:roi] %>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                <%= roi_percentage > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                      <%= roi_percentage > 0 ? '+' : '' %><%= number_with_precision(roi_percentage, precision: 1) %>%
+                    </span>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-8">
+          <div class="text-gray-400 text-4xl mb-4">📊</div>
+          <p class="text-gray-600">Nenhum dado de performance por canal encontrado.</p>
+          <p class="text-sm text-gray-500 mt-2">Importe dados de comissão para ver esta análise.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Performance por Categoria -->
+  <div class="bg-white rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">🏷️ Performance por Categoria</h2>
+      <p class="text-sm text-gray-600">Análise de desempenho por categoria de produto</p>
+    </div>
+    <div class="p-6">
+      <% if @performance_by_category.present? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% @performance_by_category.each do |category_data| %>
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm font-medium text-gray-900"><%= category_data[:category] %></h3>
+                <span class="text-2xl">🛍️</span>
+              </div>
+              
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Comissões:</span>
+                  <span class="font-medium text-green-600">R$ <%= number_with_precision(category_data[:commissions], precision: 2, delimiter: '.', separator: ',') %></span>
+                </div>
+                
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Vendas:</span>
+                  <span class="font-medium">R$ <%= number_with_precision(category_data[:sales], precision: 2, delimiter: '.', separator: ',') %></span>
+                </div>
+                
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Pedidos:</span>
+                  <span class="font-medium"><%= category_data[:orders] %></span>
+                </div>
+                
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Ticket Médio:</span>
+                  <span class="font-medium">R$ <%= number_with_precision(category_data[:avg_ticket], precision: 2, delimiter: '.', separator: ',') %></span>
+                </div>
+                
+                <div class="pt-2 border-t border-blue-200">
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Participação:</span>
+                    <span class="font-medium text-blue-600"><%= number_with_precision((category_data[:commissions] / @total_commissions * 100), precision: 1) %>%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-8">
+          <div class="text-gray-400 text-4xl mb-4">🏷️</div>
+          <p class="text-gray-600">Nenhum dado de performance por categoria encontrado.</p>
+          <p class="text-sm text-gray-500 mt-2">Importe dados de comissão para ver esta análise.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Performance por SubID -->
+  <div class="bg-white rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">🔗 Performance por SubID</h2>
+      <p class="text-sm text-gray-600">Análise detalhada por identificador de campanha</p>
+    </div>
+    <div class="p-6">
+      <% if @performance_by_subid.present? %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SubID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comissões</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendas</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedidos</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conversão</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @performance_by_subid.each_with_index do |subid_data, index| %>
+                <tr class="hover:bg-gray-50 <%= 'bg-yellow-50' if index < 3 %>">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <%= "🏆" if index == 0 %>
+                      <%= "🥈" if index == 1 %>
+                      <%= "🥉" if index == 2 %>
+                      <div class="ml-2">
+                        <div class="text-sm font-medium text-gray-900"><%= subid_data[:subid] %></div>
+                        <div class="text-sm text-gray-500">#<%= index + 1 %> em performance</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-green-600">R$ <%= number_with_precision(subid_data[:commissions], precision: 2, delimiter: '.', separator: ',') %></div>
+                    <div class="text-xs text-gray-500"><%= number_with_precision((subid_data[:commissions] / @total_commissions * 100), precision: 1) %>% do total</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    R$ <%= number_with_precision(subid_data[:sales], precision: 2, delimiter: '.', separator: ',') %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <%= subid_data[:orders] %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <% conversion_rate = subid_data[:conversion_rate] %>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                <%= conversion_rate > 5 ? 'bg-green-100 text-green-800' : conversion_rate > 2 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800' %>">
+                      <%= number_with_precision(conversion_rate, precision: 1) %>%
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <% if subid_data[:commissions] > 100 %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        🚀 Alta performance
+                      </span>
+                    <% elsif subid_data[:commissions] > 50 %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        📊 Performance média
+                      </span>
+                    <% else %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        📈 Em crescimento
+                      </span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-8">
+          <div class="text-gray-400 text-4xl mb-4">🔗</div>
+          <p class="text-gray-600">Nenhum dado de performance por SubID encontrado.</p>
+          <p class="text-sm text-gray-500 mt-2">Importe dados de comissão para ver esta análise.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Evolução Diária -->
+  <div class="bg-white rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">📅 Evolução Diária de Performance</h2>
+      <p class="text-sm text-gray-600">Acompanhe a evolução dia a dia dos seus resultados</p>
+    </div>
+    <div class="p-6">
+      <% if @daily_performance.present? %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comissões</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedidos</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ticket Médio</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tendência</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @daily_performance.last(10).each_with_index do |day_data, index| %>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900"><%= day_data[:date].strftime("%d/%m/%Y") %></div>
+                    <div class="text-sm text-gray-500"><%= day_data[:date].strftime("%A") %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-green-600">R$ <%= number_with_precision(day_data[:commissions], precision: 2, delimiter: '.', separator: ',') %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <%= day_data[:orders] %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    R$ <%= number_with_precision(day_data[:avg_ticket], precision: 2, delimiter: '.', separator: ',') %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <% if index > 0 %>
+                      <% prev_commission = @daily_performance[index - 1][:commissions] %>
+                      <% current_commission = day_data[:commissions] %>
+                      <% if current_commission > prev_commission %>
+                        <span class="text-green-600">📈 +<%= number_with_precision(((current_commission - prev_commission) / prev_commission * 100), precision: 1) %>%</span>
+                      <% elsif current_commission < prev_commission %>
+                        <span class="text-red-600">📉 -<%= number_with_precision(((prev_commission - current_commission) / prev_commission * 100), precision: 1) %>%</span>
+                      <% else %>
+                        <span class="text-gray-600">➡️ Estável</span>
+                      <% end %>
+                    <% else %>
+                      <span class="text-gray-400">-</span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-8">
+          <div class="text-gray-400 text-4xl mb-4">📅</div>
+          <p class="text-gray-600">Nenhum dado de evolução diária encontrado.</p>
+          <p class="text-sm text-gray-500 mt-2">Importe dados de comissão para ver esta análise.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

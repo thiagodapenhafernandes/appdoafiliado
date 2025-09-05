@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LinkFlow Documentação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#1F2937'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-primary">LinkFlow</a>
+                    <span class="ml-2 text-sm text-gray-500">/ Dashboard</span>
+                </div>
+                <a href="../" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Voltar ao Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                <li><a href="index.html" class="hover:text-primary">Documentação</a></li>
+                <li>→</li>
+                <li class="text-gray-900 font-medium">Dashboard</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+            <p class="text-xl text-gray-600">Sua central de controle e visão geral dos resultados</p>
+        </div>
+
+        <!-- Content -->
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Navigation Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow p-6 sticky top-8">
+                    <h3 class="font-semibold text-gray-900 mb-4">Nesta página</h3>
+                    <nav class="space-y-2 text-sm">
+                        <a href="#overview" class="block text-gray-600 hover:text-primary">Visão Geral</a>
+                        <a href="#metrics" class="block text-gray-600 hover:text-primary">Métricas Principais</a>
+                        <a href="#plan-info" class="block text-gray-600 hover:text-primary">Informações do Plano</a>
+                        <a href="#charts" class="block text-gray-600 hover:text-primary">Gráficos</a>
+                        <a href="#quick-actions" class="block text-gray-600 hover:text-primary">Ações Rápidas</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Overview -->
+                <section id="overview" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">🏠 Visão Geral</h2>
+                    <p class="text-gray-600 mb-6">
+                        O Dashboard é sua página inicial no LinkFlow. Aqui você encontra um resumo completo 
+                        de todas as suas atividades, métricas importantes e acesso rápido às principais funcionalidades.
+                    </p>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">Dica Importante</h3>
+                                <p class="mt-1 text-sm text-blue-700">
+                                    Acesse o Dashboard diariamente para acompanhar seu progresso e identificar oportunidades de melhoria.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Metrics -->
+                <section id="metrics" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Métricas Principais</h2>
+                    <p class="text-gray-600 mb-6">Entenda cada uma das métricas exibidas no seu dashboard:</p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Total de Cliques -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="font-semibold">Total de Cliques</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                Quantidade total de cliques em todos os seus links. Indica o alcance das suas campanhas.
+                            </p>
+                        </div>
+
+                        <!-- Links Ativos -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-green-100 rounded flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="font-semibold">Links Ativos</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                Número de links criados e funcionando. Mostra também o limite do seu plano.
+                            </p>
+                        </div>
+
+                        <!-- Comissões -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-orange-100 rounded flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="font-semibold">Total de Comissões</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                Valor total ganho em comissões. Dados importados do seu relatório da Shopee.
+                            </p>
+                        </div>
+
+                        <!-- Taxa de Conversão -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-purple-100 rounded flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="font-semibold">Taxa de Conversão</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                Percentual de cliques que geraram vendas. Métrica fundamental para otimização.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Plan Info -->
+                <section id="plan-info" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">💎 Informações do Plano</h2>
+                    <p class="text-gray-600 mb-6">O dashboard mostra uma seção especial com informações do seu plano atual:</p>
+
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-blue-900 mb-2">Uso do Plano Pro</h3>
+                        <div class="flex items-center space-x-4 text-sm text-blue-700">
+                            <span>Links: 5/50</span>
+                            <span>•</span>
+                            <span>Analytics: Avançados</span>
+                            <span>•</span>
+                            <span>Rastreamento: Avançado</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-3"></span>
+                            <span class="text-sm"><strong>Links:</strong> Mostra quantos links você criou vs. limite do plano</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                            <span class="text-sm"><strong>Analytics:</strong> Básicos (Starter) ou Avançados (Pro/Elite)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
+                            <span class="text-sm"><strong>Rastreamento:</strong> Básico (Starter) ou Avançado (Pro/Elite)</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Charts -->
+                <section id="charts" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📈 Gráficos e Relatórios</h2>
+                    <p class="text-gray-600 mb-6">O dashboard inclui visualizações gráficas dos seus dados:</p>
+
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h3 class="font-semibold text-gray-900">Resumo de Cliques</h3>
+                            <p class="text-sm text-gray-600">Gráfico de barras mostrando cliques por período</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h3 class="font-semibold text-gray-900">Performance de Links</h3>
+                            <p class="text-sm text-gray-600">Lista dos links com melhor performance</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <h3 class="font-semibold text-gray-900">Análise de Horários</h3>
+                            <p class="text-sm text-gray-600">Horários de pico para otimizar suas postagens</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-yellow-800">Plano Starter</h3>
+                                <p class="mt-1 text-sm text-yellow-700">
+                                    Algumas análises avançadas são exclusivas dos planos Pro e Elite.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section id="quick-actions" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">⚡ Ações Rápidas</h2>
+                    <p class="text-gray-600 mb-6">Botões de acesso rápido disponíveis no dashboard:</p>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="flex items-center p-4 border border-gray-200 rounded-lg">
+                            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Criar Novo Link</h3>
+                                <p class="text-sm text-gray-600">Botão laranja no canto superior direito</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center p-4 border border-gray-200 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Ver Analytics</h3>
+                                <p class="text-sm text-gray-600">Acessar relatórios detalhados</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center p-4 border border-gray-200 rounded-lg">
+                            <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Gerenciar Links</h3>
+                                <p class="text-sm text-gray-600">Ver, editar e organizar seus links</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center p-4 border border-gray-200 rounded-lg">
+                            <div class="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Upgrade de Plano</h3>
+                                <p class="text-sm text-gray-600">Acessar mais funcionalidades</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Navigation -->
+                <div class="flex justify-between pt-8 border-t">
+                    <a href="index.html" class="flex items-center text-gray-600 hover:text-primary">
+                        ← Voltar para índice
+                    </a>
+                    <a href="links.html" class="flex items-center text-gray-600 hover:text-primary">
+                        Próximo: Gerenciar Links →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App do Afiliado - Maximize seus ganhos na Shopee com inteligência</title>
+    <meta name="description" content="Transforme seus links de afiliado em máquinas de conversão. Analise comissões, gerencie campanhas e maximize resultados na Shopee com dados em tempo real.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#f59e0b',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-white">
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">App do Afiliado</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#funcionalidades" class="text-gray-600 hover:text-primary transition-colors">Funcionalidades</a>
+                    <a href="#precos" class="text-gray-600 hover:text-primary transition-colors">Preços</a>
+                    <a href="#depoimentos" class="text-gray-600 hover:text-primary transition-colors">Depoimentos</a>
+                    <a href="/users/sign_in" class="text-gray-600 hover:text-primary transition-colors">Login</a>
+                    <a href="#teste-gratis" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium">Teste Grátis</a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-gray-600" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div class="md:hidden mt-4 hidden" id="mobile-menu">
+                <div class="flex flex-col space-y-4">
+                    <a href="#funcionalidades" class="text-gray-600 hover:text-primary transition-colors">Funcionalidades</a>
+                    <a href="#precos" class="text-gray-600 hover:text-primary transition-colors">Preços</a>
+                    <a href="#depoimentos" class="text-gray-600 hover:text-primary transition-colors">Depoimentos</a>
+                    <a href="/users/sign_in" class="text-gray-600 hover:text-primary transition-colors">Login</a>
+                    <a href="#teste-gratis" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium text-center">Teste Grátis</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 bg-gradient-to-br from-gray-50 to-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                    Maximize seus ganhos como <span class="text-primary">afiliado da Shopee</span> com inteligência artificial
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+                    Gerencie, analise e otimize seus links de afiliado com dados em tempo real. 
+                    Transforme cada clique em mais comissões com nossa plataforma inteligente.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                    <a href="#teste-gratis" class="bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary/90 transition-colors font-semibold text-lg shadow-lg">
+                        <i class="fas fa-rocket mr-2"></i>
+                        Comece Grátis Agora
+                    </a>
+                    <a href="#demo" class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg hover:border-primary hover:text-primary transition-colors font-semibold text-lg">
+                        <i class="fas fa-play mr-2"></i>
+                        Ver Demonstração
+                    </a>
+                </div>
+                
+                <div class="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500">
+                    <div class="flex items-center">
+                        <i class="fas fa-bolt text-secondary mr-2"></i>
+                        Redirecionamento ultrarrápido
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-chart-bar text-accent mr-2"></i>
+                        Estatísticas em tempo real
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-primary mr-2"></i>
+                        100% seguro e confiável
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Video Section -->
+    <section id="demo" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    🚀 Veja como o App do Afiliado funciona em menos de 3 minutos!
+                </h2>
+                <p class="text-xl text-gray-600 mb-12">
+                    Descubra como nossa plataforma pode revolucionar seus resultados
+                </p>
+                
+                <div class="relative bg-gradient-to-r from-primary to-secondary rounded-2xl p-1 shadow-2xl">
+                    <div class="bg-gray-900 rounded-xl aspect-video flex items-center justify-center">
+                        <button class="bg-white/20 hover:bg-white/30 transition-colors rounded-full w-20 h-20 flex items-center justify-center backdrop-blur-sm">
+                            <i class="fas fa-play text-white text-2xl ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-center">
+                    <div class="bg-accent/10 text-accent px-6 py-3 rounded-full font-semibold">
+                        <i class="fas fa-star mr-2"></i>
+                        94% dos usuários recomendam
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        🚀 Transforme suas campanhas na Shopee em uma máquina de resultados!
+                    </h2>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Benefit 1 -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                            <span class="text-2xl font-bold text-primary">1</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">
+                            Nunca mais perca campanhas lucrativas
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Com nosso redirecionamento inteligente, você muda o link do produto sem pausar 
+                            ou interromper campanhas que já estão gerando resultados.
+                        </p>
+                    </div>
+                    
+                    <!-- Benefit 2 -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-6">
+                            <span class="text-2xl font-bold text-secondary">2</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">
+                            Pare de depender das métricas atrasadas da Shopee
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Tenha dados claros e imediatos sobre comissões, cliques e desempenho das 
+                            campanhas, permitindo decisões estratégicas rápidas e assertivas.
+                        </p>
+                    </div>
+                    
+                    <!-- Benefit 3 -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6">
+                            <span class="text-2xl font-bold text-accent">3</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">
+                            Invista com segurança e escalabilidade
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Acompanhe diariamente seus investimentos e retorno, maximizando lucros com 
+                            clareza absoluta sobre o desempenho financeiro de cada campanha.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="funcionalidades" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        🔥 Por que o App do Afiliado é a escolha ideal?
+                    </h2>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Features List -->
+                    <div class="space-y-8">
+                        <!-- Feature 1 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-link text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Links Sempre Ativos</h3>
+                                <p class="text-gray-600">
+                                    Alterações rápidas e simples de links, sem pausas ou perdas financeiras nas 
+                                    campanhas que já estão performando bem.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Feature 2 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clock text-secondary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Resultados em Tempo Real</h3>
+                                <p class="text-gray-600">
+                                    Veja com clareza imediata suas comissões, vendas, ROI e outros indicadores 
+                                    essenciais, dispensando a demora das atualizações tradicionais.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Feature 3 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-chart-line text-accent text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Dados Precisos para Decisões Estratégicas</h3>
+                                <p class="text-gray-600">
+                                    Dados completos e transparentes para decisões rápidas e eficazes, ajudando você 
+                                    a identificar onde investir para maximizar resultados.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Feature 4 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-bullseye text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Controle Completo do Tráfego</h3>
+                                <p class="text-gray-600">
+                                    Acompanhe diariamente o quanto investe em anúncios e o retorno exato das suas 
+                                    campanhas, garantindo o máximo aproveitamento do seu orçamento.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dashboard Preview -->
+                    <div class="relative">
+                        <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-1 shadow-2xl">
+                            <div class="bg-white rounded-xl p-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="font-semibold text-gray-900">Dashboard de Comissões</h4>
+                                        <span class="text-accent text-sm font-medium">✓ Tempo Real</span>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="bg-gray-50 rounded-lg p-4">
+                                            <div class="text-2xl font-bold text-gray-900">R$ 2.847</div>
+                                            <div class="text-sm text-gray-600">Comissões hoje</div>
+                                        </div>
+                                        <div class="bg-gray-50 rounded-lg p-4">
+                                            <div class="text-2xl font-bold text-gray-900">1.234</div>
+                                            <div class="text-sm text-gray-600">Cliques hoje</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="h-32 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-chart-area text-4xl text-primary/30"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="depoimentos" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        O que dizem nossos usuários...
+                    </h2>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold">
+                                M
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold text-gray-900">Marina Silva</div>
+                                <div class="text-gray-600 text-sm">Afiliada Expert</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed">
+                            "Meus resultados já eram bons, mas com o App do Afiliado, minhas conversões deram um 
+                            salto absurdo. Hoje é indispensável na minha operação."
+                        </p>
+                        <div class="mt-4 flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center text-white font-bold">
+                                R
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold text-gray-900">Rafael Santos</div>
+                                <div class="text-gray-600 text-sm">Mentor e Afiliado</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed">
+                            "Transformou completamente o jeito como faço análise de campanhas. Com o App do Afiliado, 
+                            tudo está centralizado, visual e preciso."
+                        </p>
+                        <div class="mt-4 flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="bg-white rounded-xl p-8 shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center text-white font-bold">
+                                D
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold text-gray-900">Daniela Costa</div>
+                                <div class="text-gray-600 text-sm">Mentora e Afiliada</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed">
+                            "Essa ferramenta é o que faltava pra profissionalizar de verdade o trabalho das minhas 
+                            alunas. Quem leva a sério, precisa usar."
+                        </p>
+                        <div class="mt-4 flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="precos" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Escolha o seu plano abaixo:
+                    </h2>
+                    <p class="text-xl text-gray-600">
+                        Comece grátis e evolua conforme seus resultados crescem
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Starter Plan -->
+                    <div class="bg-white border-2 border-gray-200 rounded-xl p-8 hover:border-primary transition-colors">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Afiliado Starter</h3>
+                            <p class="text-gray-600 mb-4">Para iniciantes</p>
+                            <div class="mb-6">
+                                <span class="text-4xl font-bold text-gray-900">R$ 59,90</span>
+                                <span class="text-gray-600">/mês</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">15 links de redirecionamento</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Análise de comissões Shopee</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Estatísticas básicas</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Rastreamento básico</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Suporte via WhatsApp</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-semibold">
+                            Teste Grátis por 14 dias
+                        </button>
+                    </div>
+                    
+                    <!-- Pro Plan -->
+                    <div class="bg-white border-2 border-primary rounded-xl p-8 relative transform scale-105">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold">
+                            Mais Popular
+                        </div>
+                        
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Afiliado Pro</h3>
+                            <p class="text-gray-600 mb-4">Para profissionais</p>
+                            <div class="mb-6">
+                                <span class="text-4xl font-bold text-gray-900">R$ 97,90</span>
+                                <span class="text-gray-600">/mês</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">50 links de redirecionamento</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Análise de comissões Shopee</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Estatísticas avançadas</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Rastreamento avançado</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Suporte via WhatsApp</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Relatórios personalizados</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors font-semibold">
+                            Teste Grátis por 14 dias
+                        </button>
+                    </div>
+                    
+                    <!-- Elite Plan -->
+                    <div class="bg-white border-2 border-gray-200 rounded-xl p-8 hover:border-primary transition-colors">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Afiliado Elite</h3>
+                            <p class="text-gray-600 mb-4">Para experts</p>
+                            <div class="mb-6">
+                                <span class="text-4xl font-bold text-gray-900">R$ 147,90</span>
+                                <span class="text-gray-600">/mês</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Links ilimitados</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Análise de comissões Shopee</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Estatísticas avançadas</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Rastreamento avançado</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Suporte via WhatsApp</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Suporte estratégico</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">API para integrações</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-semibold">
+                            Teste Grátis por 14 dias
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="teste-gratis" class="py-20 bg-gradient-to-r from-primary to-secondary">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    Pronto para transformar seus links em máquinas de conversão?
+                </h2>
+                <p class="text-xl text-white/90 mb-8 leading-relaxed">
+                    Comece hoje mesmo com o plano gratuito ou escolha o que melhor se adapta às suas 
+                    necessidades. Não há compromisso de longo prazo.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/users/sign_up" class="bg-white text-primary px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg">
+                        <i class="fas fa-rocket mr-2"></i>
+                        Teste Grátis por 14 dias
+                    </a>
+                    <a href="#precos" class="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary transition-colors font-semibold text-lg">
+                        Ver Todos os Planos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <!-- Company Info -->
+                    <div class="col-span-1">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-line text-white text-sm"></i>
+                            </div>
+                            <span class="text-xl font-bold">App do Afiliado</span>
+                        </div>
+                        <p class="text-gray-400 mb-6">
+                            A plataforma completa para gestão e análise de links de afiliado da Shopee.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fab fa-youtube text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fab fa-telegram text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Suporte -->
+                    <div>
+                        <h4 class="font-semibold mb-4">Suporte</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Central de Ajuda</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contato</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutoriais</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Status do Sistema</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Legal -->
+                    <div>
+                        <h4 class="font-semibold mb-4">Legal</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Termos de Uso</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Política de Privacidade</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Política de Reembolso</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Produto -->
+                    <div>
+                        <h4 class="font-semibold mb-4">Produto</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#funcionalidades" class="text-gray-400 hover:text-white transition-colors">Funcionalidades</a></li>
+                            <li><a href="#precos" class="text-gray-400 hover:text-white transition-colors">Preços</a></li>
+                            <li><a href="/users/sign_in" class="text-gray-400 hover:text-white transition-colors">Login</a></li>
+                            <li><a href="/users/sign_up" class="text-gray-400 hover:text-white transition-colors">Cadastro</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                    <p class="text-gray-400">
+                        App do Afiliado · © 2025 · Todos os direitos reservados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

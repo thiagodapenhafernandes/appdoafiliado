@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 120" width="780" height="120" role="img" aria-label="App do Afiliado logo">
+  <defs>
+    <!-- Gradiente principal -->
+    <linearGradient id="brandGrad" x1="20" y1="20" x2="160" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5B9DF9"/>
+      <stop offset="1" stop-color="#7A5AF8"/>
+    </linearGradient>
+    <!-- Brilho sutil -->
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="120">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ícone de "link/flow" à esquerda -->
+  <g transform="translate(10,0)">
+    <!-- Elo 1 -->
+    <path d="M30,60
+             C30,38.9 47.0,22 68,22
+             h16
+             c21,0 38,16.9 38,38
+             s-17,38 -38,38
+             H68
+             c-8.8,0 -16,-7.2 -16,-16
+             s7.2,-16 16,-16
+             h16"
+          fill="none"
+          stroke="url(#brandGrad)"
+          stroke-width="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <!-- Elo 2 -->
+    <path d="M64,60
+             c0,21.1 17,38 38,38
+             h16
+             c21,0 38,-16.9 38,-38
+             s-17,-38 -38,-38
+             h-16
+             c-8.8,0 -16,7.2 -16,16
+             s7.2,16 16,16
+             h16"
+          fill="none"
+          stroke="url(#brandGrad)"
+          stroke-width="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity="0.9"/>
+    <!-- brilho -->
+    <path d="M30,60
+             C30,38.9 47.0,22 68,22
+             h16
+             c21,0 38,16.9 38,38
+             s-17,38 -38,38
+             H68
+             c-8.8,0 -16,-7.2 -16,-16
+             s7.2,-16 16,-16
+             h16"
+          fill="none"
+          stroke="url(#shine)"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(180,0)">
+    <text x="0" y="78"
+          font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+          font-size="48"
+          font-weight="700"
+          letter-spacing="0.4">
+      <tspan fill="#111111">App do </tspan>
+      <tspan fill="url(#brandGrad)">Afiliado</tspan>
+    </text>
+    <!-- Subtítulo opcional -->
+    <!-- <text x="2" y="102"
+          font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+          font-size="14"
+          fill="#6B7280"
+          letter-spacing="2"
+          style="text-transform:uppercase">redirect & analytics</text> -->
+  </g>
+</svg>

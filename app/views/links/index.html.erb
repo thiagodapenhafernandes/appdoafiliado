@@ -1,0 +1,135 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="flex-1 min-w-0">
+      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+        Meus Links
+      </h2>
+      <p class="mt-1 text-sm text-gray-500">
+        Gerencie todos os seus links de afiliação
+      </p>
+    </div>
+    <div class="mt-4 flex md:mt-0 md:ml-4">
+      <%= link_to new_link_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        Novo Link
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total de Links</dt>
+              <dd class="text-lg font-medium text-gray-900"><%= @links_count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total de Cliques</dt>
+              <dd class="text-lg font-medium text-gray-900"><%= @total_clicks %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Links Ativos</dt>
+              <dd class="text-lg font-medium text-gray-900"><%= @active_links %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Links Table -->
+  <div class="bg-white shadow overflow-hidden sm:rounded-md">
+    <% if @links.any? %>
+      <ul class="divide-y divide-gray-200">
+        <% @links.each do |link| %>
+          <li>
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-blue-600 truncate">
+                    <%= link.title.present? ? link.title : "Link sem título" %>
+                  </p>
+                  <p class="text-sm text-gray-500 truncate">
+                    URL: <%= link.short_url(@request) %>
+                  </p>
+                  <p class="text-xs text-gray-400 truncate">
+                    Destino: <%= truncate(link.original_url, length: 60) %>
+                  </p>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="text-sm text-gray-500">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= link.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                      <%= link.active? ? 'Ativo' : 'Inativo' %>
+                    </span>
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    <%= link.clicks_count %> cliques
+                  </div>
+                  <div class="flex space-x-2">
+                    <%= link_to "Ver", link, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50" %>
+                    <%= link_to "Editar", edit_link_path(link), class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhum link criado</h3>
+        <p class="mt-1 text-sm text-gray-500">Comece criando seu primeiro link de afiliação.</p>
+        <div class="mt-6">
+          <%= link_to new_link_path, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Criar primeiro link
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

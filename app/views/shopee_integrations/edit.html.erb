@@ -1,0 +1,211 @@
+<!-- app/views/shopee_integrations/edit.html.erb -->
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Editar Integração Shopee</h1>
+    <p class="mt-2 text-gray-600">
+      Atualize suas credenciais ou configurações da integração Shopee.
+    </p>
+  </div>
+
+  <!-- Current Status Card -->
+  <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-medium text-gray-900">Status Atual</h3>
+        <p class="text-sm text-gray-600">
+          Configurado em <%= @integration.created_at.strftime("%d/%m/%Y") %>
+        </p>
+      </div>
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+        <%= @integration.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+        <%= @integration.active? ? 'Ativo' : 'Inativo' %>
+      </span>
+    </div>
+  </div>
+
+  <%= form_with model: @integration, url: shopee_integration_path, method: :patch, 
+      local: false, html: { class: "space-y-6" } do |form| %>
+    
+    <% if @integration.errors.any? %>
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex">
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">
+              <%= pluralize(@integration.errors.count, "erro") %> encontrado<%= @integration.errors.count > 1 ? "s" : "" %>:
+            </h3>
+            <div class="mt-2 text-sm text-red-700">
+              <ul class="list-disc list-inside space-y-1">
+                <% @integration.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="space-y-6">
+      <!-- App ID Field -->
+      <div>
+        <%= form.label :app_id, "App ID *", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.text_field :app_id, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
+            placeholder: "Digite o App ID do seu aplicativo Shopee",
+            required: true %>
+        <p class="mt-1 text-sm text-gray-500">
+          Atual: <%= @integration.app_id.present? ? @integration.app_id[0..8] + "..." : "Não configurado" %>
+        </p>
+      </div>
+
+      <!-- Secret Field -->
+      <div>
+        <%= form.label :secret, "Secret", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.password_field :secret, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
+            placeholder: "Deixe em branco para manter o atual" %>
+        <p class="mt-1 text-sm text-gray-500">
+          Deixe em branco se não quiser alterar o secret atual.
+        </p>
+      </div>
+
+      <!-- Active Status -->
+      <div class="flex items-start">
+        <div class="flex items-center h-5">
+          <%= form.check_box :active, 
+              class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" %>
+        </div>
+        <div class="ml-3 text-sm">
+          <%= form.label :active, "Integração ativa", class: "font-medium text-gray-700" %>
+          <p class="text-gray-500">Quando ativa, a integração sincroniza conversões automaticamente.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Connection Option -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <div class="flex items-start">
+        <div class="flex items-center h-5">
+          <input type="checkbox" id="test_before_save" name="test_before_save" value="1" checked
+                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+        </div>
+        <div class="ml-3 text-sm">
+          <label for="test_before_save" class="font-medium text-yellow-700">Testar conexão antes de salvar</label>
+          <p class="text-yellow-600">Verificar se as credenciais (novas ou existentes) estão funcionando.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="border-t border-gray-200 pt-6">
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <h3 class="text-sm font-medium text-red-800 mb-2">Zona de Perigo</h3>
+        <p class="text-sm text-red-600 mb-3">
+          Remover a integração irá parar todas as sincronizações automáticas. 
+          Os dados já importados serão mantidos.
+        </p>
+        <%= link_to "Remover Integração", shopee_integration_path, 
+            method: :delete,
+            remote: true,
+            class: "inline-flex items-center px-3 py-1.5 border border-red-300 text-sm font-medium rounded text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
+            data: { 
+              confirm: "Tem certeza? Isso irá remover a integração e parar todas as sincronizações automáticas. Os dados já importados serão mantidos." 
+            } %>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-between pt-6 border-t border-gray-200">
+      <%= link_to "Cancelar", shopee_integration_path, 
+          class: "btn-secondary" %>
+          
+      <%= form.submit "Salvar Alterações", 
+          class: "btn-primary",
+          id: "submit-btn",
+          data: { disable_with: "Salvando..." } %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Progress Modal -->
+<div id="progress-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2" id="progress-title">Processando...</h3>
+        <p class="text-sm text-gray-600" id="progress-message">Aguarde...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('form');
+  const modal = document.getElementById('progress-modal');
+  const progressTitle = document.getElementById('progress-title');
+  const progressMessage = document.getElementById('progress-message');
+  const testCheckbox = document.getElementById('test_before_save');
+
+  form.addEventListener('ajax:before', function(event) {
+    if (testCheckbox.checked) {
+      progressTitle.textContent = 'Testando Conexão...';
+      progressMessage.textContent = 'Verificando credenciais com a API Shopee...';
+      modal.classList.remove('hidden');
+    }
+  });
+
+  form.addEventListener('ajax:complete', function() {
+    modal.classList.add('hidden');
+  });
+
+  form.addEventListener('ajax:success', function(event) {
+    const data = event.detail[0];
+    
+    if (data.success) {
+      showNotification(data.message || 'Configuração atualizada com sucesso!', 'success');
+      
+      // Redirect after a short delay
+      setTimeout(() => {
+        window.location.href = data.redirect_url || '/shopee_integration';
+      }, 1500);
+    } else {
+      showNotification(data.message || 'Erro ao atualizar configuração', 'error');
+    }
+  });
+
+  form.addEventListener('ajax:error', function(event) {
+    const data = event.detail[0];
+    showNotification(data.error || 'Erro ao processar solicitação', 'error');
+  });
+
+  // Handle delete integration
+  document.addEventListener('ajax:success', function(event) {
+    if (event.target.textContent.includes('Remover Integração')) {
+      const data = event.detail[0];
+      
+      if (data.success) {
+        showNotification('Integração removida com sucesso!', 'success');
+        setTimeout(() => {
+          window.location.href = '/shopee_integration';
+        }, 1500);
+      }
+    }
+  });
+
+  function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 5000);
+  }
+});
+</script>

@@ -1,0 +1,97 @@
+<div class="mb-8">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Gerenciar Planos</h1>
+      <p class="mt-2 text-gray-600">Configure os planos de assinatura e integração com Stripe</p>
+    </div>
+    <%= link_to "Novo Plano", new_admin_plan_path, 
+        class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700" %>
+  </div>
+</div>
+
+<div class="bg-white shadow overflow-hidden sm:rounded-md">
+  <% if @plans.any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @plans.each do |plan| %>
+        <li>
+          <div class="px-4 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                    <span class="text-sm font-medium text-white">
+                      <%= plan.name.first.upcase %>
+                    </span>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="flex items-center">
+                    <p class="text-sm font-medium text-indigo-600">
+                      <%= link_to plan.name, admin_plan_path(plan) %>
+                    </p>
+                    <% if plan.stripe_price_id.present? %>
+                      <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Stripe Sync
+                      </span>
+                    <% else %>
+                      <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        Não Sincronizado
+                      </span>
+                    <% end %>
+                  </div>
+                  <div class="mt-1">
+                    <p class="text-sm text-gray-900">
+                      R$ <%= number_with_precision(plan.price, precision: 2) %>/mês
+                    </p>
+                    <p class="text-sm text-gray-500">
+                      <%= plan.description %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <% if plan.stripe_price_id.blank? %>
+                  <%= form_tag sync_with_stripe_admin_plan_path(plan), method: :patch, class: "inline-block" do %>
+                    <%= submit_tag "Sincronizar", 
+                        class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium border-none bg-transparent cursor-pointer p-0 underline",
+                        onclick: "return confirm('Sincronizar este plano com o Stripe?')" %>
+                  <% end %>
+                <% end %>
+                <%= link_to "Editar", edit_admin_plan_path(plan),
+                    class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+                <%= form_tag admin_plan_path(plan), method: :delete, class: "inline-block" do %>
+                  <%= submit_tag "Excluir", 
+                      class: "text-red-600 hover:text-red-900 text-sm font-medium border-none bg-transparent cursor-pointer p-0 underline",
+                      onclick: "return confirm('Tem certeza que deseja excluir este plano?')" %>
+                <% end %>
+              </div>
+            </div>
+            
+            <% if plan.stripe_price_id.present? %>
+              <div class="mt-2 flex items-center text-xs text-gray-500">
+                <span>Stripe Price ID: <%= plan.stripe_price_id %></span>
+              </div>
+            <% end %>
+            
+            <div class="mt-2">
+              <span class="text-xs text-gray-500">
+                Assinaturas ativas: <%= plan.subscriptions.active.count %>
+              </span>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="px-4 py-12 text-center">
+      <div class="text-center">
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhum plano encontrado</h3>
+        <p class="mt-1 text-sm text-gray-500">Comece criando seu primeiro plano de assinatura.</p>
+        <div class="mt-6">
+          <%= link_to "Criar Plano", new_admin_plan_path,
+              class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

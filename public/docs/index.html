@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkFlow - Documentação de Uso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#1F2937'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-primary">LinkFlow</h1>
+                    <span class="ml-2 text-sm text-gray-500">Documentação</span>
+                </div>
+                <a href="../" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Voltar ao Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-primary to-orange-600 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Guia Completo do LinkFlow</h2>
+            <p class="text-xl opacity-90 mb-8">Aprenda a usar todas as funcionalidades da sua plataforma de afiliação Shopee</p>
+            <div class="flex justify-center space-x-4">
+                <span class="bg-white/20 px-4 py-2 rounded-full text-sm">✨ Simples</span>
+                <span class="bg-white/20 px-4 py-2 rounded-full text-sm">⚡ Rápido</span>
+                <span class="bg-white/20 px-4 py-2 rounded-full text-sm">📊 Completo</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Começando Agora</h3>
+                <p class="text-xl text-gray-600">3 passos simples para começar a lucrar</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl font-bold">1</span>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">Criar Links</h4>
+                    <p class="text-gray-600">Crie links de redirecionamento para seus produtos da Shopee</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl font-bold">2</span>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">Compartilhar</h4>
+                    <p class="text-gray-600">Divulgue seus links nas redes sociais e grupos</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white text-2xl font-bold">3</span>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">Analisar</h4>
+                    <p class="text-gray-600">Acompanhe suas comissões e otimize suas estratégias</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-center text-gray-900 mb-12">Módulos da Plataforma</h3>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dashboard -->
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2V7"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold">Dashboard</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Visão geral dos seus resultados, métricas e status do plano</p>
+                    <a href="dashboard.html" class="text-primary font-medium hover:text-orange-600">Ler documentação →</a>
+                </div>
+
+                <!-- Links -->
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold">Gerenciar Links</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Criar, editar e organizar seus links de afiliação</p>
+                    <a href="links.html" class="text-primary font-medium hover:text-orange-600">Ler documentação →</a>
+                </div>
+
+                <!-- Analytics Shopee -->
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold">Analytics Shopee</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Análise completa das suas comissões e performance</p>
+                    <a href="analytics.html" class="text-primary font-medium hover:text-orange-600">Ler documentação →</a>
+                </div>
+
+                <!-- Cliques -->
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.122 2.122"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold">Analytics de Cliques</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Rastreamento detalhado de cliques nos seus links</p>
+                    <a href="clicks.html" class="text-primary font-medium hover:text-orange-600">Ler documentação →</a>
+                </div>
+
+                <!-- Planos -->
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold">Planos & Funcionalidades</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Entenda as diferenças entre os planos e como fazer upgrade</p>
+                    <a href="plans.html" class="text-primary font-medium hover:text-orange-600">Ler documentação →</a>
+                </div>
+
+                <!-- FAQ -->
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold">Perguntas Frequentes</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Respostas para as dúvidas mais comuns dos usuários</p>
+                    <a href="faq.html" class="text-primary font-medium hover:text-orange-600">Ler documentação →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section class="py-12 bg-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Precisa de Ajuda?</h3>
+            <p class="text-gray-600 mb-8">Nossa equipe está pronta para te ajudar a maximizar seus resultados</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-semibold mb-2">💬 Suporte via WhatsApp</h4>
+                    <p class="text-gray-600 text-sm mb-4">Disponível para todos os planos</p>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        Chamar no WhatsApp
+                    </button>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-semibold mb-2">🎯 Suporte Estratégico</h4>
+                    <p class="text-gray-600 text-sm mb-4">Exclusivo para plano Elite</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                        Solicitar Consultoria
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-xl font-bold mb-2">LinkFlow</h3>
+            <p class="text-gray-400">Sua plataforma completa para afiliação Shopee</p>
+        </div>
+    </footer>
+
+    <script>
+        // Adicionar interatividade simples
+        document.querySelectorAll('a[href$=".html"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = this.href;
+            });
+        });
+    </script>
+</body>
+</html>

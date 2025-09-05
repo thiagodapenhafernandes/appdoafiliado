@@ -1,0 +1,184 @@
+<div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <!-- Header section -->
+  <div class="container mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+      <h1 class="text-5xl font-bold text-gray-800 mb-4">
+        Escolha o Plano Perfeito
+      </h1>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Transforme seus links em ferramentas poderosas de marketing e análise. 
+        Comece gratuitamente e escale conforme seu negócio cresce.
+      </p>
+    </div>
+
+    <!-- Current subscription info -->
+    <% if user_signed_in? && current_user.current_subscription&.active? %>
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 max-w-4xl mx-auto">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-blue-800">Plano Atual</h3>
+            <div class="mt-1 text-sm text-blue-700">
+              <% if current_user.on_trial? %>
+                Período de teste - <%= pluralize(current_user.trial_days_remaining, 'dia') %> restante(s)
+              <% else %>
+                <%= current_user.current_subscription.plan.name %> - Ativo até <%= current_user.current_subscription.current_period_end&.strftime('%d/%m/%Y') %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Plans grid -->
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <% @plans.each_with_index do |plan, index| %>
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 <%= 'ring-4 ring-blue-500 relative' if index == 1 %>">
+            <% if index == 1 %>
+              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  🔥 Mais Popular
+                </span>
+              </div>
+            <% end %>
+            
+            <div class="p-8">
+              <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2"><%= plan.name %></h3>
+                <p class="text-gray-600 mb-6"><%= plan.description %></p>
+                
+                <div class="mb-6">
+                  <% if plan.price == 0 %>
+                    <span class="text-4xl font-bold text-gray-800">Gratuito</span>
+                  <% else %>
+                    <span class="text-lg text-gray-500">R$</span>
+                    <span class="text-4xl font-bold text-gray-800"><%= plan.price.to_i %></span>
+                    <span class="text-gray-600">/mês</span>
+                  <% end %>
+                </div>
+              </div>
+              
+              <div class="space-y-4 mb-8">
+                <% if plan.features.present? %>
+                  <% plan.features.each do |feature| %>
+                    <div class="flex items-center">
+                      <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                      </svg>
+                      <span class="text-gray-600"><%= feature %></span>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-600">Acesso completo à plataforma</span>
+                  </div>
+                  <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-600">Dashboard de analytics</span>
+                  </div>
+                  <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-600">Relatórios detalhados</span>
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="text-center">
+                <% if user_signed_in? && current_user.current_subscription&.plan_id == plan.id %>
+                  <button class="w-full bg-gray-100 text-gray-600 py-3 px-6 rounded-lg font-semibold cursor-not-allowed">
+                    Plano Atual
+                  </button>
+                <% else %>
+                  <%= link_to new_subscription_path(plan_id: plan.id), 
+                      class: "w-full inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105" do %>
+                    <%= plan.price == 0 ? "Começar Grátis" : "Assinar Agora" %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Benefits section -->
+    <div class="max-w-4xl mx-auto mt-20">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">
+          Por que escolher nossa plataforma?
+        </h2>
+        <p class="text-gray-600">
+          Ferramentas profissionais para maximizar o potencial dos seus links
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Analytics Avançados</h3>
+          <p class="text-gray-600">Acompanhe clicks, origens, dispositivos e muito mais em tempo real</p>
+        </div>
+
+        <div class="text-center">
+          <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">100% Seguro</h3>
+          <p class="text-gray-600">Seus dados e links protegidos com a melhor segurança do mercado</p>
+        </div>
+
+        <div class="text-center">
+          <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Rápido e Confiável</h3>
+          <p class="text-gray-600">Links que carregam instantaneamente, disponíveis 24/7</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA section for non-logged users -->
+    <% unless user_signed_in? %>
+      <div class="max-w-4xl mx-auto mt-20 text-center">
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
+          <h2 class="text-3xl font-bold mb-4">
+            Pronto para começar?
+          </h2>
+          <p class="text-xl mb-8 opacity-90">
+            Crie sua conta gratuita e comece a usar nossa plataforma hoje mesmo
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <%= link_to new_user_registration_path, 
+                class: "bg-white text-blue-600 hover:bg-gray-100 py-3 px-8 rounded-lg font-semibold transition-colors" do %>
+              Criar Conta Gratuita
+            <% end %>
+            <%= link_to new_user_session_path, 
+                class: "border border-white text-white hover:bg-white hover:text-blue-600 py-3 px-8 rounded-lg font-semibold transition-colors" do %>
+              Já tenho conta
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

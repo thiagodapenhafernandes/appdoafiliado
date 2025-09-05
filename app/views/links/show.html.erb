@@ -1,0 +1,247 @@
+<div class="max-w-6xl mx-auto">
+  <!-- Alert de Sucesso -->
+  <% if notice %>
+    <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-green-800"><%= notice %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="flex-1 min-w-0">
+      <h1 class="text-3xl font-bold text-gray-900">
+        <%= @link.name.present? ? @link.name : (@link.title.present? ? @link.title : "Link ##{@link.id}") %>
+      </h1>
+      <p class="mt-2 text-sm text-gray-500">
+        Criado em <%= @link.created_at.strftime("%d/%m/%Y às %H:%M") %>
+      </p>
+    </div>
+    <div class="mt-4 flex space-x-3 md:mt-0 md:ml-4">
+      <%= link_to "Editar", edit_link_path(@link), class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+      <%= link_to "Voltar", links_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+    <!-- Main Content -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Link Details -->
+      <div class="bg-white shadow-sm rounded-xl border border-gray-200">
+        <div class="px-6 py-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-6">Detalhes do Link</h2>
+          
+          <div class="space-y-6">
+            <!-- URL Curta -->
+            <div class="bg-gray-50 rounded-lg p-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">URL Curta</label>
+              <div class="flex items-center space-x-3">
+                <div class="flex-1 bg-white rounded-lg border border-gray-300 px-3 py-2">
+                  <code class="text-blue-600 font-mono text-sm break-all"><%= @short_url %></code>
+                </div>
+                <button onclick="copyToClipboard('<%= @short_url %>')" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                  </svg>
+                  Copiar
+                </button>
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="flex items-center justify-between py-4 border-b border-gray-200">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Status</label>
+                <div class="mt-1">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= @link.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                    <div class="w-2 h-2 rounded-full <%= @link.active? ? 'bg-green-400' : 'bg-red-400' %> mr-2"></div>
+                    <%= @link.active? ? 'Ativo' : 'Inativo' %>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- URL de Destino -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">URL de Destino</label>
+              <div class="bg-gray-50 rounded-lg p-3">
+                <%= link_to @link.original_url, @link.original_url, target: "_blank", class: "text-blue-600 hover:text-blue-800 break-all text-sm font-medium" %>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <% if @link.tags.present? %>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                <div class="flex flex-wrap gap-2">
+                  <% @link.tag_list.each do |tag| %>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <%= tag %>
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Data de Expiração -->
+            <% if @link.expires_at.present? %>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Data de Expiração</label>
+                <div class="text-sm text-gray-900">
+                  <%= @link.expires_at.strftime("%d/%m/%Y às %H:%M") %>
+                  <% if @link.expired? %>
+                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                      Expirado
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Descrição -->
+            <% if @link.description.present? %>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+                <div class="text-sm text-gray-900 bg-gray-50 rounded-lg p-3">
+                  <%= simple_format(@link.description) %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compartilhamento -->
+      <div class="bg-white shadow-sm rounded-xl border border-gray-200">
+        <div class="px-6 py-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-6">Compartilhamento</h2>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="shareOnWhatsApp()" class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.886 3.75"/>
+              </svg>
+              WhatsApp
+            </button>
+            
+            <button onclick="shareOnTelegram()" class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+              </svg>
+              Telegram
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Stats e Ações -->
+    <div class="space-y-6">
+      <!-- Estatísticas -->
+      <div class="bg-white shadow-sm rounded-xl border border-gray-200">
+        <div class="px-6 py-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-6">Estatísticas</h3>
+          
+          <div class="space-y-6">
+            <div class="text-center">
+              <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mb-4">
+                <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Total de Cliques</p>
+                <p class="text-4xl font-bold text-gray-900 mt-1"><%= @link.clicks_count %></p>
+              </div>
+            </div>
+            
+            <div class="border-t pt-4 space-y-3">
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-500">Código do Link</span>
+                <span class="font-mono font-medium text-gray-900"><%= @link.short_code %></span>
+              </div>
+              <% if @link.created_at %>
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-500">Criado há</span>
+                  <span class="font-medium text-gray-900"><%= time_ago_in_words(@link.created_at) %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ações -->
+      <div class="bg-white shadow-sm rounded-xl border border-gray-200">
+        <div class="px-6 py-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-6">Ações</h3>
+          
+          <div class="space-y-3">
+            <%= link_to edit_link_path(@link), class: "w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Editar Link
+            <% end %>
+            
+            <%= link_to @link, method: :delete, data: { confirm: "Tem certeza que deseja deletar este link? Esta ação não pode ser desfeita." }, class: "w-full inline-flex justify-center items-center px-4 py-3 border border-red-300 shadow-sm text-sm font-medium rounded-lg text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors" do %>
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Deletar Link
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(function() {
+    // Criar notificação de sucesso mais elegante
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full';
+    notification.textContent = 'URL copiada para a área de transferência!';
+    document.body.appendChild(notification);
+    
+    // Animar entrada
+    setTimeout(() => {
+      notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remover após 3 segundos
+    setTimeout(() => {
+      notification.classList.add('translate-x-full');
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 300);
+    }, 3000);
+  }).catch(function() {
+    alert('Erro ao copiar URL. Tente selecionar e copiar manualmente.');
+  });
+}
+
+function shareOnWhatsApp() {
+  const url = '<%= @short_url %>';
+  const text = '<%= @link.name.present? ? @link.name : (@link.title.present? ? @link.title : "Confira este produto incrível!") %>';
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+  window.open(whatsappUrl, '_blank');
+}
+
+function shareOnTelegram() {
+  const url = '<%= @short_url %>';
+  const text = '<%= @link.name.present? ? @link.name : (@link.title.present? ? @link.title : "Confira este produto incrível!") %>';
+  const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+  window.open(telegramUrl, '_blank');
+}
+</script>

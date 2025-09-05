@@ -1,0 +1,253 @@
+<div class="max-w-4xl mx-auto">
+  <div class="md:flex md:items-center md:justify-between mb-6">
+    <div class="flex-1 min-w-0">
+      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+        Criar Novo Link
+      </h2>
+      <p class="mt-1 text-sm text-gray-500">
+        Configure seu link personalizado com todas as opções avançadas
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Formulário Principal -->
+    <div class="lg:col-span-2">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <%= form_with model: @link, local: true, id: "link-form", class: "space-y-6" do |form| %>
+            <% if @link.errors.any? %>
+              <div class="bg-red-50 border border-red-200 rounded-md p-4">
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">
+                      Ocorreram alguns erros:
+                    </h3>
+                    <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                      <% @link.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Nome do Link -->
+            <div>
+              <%= form.label :name, "Nome do Link", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="mt-1">
+                <%= form.text_field :name, class: "w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors", placeholder: "Ex: Promoção Black Friday - Samsung Galaxy" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Um nome para identificar facilmente este link</p>
+            </div>
+
+            <!-- Link Original -->
+            <div>
+              <%= form.label :original_url, "Link Original", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="mt-1">
+                <%= form.url_field :original_url, class: "w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors", placeholder: "https://shopee.com.br/product/123?af_sub_siteid=seu_id" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Cole aqui o link completo de afiliação</p>
+            </div>
+
+            <!-- Slug Personalizado -->
+            <div>
+              <%= form.label :custom_slug, "Slug Personalizado (opcional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="mt-1 flex rounded-lg shadow-sm">
+                <span class="inline-flex items-center px-3 py-2.5 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm font-medium">
+                  <%= ENV['APP_URL'] || 'dev.notificalead.com.br' %>/go/
+                </span>
+                <%= form.text_field :custom_slug, class: "flex-1 px-3 py-2.5 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors", placeholder: "meu-link-personalizado" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Se não preenchido, será gerado automaticamente</p>
+            </div>
+
+            <!-- Tags -->
+            <div>
+              <%= form.label :tags, "Tags", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="mt-1">
+                <%= form.text_field :tags, class: "w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors", placeholder: "black-friday, samsung, smartphone, promoção" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Separe as tags por vírgula para organizar seus links</p>
+            </div>
+
+            <!-- Data de Expiração -->
+            <div>
+              <%= form.label :expires_at, "Data de Expiração (opcional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="mt-1">
+                <%= form.date_field :expires_at, class: "w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Após esta data, o link será automaticamente desativado</p>
+            </div>
+
+            <!-- Rastreamento Avançado -->
+            <!-- Rastreamento Avançado -->
+            <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg <%= current_user.can_access_advanced_tracking? ? 'bg-white' : 'bg-gray-50' %>">
+              <div class="flex items-center h-5 mt-1">
+                <% if current_user.can_access_advanced_tracking? %>
+                  <%= form.check_box :advanced_tracking, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" %>
+                <% else %>
+                  <input type="checkbox" disabled class="h-4 w-4 text-gray-400 border-gray-300 rounded cursor-not-allowed">
+                <% end %>
+              </div>
+              <div class="flex-1">
+                <%= form.label :advanced_tracking, "Habilitar rastreamento avançado", class: "block text-sm font-medium #{current_user.can_access_advanced_tracking? ? 'text-gray-700' : 'text-gray-400'}" %>
+                <% if current_user.can_access_advanced_tracking? %>
+                  <p class="mt-1 text-sm text-green-600">✓ Disponível no seu plano <%= current_user.current_plan&.name %></p>
+                <% else %>
+                  <p class="mt-1 text-sm text-gray-500">Recurso disponível nos planos Pro e Elite. Faça upgrade para acessar.</p>
+                <% end %>
+              </div>
+            </div>
+
+            <!-- Link Ativo -->
+            <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">
+              <div class="flex items-center h-5 mt-1">
+                <%= form.check_box :active, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", checked: true %>
+              </div>
+              <div class="flex-1">
+                <%= form.label :active, "Link Ativo", class: "block text-sm font-medium text-gray-700" %>
+                <p class="mt-1 text-sm text-gray-500">Links inativos não funcionarão quando acessados</p>
+              </div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+              <button type="button" id="preview-btn" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                Preview
+              </button>
+              
+              <div class="flex space-x-3">
+                <%= link_to "Cancelar", links_path, class: "px-6 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+                <%= form.submit "Criar Link", class: "px-6 py-2 bg-blue-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Sidebar -->
+    <div class="lg:col-span-1">
+      <div class="bg-white shadow rounded-lg sticky top-6">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Preview do Link</h3>
+          
+          <div id="preview-content" class="space-y-4">
+            <div class="text-center py-8 text-gray-500">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+              </svg>
+              <p class="mt-2 text-sm">Preencha os campos para ver o preview</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-blue-800">
+              Dicas
+            </h3>
+            <div class="mt-2 text-sm text-blue-700">
+              <ul class="list-disc list-inside space-y-1">
+                <li>Use nomes descritivos para encontrar facilmente seus links</li>
+                <li>Tags ajudam a organizar e filtrar seus links</li>
+                <li>Slugs personalizados são mais fáceis de lembrar</li>
+                <li>Configure data de expiração para promoções temporárias</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('link-form');
+  const previewBtn = document.getElementById('preview-btn');
+  const previewContent = document.getElementById('preview-content');
+  
+  previewBtn.addEventListener('click', function() {
+    const formData = new FormData(form);
+    
+    fetch('<%= preview_links_path %>', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.errors) {
+        previewContent.innerHTML = `
+          <div class="bg-red-50 border border-red-200 rounded-md p-3">
+            <p class="text-sm text-red-800">Erros encontrados:</p>
+            <ul class="mt-1 text-sm text-red-700 list-disc list-inside">
+              ${data.errors.map(error => `<li>${error}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      } else {
+        previewContent.innerHTML = `
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide">URL Curta</label>
+              <p class="mt-1 text-sm font-medium text-blue-600 break-all">${data.short_url}</p>
+            </div>
+            
+            ${data.expires_at ? `
+              <div>
+                <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide">Expira em</label>
+                <p class="mt-1 text-sm text-gray-900">${data.expires_at}</p>
+              </div>
+            ` : ''}
+            
+            ${data.tag_list && data.tag_list.length > 0 ? `
+              <div>
+                <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide">Tags</label>
+                <div class="mt-1 flex flex-wrap gap-1">
+                  ${data.tag_list.map(tag => `
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                      ${tag}
+                    </span>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      previewContent.innerHTML = `
+        <div class="bg-red-50 border border-red-200 rounded-md p-3">
+          <p class="text-sm text-red-800">Erro ao gerar preview</p>
+        </div>
+      `;
+    });
+  });
+});
+</script>

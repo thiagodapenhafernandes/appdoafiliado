@@ -1,0 +1,148 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Assinatura Confirmada!</h1>
+      <p class="text-gray-600">Sua assinatura foi ativada com sucesso</p>
+    </div>
+
+    <!-- Success message -->
+    <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-green-800">Pagamento processado</h3>
+          <div class="mt-1 text-sm text-green-700">
+            Bem-vindo ao plano <%= @subscription.plan.name %>! Você agora tem acesso a todos os recursos incluídos.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscription details -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Detalhes da Assinatura</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Plano</label>
+          <p class="text-gray-900"><%= @subscription.plan.name %></p>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Valor</label>
+          <p class="text-gray-900">
+            <% if @subscription.plan.price == 0 %>
+              Gratuito
+            <% else %>
+              R$ <%= number_with_precision(@subscription.plan.price, precision: 2) %>/mês
+            <% end %>
+          </p>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Data de Início</label>
+          <p class="text-gray-900"><%= @subscription.current_period_start.strftime('%d/%m/%Y às %H:%M') %></p>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Próxima Cobrança</label>
+          <p class="text-gray-900">
+            <% if @subscription.plan.price == 0 %>
+              Não aplicável
+            <% else %>
+              <%= @subscription.current_period_end&.strftime('%d/%m/%Y') || 'Não definido' %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+      
+      <div class="mt-6 pt-6 border-t">
+        <h3 class="font-semibold text-gray-800 mb-3">Recursos Incluídos:</h3>
+        <div class="space-y-2">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-sm text-gray-600">
+              <%= @subscription.plan.max_links == -1 ? 'Links ilimitados' : "Até #{@subscription.plan.max_links} links" %>
+            </span>
+          </div>
+          
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-sm text-gray-600">Análise detalhada de cliques</span>
+          </div>
+          
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-sm text-gray-600">Dashboard completo</span>
+          </div>
+          
+          <% if @subscription.plan.name == 'Pro' || @subscription.plan.name == 'Business' %>
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-sm text-gray-600">Links personalizados</span>
+            </div>
+          <% end %>
+          
+          <% if @subscription.plan.name == 'Business' %>
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-sm text-gray-600">API de integração</span>
+            </div>
+            
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-sm text-gray-600">Suporte prioritário</span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next steps -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+      <h3 class="text-lg font-semibold text-blue-800 mb-3">Próximos Passos</h3>
+      <div class="space-y-2 text-blue-700">
+        <p>✓ Sua conta foi atualizada para o plano <%= @subscription.plan.name %></p>
+        <p>✓ Todos os recursos estão agora disponíveis</p>
+        <p>✓ Você pode começar a criar seus links personalizados</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex space-x-4">
+      <%= link_to dashboard_path, 
+          class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium text-center transition-colors" do %>
+        Ir para o Dashboard
+      <% end %>
+      
+      <%= link_to links_path, 
+          class: "flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg font-medium text-center transition-colors" do %>
+        Gerenciar Links
+      <% end %>
+    </div>
+
+    <!-- Support -->
+    <div class="mt-8 text-center">
+      <p class="text-sm text-gray-600">
+        Precisa de ajuda? 
+        <a href="#" class="text-blue-600 hover:text-blue-800">Entre em contato com nosso suporte</a>
+      </p>
+    </div>
+  </div>
+</div>

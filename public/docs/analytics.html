@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Shopee - LinkFlow Documentação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#1F2937'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-primary">LinkFlow</a>
+                    <span class="ml-2 text-sm text-gray-500">/ Analytics Shopee</span>
+                </div>
+                <a href="../" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Voltar ao Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                <li><a href="index.html" class="hover:text-primary">Documentação</a></li>
+                <li>→</li>
+                <li class="text-gray-900 font-medium">Analytics Shopee</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Analytics Shopee</h1>
+            <p class="text-xl text-gray-600">Análise completa das suas comissões e performance de afiliação</p>
+        </div>
+
+        <!-- Content -->
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Navigation Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow p-6 sticky top-8">
+                    <h3 class="font-semibold text-gray-900 mb-4">Nesta página</h3>
+                    <nav class="space-y-2 text-sm">
+                        <a href="#overview" class="block text-gray-600 hover:text-primary">Visão Geral</a>
+                        <a href="#importing" class="block text-gray-600 hover:text-primary">Importar Dados CSV</a>
+                        <a href="#basic-analytics" class="block text-gray-600 hover:text-primary">Analytics Básicos</a>
+                        <a href="#advanced-analytics" class="block text-gray-600 hover:text-primary">Analytics Avançados</a>
+                        <a href="#reports" class="block text-gray-600 hover:text-primary">Relatórios PDF</a>
+                        <a href="#metrics" class="block text-gray-600 hover:text-primary">Métricas Disponíveis</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Overview -->
+                <section id="overview" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Visão Geral</h2>
+                    <p class="text-gray-600 mb-6">
+                        O módulo Analytics Shopee permite analisar suas comissões e performance de vendas 
+                        importando os dados diretamente dos relatórios da Shopee.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-blue-900 mb-2">📈 Analytics Básicos (Starter)</h3>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Visão geral das comissões</li>
+                                <li>• Análise por categoria</li>
+                                <li>• Análise por SubID</li>
+                                <li>• Métricas principais</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-green-900 mb-2">🚀 Analytics Avançados (Pro/Elite)</h3>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• Tudo dos analytics básicos</li>
+                                <li>• Análise de performance avançada</li>
+                                <li>• Análise de conversão</li>
+                                <li>• Relatórios PDF personalizados</li>
+                                <li>• ROI e análise de gastos com ads</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Importing Data -->
+                <section id="importing" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📥 Como Importar Dados CSV da Shopee</h2>
+                    <p class="text-gray-600 mb-6">Passo a passo para importar seus dados de comissão da Shopee:</p>
+
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Baixar relatório da Shopee</h3>
+                                <p class="text-gray-600 mb-3">
+                                    Acesse sua área de afiliado na Shopee e baixe o relatório de comissões em formato CSV.
+                                </p>
+                                <div class="bg-blue-50 border border-blue-200 rounded p-3">
+                                    <p class="text-sm text-blue-700">
+                                        💡 <strong>Dica:</strong> Baixe relatórios mensais para melhor organização
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                2
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Acessar importação no LinkFlow</h3>
+                                <p class="text-gray-600 mb-3">
+                                    Vá em "Análise Shopee" → "Análise de Comissões Shopee" → Clique em 
+                                    <span class="bg-blue-600 text-white px-2 py-1 rounded text-sm">Importar CSV</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                3
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Fazer upload do arquivo</h3>
+                                <p class="text-gray-600 mb-3">
+                                    Selecione o arquivo CSV baixado da Shopee e clique em "Importar".
+                                    O sistema processará automaticamente os dados.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                4
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Adicionar dados de gastos (opcional)</h3>
+                                <p class="text-gray-600 mb-3">
+                                    Para análise de ROI, você pode informar os gastos com publicidade por SubID 
+                                    durante a importação.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-yellow-800">Formato do arquivo CSV</h3>
+                                <p class="mt-1 text-sm text-yellow-700">
+                                    O sistema aceita apenas arquivos CSV exportados diretamente da plataforma de afiliados da Shopee. 
+                                    Não modifique o arquivo antes de importar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Basic Analytics -->
+                <section id="basic-analytics" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📈 Analytics Básicos (Todos os Planos)</h2>
+                    <p class="text-gray-600 mb-6">Funcionalidades disponíveis para todos os usuários:</p>
+
+                    <div class="space-y-6">
+                        <!-- Visão Geral -->
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">📊 Visão Geral</h3>
+                            <p class="text-gray-600 mb-3">Dashboard principal com métricas essenciais:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                                <li>• Total de comissões ganhas</li>
+                                <li>• Total de vendas geradas</li>
+                                <li>• Número total de pedidos</li>
+                                <li>• Ticket médio</li>
+                                <li>• Taxa de conversão</li>
+                            </ul>
+                        </div>
+
+                        <!-- Por Categoria -->
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🏷️ Comissões por Categoria</h3>
+                            <p class="text-gray-600 mb-3">Análise detalhada por categoria de produtos:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                                <li>• Ranking de categorias mais lucrativas</li>
+                                <li>• Comissão média por categoria</li>
+                                <li>• Quantidade de vendas por categoria</li>
+                                <li>• Produtos top de cada categoria</li>
+                            </ul>
+                        </div>
+
+                        <!-- Por SubID -->
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🎯 Análise por SubID</h3>
+                            <p class="text-gray-600 mb-3">Acompanhe a performance de cada fonte de tráfego:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                                <li>• Comissões por SubID</li>
+                                <li>• Comparação entre diferentes SubIDs</li>
+                                <li>• Identificação dos SubIDs mais rentáveis</li>
+                                <li>• Histórico de performance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Advanced Analytics -->
+                <section id="advanced-analytics" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">🚀 Analytics Avançados (Pro & Elite)</h2>
+                    <p class="text-gray-600 mb-6">Funcionalidades exclusivas para planos Pro e Elite:</p>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-center">
+                            <svg class="h-5 w-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-green-800">
+                                Upgrade para Pro ou Elite para acessar estas funcionalidades
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Performance Avançada -->
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">📈 Análise de Performance Avançada</h3>
+                            <p class="text-gray-600 mb-3">Insights profundos sobre sua performance:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                                <li>• Evolução temporal das vendas</li>
+                                <li>• Sazonalidade e tendências</li>
+                                <li>• Comparação de períodos</li>
+                                <li>• Previsão de resultados</li>
+                                <li>• Análise de produtos mais vendidos</li>
+                            </ul>
+                        </div>
+
+                        <!-- Análise de Conversão -->
+                        <div class="border-l-4 border-pink-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🎯 Análise de Conversão</h3>
+                            <p class="text-gray-600 mb-3">Entenda o funil de conversão completo:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                                <li>• Funil de conversão detalhado</li>
+                                <li>• Taxa de conversão por fonte</li>
+                                <li>• Análise de ROI por campanha</li>
+                                <li>• Correlação entre gastos e resultados</li>
+                                <li>• Otimização de investimentos</li>
+                            </ul>
+                        </div>
+
+                        <!-- ROI e Gastos -->
+                        <div class="border-l-4 border-yellow-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">💰 Análise de ROI e Gastos com Ads</h3>
+                            <p class="text-gray-600 mb-3">Controle completo dos seus investimentos:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                                <li>• Cálculo automático de ROI por SubID</li>
+                                <li>• Controle de gastos com publicidade</li>
+                                <li>• Margem de lucro real</li>
+                                <li>• Recomendações de otimização</li>
+                                <li>• Histórico de investimentos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PDF Reports -->
+                <section id="reports" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📄 Relatórios PDF (Pro & Elite)</h2>
+                    <p class="text-gray-600 mb-6">Exporte relatórios profissionais em PDF:</p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold mb-2">📊 Conteúdo do Relatório</h3>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Resumo executivo</li>
+                                <li>• Métricas principais</li>
+                                <li>• Gráficos e visualizações</li>
+                                <li>• Análise por SubID</li>
+                                <li>• Top produtos</li>
+                                <li>• Recomendações</li>
+                            </ul>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold mb-2">🎨 Formatação Profissional</h3>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Design limpo e profissional</li>
+                                <li>• Tabelas organizadas</li>
+                                <li>• Gráficos coloridos</li>
+                                <li>• Cabeçalho personalizado</li>
+                                <li>• Data de geração</li>
+                                <li>• Paginação automática</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h3 class="font-semibold text-blue-900 mb-2">Como gerar um relatório PDF:</h3>
+                        <ol class="text-sm text-blue-700 space-y-1">
+                            <li>1. Acesse "Análise de Comissões Shopee"</li>
+                            <li>2. Clique no botão "Exportar PDF" (vermelho, no topo)</li>
+                            <li>3. O download iniciará automaticamente</li>
+                            <li>4. Use o relatório para apresentações ou arquivamento</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Metrics -->
+                <section id="metrics" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Glossário de Métricas</h2>
+                    <p class="text-gray-600 mb-6">Entenda o significado de cada métrica disponível:</p>
+
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">💰 Total de Comissões</h3>
+                            <p class="text-gray-600 text-sm">
+                                Valor total ganho em comissões no período analisado. 
+                                É o valor que você receberá da Shopee.
+                            </p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🛍️ Total de Vendas</h3>
+                            <p class="text-gray-600 text-sm">
+                                Valor total dos produtos vendidos através dos seus links. 
+                                Representa o faturamento gerado para os vendedores.
+                            </p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">📦 Total de Pedidos</h3>
+                            <p class="text-gray-600 text-sm">
+                                Quantidade de pedidos únicos realizados através dos seus links de afiliação.
+                            </p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🎯 Ticket Médio</h3>
+                            <p class="text-gray-600 text-sm">
+                                Valor médio por pedido (Total de Vendas ÷ Total de Pedidos). 
+                                Indica o valor médio dos produtos que seus clientes compram.
+                            </p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">📈 Taxa de Conversão</h3>
+                            <p class="text-gray-600 text-sm">
+                                Percentual de cliques que resultaram em vendas. 
+                                Calculada com base nos cliques registrados e pedidos confirmados.
+                            </p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">💡 ROI (Retorno sobre Investimento)</h3>
+                            <p class="text-gray-600 text-sm">
+                                Percentual de retorno dos investimentos em publicidade. 
+                                Calculado como: (Comissões - Gastos com Ads) ÷ Gastos com Ads × 100.
+                            </p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🏷️ SubID</h3>
+                            <p class="text-gray-600 text-sm">
+                                Identificador único usado para rastrear a origem do tráfego. 
+                                Pode representar campanhas, redes sociais ou estratégias específicas.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Navigation -->
+                <div class="flex justify-between pt-8 border-t">
+                    <a href="links.html" class="flex items-center text-gray-600 hover:text-primary">
+                        ← Anterior: Gerenciar Links
+                    </a>
+                    <a href="clicks.html" class="flex items-center text-gray-600 hover:text-primary">
+                        Próximo: Analytics de Cliques →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!-- app/views/admin/shopee_config/show.html.erb -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="flex-1 min-w-0">
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+          <li>
+            <%= link_to "Shopee Config", admin_shopee_configs_path, class: "text-gray-400 hover:text-gray-500" %>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="ml-4 text-sm font-medium text-gray-500"><%= @config.market %></span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+      <h2 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+        Configuração Shopee - <%= @config.market %>
+      </h2>
+    </div>
+    <div class="mt-4 flex space-x-3 md:mt-0 md:ml-4">
+      <%= link_to "Editar", edit_admin_shopee_config_path(@config), 
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+      <% if @config.configured? %>
+        <%= button_to "Testar Conexão", test_connection_admin_shopee_config_path(@config), 
+            method: :post,
+            class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Status Overview -->
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
+    <!-- Configuration Status -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full <%= @config.configured? ? 'bg-green-100' : 'bg-red-100' %>">
+              <svg class="h-5 w-5 <%= @config.configured? ? 'text-green-600' : 'text-red-600' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <% if @config.configured? %>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <% else %>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <% end %>
+              </svg>
+            </span>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Status</dt>
+              <dd class="text-lg font-medium text-gray-900">
+                <%= @config.configured? ? "Configurado" : "Pendente" %>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Status -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full <%= @config.active? ? 'bg-green-100' : 'bg-gray-100' %>">
+              <svg class="h-5 w-5 <%= @config.active? ? 'text-green-600' : 'text-gray-600' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </span>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Estado</dt>
+              <dd class="text-lg font-medium text-gray-900">
+                <%= @config.active? ? "Ativo" : "Inativo" %>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Last Test -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100">
+              <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </span>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Último Teste</dt>
+              <dd class="text-sm font-medium text-gray-900">
+                <% if @config.last_tested_at %>
+                  <%= time_ago_in_words(@config.last_tested_at) %> atrás
+                <% else %>
+                  Nunca testado
+                <% end %>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuration Details -->
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+    <div class="px-4 py-5 sm:px-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes da Configuração</h3>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">
+        Informações sobre a configuração da API Shopee para <%= @config.market %>
+      </p>
+    </div>
+    <div class="border-t border-gray-200">
+      <dl>
+        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Mercado</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+              <%= @config.market %>
+            </span>
+          </dd>
+        </div>
+        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Endpoint da API</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <code class="bg-gray-100 px-2 py-1 rounded"><%= @config.endpoint %></code>
+          </dd>
+        </div>
+        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">App ID Master</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <% if @config.master_app_id.present? %>
+              <code class="bg-gray-100 px-2 py-1 rounded"><%= @config.master_app_id[0..6] %>***</code>
+              <span class="ml-2 text-green-600 text-xs">✓ Configurado</span>
+            <% else %>
+              <span class="text-red-600">Não configurado</span>
+            <% end %>
+          </dd>
+        </div>
+        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Secret Master</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <% if @config.master_app_secret.present? %>
+              <code class="bg-gray-100 px-2 py-1 rounded">***************</code>
+              <span class="ml-2 text-green-600 text-xs">✓ Configurado</span>
+            <% else %>
+              <span class="text-red-600">Não configurado</span>
+            <% end %>
+          </dd>
+        </div>
+        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Criado em</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <%= @config.created_at.strftime("%d/%m/%Y às %H:%M") %>
+          </dd>
+        </div>
+        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-500">Última atualização</dt>
+          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            <%= @config.updated_at.strftime("%d/%m/%Y às %H:%M") %>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Test Results -->
+  <% if @config.last_tested_at %>
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Resultado do Último Teste</h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">
+          Testado em <%= @config.last_tested_at.strftime("%d/%m/%Y às %H:%M") %>
+        </p>
+      </div>
+      <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <% if @config.last_test_result == 'success' %>
+              <svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            <% else %>
+              <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            <% end %>
+          </div>
+          <div class="ml-3">
+            <h4 class="text-sm font-medium <%= @config.last_test_result == 'success' ? 'text-green-800' : 'text-red-800' %>">
+              <%= @config.last_test_result == 'success' ? 'Conexão bem-sucedida' : 'Falha na conexão' %>
+            </h4>
+            <% if @config.last_test_details.present? %>
+              <div class="mt-2 text-sm <%= @config.last_test_result == 'success' ? 'text-green-700' : 'text-red-700' %>">
+                <pre class="whitespace-pre-wrap"><%= @config.last_test_details %></pre>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- API Usage Statistics -->
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">Estatísticas de Uso da API</h3>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">
+        Monitoramento de requests e rate limiting
+      </p>
+    </div>
+    <div class="border-t border-gray-200">
+      <div class="grid grid-cols-2 gap-0 divide-y divide-gray-200 md:divide-y-0 md:divide-x">
+        <div class="px-4 py-5 sm:p-6">
+          <dt class="text-base font-normal text-gray-900">Requests Hoje</dt>
+          <dd class="mt-1 flex justify-between items-baseline md:block lg:flex">
+            <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
+              <%= @usage_stats[:requests_today] %>
+              <span class="ml-2 text-sm font-medium text-gray-500">requests</span>
+            </div>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 sm:p-6">
+          <dt class="text-base font-normal text-gray-900">Taxa de Sucesso</dt>
+          <dd class="mt-1 flex justify-between items-baseline md:block lg:flex">
+            <div class="flex items-baseline text-2xl font-semibold text-green-600">
+              <%= @usage_stats[:success_rate] %>%
+              <span class="ml-2 text-sm font-medium text-gray-500">sucesso</span>
+            </div>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 sm:p-6">
+          <dt class="text-base font-normal text-gray-900">Usuários Ativos</dt>
+          <dd class="mt-1 flex justify-between items-baseline md:block lg:flex">
+            <div class="flex items-baseline text-2xl font-semibold text-blue-600">
+              <%= @usage_stats[:active_users] %>
+              <span class="ml-2 text-sm font-medium text-gray-500">usuários</span>
+            </div>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 sm:p-6">
+          <dt class="text-base font-normal text-gray-900">Rate Limit Atual</dt>
+          <dd class="mt-1 flex justify-between items-baseline md:block lg:flex">
+            <div class="flex items-baseline text-2xl font-semibold 
+              <%= @usage_stats[:requests_last_minute] > 80 ? 'text-red-600' : @usage_stats[:requests_last_minute] > 50 ? 'text-yellow-600' : 'text-green-600' %>">
+              <%= @usage_stats[:requests_last_minute] %>
+              <span class="ml-2 text-sm font-medium text-gray-500">/ minuto</span>
+            </div>
+          </dd>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

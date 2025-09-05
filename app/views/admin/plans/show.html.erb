@@ -1,0 +1,133 @@
+<div class="mb-8">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900"><%= @plan.name %></h1>
+      <p class="mt-2 text-gray-600"><%= @plan.description %></p>
+    </div>
+    <div class="flex space-x-3">
+      <%= link_to "Editar", edit_admin_plan_path(@plan), 
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+      <%= link_to "Voltar", admin_plans_path, 
+          class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700" %>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Plan Details -->
+  <div class="lg:col-span-2">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes do Plano</h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">Informações básicas e configurações</p>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Nome</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @plan.name %></dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Descrição</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @plan.description %></dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Preço</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              R$ <%= number_with_precision(@plan.price, precision: 2) %>/mês
+              <span class="text-gray-500">(<%= @plan.price_cents %> centavos)</span>
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Máximo de Links</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= @plan.unlimited_links? ? "Ilimitado" : @plan.max_links %>
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Status Stripe</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= stripe_sync_status(@plan) %>
+            </dd>
+          </div>
+          <% if @plan.stripe_price_id.present? %>
+            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">Stripe Price ID</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <code class="bg-gray-100 px-2 py-1 rounded text-xs"><%= @plan.stripe_price_id %></code>
+              </dd>
+            </div>
+          <% end %>
+          <% if @plan.stripe_price_id.present? %>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">Stripe Price ID</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <code class="bg-gray-100 px-2 py-1 rounded text-xs"><%= @plan.stripe_price_id %></code>
+              </dd>
+            </div>
+          <% end %>
+          <% if @plan.features.present? %>
+            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">Recursos</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <% if @plan.features.present? %>
+                  <ul class="list-disc list-inside">
+                    <% @plan.features.each do |feature| %>
+                      <li><%= feature %></li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  <span class="text-gray-500">Nenhum recurso cadastrado</span>
+                <% end %>
+              </dd>
+            </div>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions & Stats -->
+  <div class="space-y-6">
+    <!-- Quick Actions -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Ações</h3>
+        <div class="space-y-3">
+          <% if @plan.stripe_price_id.blank? %>
+            <%= form_tag sync_with_stripe_admin_plan_path(@plan), method: :patch, class: "w-full block" do %>
+              <%= submit_tag "Sincronizar com Stripe",
+                  onclick: "return confirm('Sincronizar este plano com o Stripe?')",
+                  class: "w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer" %>
+            <% end %>
+          <% end %>
+          <%= link_to "Editar Plano", edit_admin_plan_path(@plan),
+              class: "w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Estatísticas</h3>
+        <div class="space-y-4">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Assinaturas Ativas</dt>
+            <dd class="text-2xl font-bold text-gray-900"><%= @plan.subscriptions.active.count %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Total de Assinaturas</dt>
+            <dd class="text-2xl font-bold text-gray-900"><%= @plan.subscriptions.count %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Receita Mensal</dt>
+            <dd class="text-2xl font-bold text-gray-900">
+              R$ <%= number_with_precision(@plan.subscriptions.active.count * @plan.price, precision: 2) %>
+            </dd>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

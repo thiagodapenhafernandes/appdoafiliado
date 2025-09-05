@@ -1,0 +1,674 @@
+<div class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" style="min-height: 100vh;">
+  <div class="max-w-2xl mx-auto space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Criar sua conta
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Ou
+        <%= link_to "faça login em sua conta existente", new_session_path(resource_name), class: "font-medium text-blue-600 hover:text-blue-500" %>
+      </p>
+    </div>
+    
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-8 space-y-6", id: "registration-form" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <!-- Informações pessoais -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Informações pessoais</h3>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <%= f.label :first_name, "Nome", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.text_field :first_name, autocomplete: "given-name", required: true, placeholder: "Nome", class: "mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" %>
+            </div>
+            <div>
+              <%= f.label :last_name, "Sobrenome", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.text_field :last_name, autocomplete: "family-name", required: true, placeholder: "Sobrenome", class: "mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" %>
+            </div>
+          </div>
+
+          <div>
+            <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.email_field :email, autocomplete: "email", required: true, placeholder: "Endereço de email", class: "mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :phone, "Telefone", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.telephone_field :phone, autocomplete: "tel", placeholder: "Telefone (opcional)", class: "mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :password, "Senha", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.password_field :password, autocomplete: "new-password", required: true, placeholder: "Senha (mínimo #{@minimum_password_length} caracteres)", class: "mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :password_confirmation, "Confirmar senha", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, placeholder: "Confirmar senha", class: "mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seleção de plano -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Escolha seu plano</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <% Plan.order(:price_cents).each do |plan| %>
+            <div class="relative">
+              <label class="plan-option cursor-pointer">
+                <%= radio_button_tag :plan_id, plan.id, plan.name == 'Afiliado Pro', 
+                    class: "sr-only plan-radio", 
+                    data: { 
+                      plan_name: plan.name, 
+                      plan_price: plan.price_cents,
+                      plan_stripe_id: plan.stripe_price_id
+                    } %>
+                <div class="plan-card border-2 border-gray-200 rounded-lg p-4 hover:border-blue-500 transition-colors duration-200 
+                           <%= 'border-blue-500 bg-blue-50' if plan.name == 'Afiliado Pro' %>">
+                  <div class="text-center">
+                    <h4 class="text-lg font-semibold text-gray-900"><%= plan.name %></h4>
+                    <div class="mt-2">
+                      <span class="text-3xl font-bold text-gray-900">R$ <%= plan.price_cents / 100 %></span>
+                      <span class="text-gray-500">/mês</span>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-600"><%= plan.description %></p>
+                    <% if plan.name == 'Afiliado Pro' %>
+                      <div class="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        Recomendado
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Informações de pagamento -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Informações de pagamento</h3>
+        
+        <!-- Trial info -->
+        <div class="mb-6 bg-green-50 border border-green-200 rounded-md p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-green-800">
+                14 dias grátis para testar!
+              </h3>
+              <div class="mt-2 text-sm text-green-700">
+                <p>Você terá 14 dias para testar todas as funcionalidades. Só será cobrado após o período de teste se não cancelar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stripe Elements -->
+        <div class="space-y-4">
+          <!-- Status de conexão com Stripe -->
+          <div id="stripe-status" class="mb-4">
+            <div id="stripe-loading" class="text-blue-800 bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <div class="flex items-center">
+                <svg class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="font-medium">Carregando sistema de pagamento...</span>
+              </div>
+            </div>
+            
+            <div id="stripe-available" class="text-green-800 bg-green-50 border border-green-200 rounded-lg p-3 hidden">
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-medium">Sistema de pagamento conectado</span>
+              </div>
+              <p class="text-sm mt-1">Seu cartão será configurado para cobrança automática após o período de teste.</p>
+            </div>
+            
+            <div id="stripe-unavailable" class="text-red-800 bg-red-50 border border-red-200 rounded-lg p-3 hidden">
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-medium">Sistema de pagamento indisponível</span>
+              </div>
+              <p class="text-sm mt-1">Verifique sua conexão com a internet e recarregue a página.</p>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Informações do cartão</label>
+            <div id="card-element" class="p-3 border border-gray-300 rounded-md bg-gray-50">
+              <!-- Stripe Elements will be mounted here -->
+            </div>
+
+            <div id="card-errors" role="alert" class="mt-2 text-sm text-red-600"></div>
+            <p class="mt-1 text-xs text-gray-500">Teste com cartão: 4242 4242 4242 4242</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <%= f.submit "Aguardando sistema de pagamento...", 
+            class: "group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200",
+            id: "submit-button",
+            disabled: true,
+            style: "opacity: 0.5;" %>
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-xs text-gray-500">
+          Ao criar uma conta, você concorda com nossos 
+          <a href="#" class="text-blue-600 hover:text-blue-500">Termos de Serviço</a> e 
+          <a href="#" class="text-blue-600 hover:text-blue-500">Política de Privacidade</a>
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Stripe JavaScript -->
+<script src="https://js.stripe.com/v3/" 
+        onerror="console.error('❌ Falha ao carregar Stripe.js from CDN')"
+        onload="console.log('✅ Stripe.js carregado do CDN')"></script>
+<script>
+/**
+ * Sistema de cadastro com Stripe - Versão Robusta com Debug
+ * Fluxo: Sempre exige pagamento, sem fallbacks
+ */
+
+window.addEventListener('DOMContentLoaded', function() {
+  console.log('🌟 DOM carregado, aguardando inicialização...');
+});
+
+class StripeRegistration {
+  constructor() {
+    this.stripe = null;
+    this.elements = null;
+    this.cardElement = null;
+    this.isReady = false;
+    this.form = null;
+    this.submitButton = null;
+    
+    console.log('🚀 Construtor StripeRegistration chamado');
+    
+    // Aguardar um pouco para o DOM estar completamente pronto
+    setTimeout(() => {
+      this.init();
+    }, 100);
+  }
+  
+  init() {
+    console.log('� Método init() chamado');
+    
+    // Aguardar DOM estar pronto
+    if (document.readyState === 'loading') {
+      console.log('📄 DOM ainda carregando, aguardando...');
+      document.addEventListener('DOMContentLoaded', () => this.setup());
+    } else {
+      console.log('📄 DOM já carregado, iniciando setup...');
+      this.setup();
+    }
+  }
+  
+  setup() {
+    console.log('📄 Setup iniciado - DOM ready');
+    
+    // Verificar elementos essenciais
+    this.form = document.getElementById('registration-form');
+    this.submitButton = document.getElementById('submit-button');
+    
+    console.log('🔍 Form encontrado:', !!this.form);
+    console.log('🔍 Submit button encontrado:', !!this.submitButton);
+    
+    if (!this.form || !this.submitButton) {
+      console.error('❌ Elementos essenciais não encontrados');
+      console.log('- Form element:', this.form);
+      console.log('- Submit button:', this.submitButton);
+      return;
+    }
+    
+    // Aguardar Stripe carregar
+    this.waitForStripe();
+  }
+  
+  waitForStripe() {
+    console.log('⏳ Aguardando Stripe carregar...');
+    
+    let attempts = 0;
+    const maxAttempts = 50; // 5 segundos
+    
+    const checkStripe = () => {
+      attempts++;
+      console.log(`🔍 Tentativa ${attempts}: typeof Stripe =`, typeof Stripe);
+      
+      if (typeof Stripe !== 'undefined') {
+        console.log('✅ Stripe.js finalmente carregado!');
+        this.initializeStripe();
+        this.setupEventListeners();
+        this.setupPlanSelection();
+      } else if (attempts < maxAttempts) {
+        console.log(`⏳ Stripe ainda não carregou, tentativa ${attempts}/${maxAttempts}...`);
+        setTimeout(checkStripe, 100);
+      } else {
+        console.error('❌ Timeout aguardando Stripe carregar após 5 segundos');
+        this.handleStripeUnavailable();
+      }
+    };
+    
+    // Primeira verificação imediata
+    checkStripe();
+  }
+  
+  handleStripeUnavailable() {
+    console.error('❌ Stripe não disponível');
+    
+    // Em modo de desenvolvimento, permitir cadastro sem Stripe para debug
+    const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    
+    if (isDevelopment) {
+      console.log('🚧 Modo desenvolvimento: Habilitando cadastro sem Stripe para debug');
+      this.enableSubmitButtonWithWarning();
+      this.updateStatus(false);
+      
+      // Substituir handler do formulário para debug
+      if (this.form) {
+        this.form.addEventListener('submit', (e) => {
+          console.log('🚧 Debug: Formulário submetido sem Stripe');
+          alert('⚠️ MODO DEBUG: Stripe não disponível. Em produção isso não funcionaria.');
+        });
+      }
+    } else {
+      this.showError('Sistema de pagamento não disponível. Verifique sua conexão e recarregue a página.');
+      this.updateStatus(false);
+      
+      if (this.submitButton) {
+        this.submitButton.disabled = true;
+        this.submitButton.style.opacity = '0.5';
+        this.submitButton.value = 'Sistema de pagamento indisponível';
+      }
+    }
+  }
+  
+  enableSubmitButtonWithWarning() {
+    if (this.submitButton) {
+      this.submitButton.disabled = false;
+      this.submitButton.style.opacity = '1';
+      this.submitButton.style.cursor = 'pointer';
+      this.submitButton.style.backgroundColor = '#f59e0b'; // Amber color for warning
+      this.submitButton.value = '⚠️ DEBUG: Teste sem pagamento';
+      console.log('🚧 Botão habilitado em modo debug');
+    }
+  }
+  
+  initializeStripe() {
+    const stripeKey = '<%= ENV["STRIPE_PUBLISHABLE_KEY"] %>';
+    
+    console.log('🔑 Chave Stripe:', stripeKey ? stripeKey.substring(0, 12) + '...' : 'não encontrada');
+    
+    if (!stripeKey || stripeKey === '' || stripeKey.includes('undefined')) {
+      console.error('❌ Chave do Stripe não configurada');
+      this.showError('Configuração de pagamento inválida');
+      return;
+    }
+    
+    try {
+      console.log('🎯 Inicializando Stripe com chave...');
+      this.stripe = Stripe(stripeKey);
+      this.elements = this.stripe.elements();
+      
+      console.log('✅ Stripe inicializado com sucesso');
+      
+      // Criar elemento do cartão
+      this.cardElement = this.elements.create('card', {
+        style: {
+          base: {
+            fontSize: '16px',
+            color: '#374151',
+            fontFamily: 'system-ui, sans-serif',
+            '::placeholder': {
+              color: '#9CA3AF',
+            },
+          },
+          invalid: {
+            color: '#EF4444',
+            iconColor: '#EF4444'
+          },
+        },
+        hidePostalCode: true
+      });
+      
+      console.log('🎨 Elemento do cartão criado');
+      
+      // Montar elemento
+      const cardContainer = document.getElementById('card-element');
+      if (!cardContainer) {
+        console.error('❌ Container do cartão não encontrado');
+        return;
+      }
+      
+      this.cardElement.mount('#card-element');
+      console.log('✅ Elemento do cartão montado');
+      
+      // Event listeners do cartão
+      this.cardElement.on('ready', () => {
+        console.log('✅ Cartão pronto para uso');
+        this.isReady = true;
+        this.updateStatus(true);
+        this.enableSubmitButton();
+      });
+      
+      this.cardElement.on('change', (event) => {
+        const errorElement = document.getElementById('card-errors');
+        if (errorElement) {
+          errorElement.textContent = event.error ? event.error.message : '';
+        }
+        console.log('🎫 Status do cartão:', event.complete ? 'válido' : 'incompleto');
+      });
+      
+    } catch (error) {
+      console.error('❌ Erro ao inicializar Stripe:', error);
+      this.showError('Erro na inicialização do sistema de pagamento');
+    }
+  }
+  
+  enableSubmitButton() {
+    if (this.submitButton) {
+      this.submitButton.disabled = false;
+      this.submitButton.style.opacity = '1';
+      this.submitButton.style.cursor = 'pointer';
+      this.submitButton.value = 'Iniciar teste grátis de 14 dias';
+      console.log('✅ Botão de submit habilitado');
+    } else {
+      console.error('❌ Botão de submit não encontrado para habilitar');
+    }
+  }
+        this.cardElement.on('focus', () => {
+          const errorElement = document.getElementById('card-errors');
+          if (errorElement) {
+            errorElement.textContent = '';
+          }
+        });
+      }
+      
+    } catch (error) {
+      console.error('❌ Erro ao inicializar Stripe:', error);
+      this.showError('Erro ao carregar sistema de pagamento');
+    }
+  }
+  
+  setupEventListeners() {
+    this.form.addEventListener('submit', (event) => this.handleSubmit(event));
+  }
+  
+  setupPlanSelection() {
+    const planRadios = document.querySelectorAll('.plan-radio');
+    const planCards = document.querySelectorAll('.plan-card');
+    
+    planRadios.forEach((radio, index) => {
+      radio.addEventListener('change', () => {
+        planCards.forEach(card => {
+          card.classList.remove('border-blue-500', 'bg-blue-50');
+          card.classList.add('border-gray-200');
+        });
+        
+        if (radio.checked && planCards[index]) {
+          planCards[index].classList.remove('border-gray-200');
+          planCards[index].classList.add('border-blue-500', 'bg-blue-50');
+        }
+      });
+    });
+  }
+  
+  async handleSubmit(event) {
+    event.preventDefault();
+    console.log('🔄 Iniciando processo de cadastro');
+    
+    // Validações
+    if (!this.validateForm()) {
+      return;
+    }
+    
+    if (!this.isReady || !this.stripe || !this.cardElement) {
+      this.showError('Sistema de pagamento não está pronto. Aguarde e tente novamente.');
+      return;
+    }
+    
+    this.setSubmitState(true, 'Validando cartão...');
+    
+    try {
+      // Criar Payment Method
+      const result = await this.stripe.createPaymentMethod({
+        type: 'card',
+        card: this.cardElement,
+        billing_details: this.getBillingDetails(),
+      });
+      
+      if (result.error) {
+        console.error('❌ Erro no cartão:', result.error);
+        this.handleCardError(result.error);
+        return;
+      }
+      
+      console.log('✅ Payment Method criado:', result.paymentMethod.id);
+      
+      // Adicionar dados e submeter
+      this.addPaymentData(result.paymentMethod.id);
+      this.setSubmitState(true, 'Criando conta...');
+      
+      // Submit real do formulário
+      this.form.submit();
+      
+    } catch (error) {
+      console.error('❌ Erro inesperado:', error);
+      this.showError('Erro inesperado. Tente novamente.');
+      this.setSubmitState(false);
+    }
+  }
+  
+  validateForm() {
+    const fields = [
+      { name: 'user[first_name]', label: 'Nome', required: true },
+      { name: 'user[last_name]', label: 'Sobrenome', required: true },
+      { name: 'user[email]', label: 'Email', required: true, type: 'email' },
+      { name: 'user[password]', label: 'Senha', required: true, minLength: 6 },
+      { name: 'user[password_confirmation]', label: 'Confirmação de senha', required: true }
+    ];
+    
+    // Validar campos básicos
+    for (const field of fields) {
+      const element = document.querySelector(`[name="${field.name}"]`);
+      const value = element ? element.value.trim() : '';
+      
+      if (field.required && !value) {
+        this.showFieldError(`${field.label} é obrigatório`, element);
+        return false;
+      }
+      
+      if (field.type === 'email' && value && !this.isValidEmail(value)) {
+        this.showFieldError('Email deve ter um formato válido', element);
+        return false;
+      }
+      
+      if (field.minLength && value.length < field.minLength) {
+        this.showFieldError(`${field.label} deve ter pelo menos ${field.minLength} caracteres`, element);
+        return false;
+      }
+    }
+    
+    // Validar confirmação de senha
+    const password = document.querySelector('[name="user[password]"]').value;
+    const passwordConfirmation = document.querySelector('[name="user[password_confirmation]"]').value;
+    
+    if (password !== passwordConfirmation) {
+      this.showFieldError('Confirmação de senha não confere', document.querySelector('[name="user[password_confirmation]"]'));
+      return false;
+    }
+    
+    // Validar plano selecionado
+    const selectedPlan = document.querySelector('.plan-radio:checked');
+    if (!selectedPlan) {
+      this.showError('Por favor, selecione um plano');
+      return false;
+    }
+    
+    return true;
+  }
+  
+  getBillingDetails() {
+    const firstName = document.querySelector('[name="user[first_name]"]').value.trim();
+    const lastName = document.querySelector('[name="user[last_name]"]').value.trim();
+    const email = document.querySelector('[name="user[email]"]').value.trim();
+    
+    return {
+      name: `${firstName} ${lastName}`,
+      email: email,
+    };
+  }
+  
+  addPaymentData(paymentMethodId) {
+    const selectedPlan = document.querySelector('.plan-radio:checked');
+    
+    // Payment Method ID
+    const paymentInput = document.createElement('input');
+    paymentInput.type = 'hidden';
+    paymentInput.name = 'payment_method_id';
+    paymentInput.value = paymentMethodId;
+    this.form.appendChild(paymentInput);
+    
+    // Plan ID
+    const planInput = document.createElement('input');
+    planInput.type = 'hidden';
+    planInput.name = 'plan_id';
+    planInput.value = selectedPlan.value;
+    this.form.appendChild(planInput);
+  }
+  
+  setSubmitState(disabled, text = null) {
+    this.submitButton.disabled = disabled;
+    
+    if (text) {
+      this.submitButton.textContent = text;
+    } else if (!disabled) {
+      this.submitButton.textContent = 'Iniciar teste grátis de 14 dias';
+    }
+  }
+  
+  handleCardError(error) {
+    const errorElement = document.getElementById('card-errors');
+    if (errorElement) {
+      errorElement.textContent = error.message;
+    }
+    
+    let userMessage = 'Erro no cartão: ' + error.message;
+    
+    // Mensagens mais amigáveis para erros comuns
+    switch (error.code) {
+      case 'card_declined':
+        userMessage = 'Cartão recusado. Tente outro cartão ou entre em contato com seu banco.';
+        break;
+      case 'expired_card':
+        userMessage = 'Cartão expirado. Use um cartão válido.';
+        break;
+      case 'incorrect_cvc':
+        userMessage = 'Código de segurança incorreto.';
+        break;
+      case 'insufficient_funds':
+        userMessage = 'Fundos insuficientes.';
+        break;
+      case 'processing_error':
+        userMessage = 'Erro no processamento. Tente novamente.';
+        break;
+    }
+    
+    this.showError(userMessage);
+    this.setSubmitState(false);
+  }
+  
+  showError(message) {
+    alert(message); // TODO: Substituir por toast ou modal mais elegante
+  }
+  
+  showFieldError(message, element) {
+    this.showError(message);
+    if (element) {
+      element.focus();
+    }
+  }
+  
+  updateStatus(available) {
+    const stripeLoading = document.getElementById('stripe-loading');
+    const stripeAvailable = document.getElementById('stripe-available');
+    const stripeUnavailable = document.getElementById('stripe-unavailable');
+    
+    // Esconder loading
+    if (stripeLoading) {
+      stripeLoading.classList.add('hidden');
+    }
+    
+    if (available) {
+      console.log('✅ Atualizando status: Stripe disponível');
+      if (stripeAvailable) {
+        stripeAvailable.classList.remove('hidden');
+      }
+      if (stripeUnavailable) {
+        stripeUnavailable.classList.add('hidden');
+      }
+    } else {
+      console.log('❌ Atualizando status: Stripe indisponível');
+      if (stripeAvailable) {
+        stripeAvailable.classList.add('hidden');
+      }
+      if (stripeUnavailable) {
+        stripeUnavailable.classList.remove('hidden');
+      }
+    }
+  }
+  
+  isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+}
+
+// Inicializar quando a página carrega - com verificação redundante
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🔥 DOMContentLoaded disparado');
+  setTimeout(() => {
+    console.log('🔥 Timeout de inicialização executado');
+    if (!window.stripeRegistrationInstance) {
+      console.log('🔥 Criando nova instância StripeRegistration');
+      window.stripeRegistrationInstance = new StripeRegistration();
+    }
+  }, 200);
+});
+
+// Backup de inicialização
+window.addEventListener('load', function() {
+  console.log('🔥 Window load disparado');
+  setTimeout(() => {
+    if (!window.stripeRegistrationInstance) {
+      console.log('🔥 Backup: Criando nova instância StripeRegistration');
+      window.stripeRegistrationInstance = new StripeRegistration();
+    }
+  }, 500);
+});
+
+// Inicialização imediata se o DOM já estiver pronto
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  console.log('🔥 DOM já pronto, inicializando imediatamente');
+  setTimeout(() => {
+    if (!window.stripeRegistrationInstance) {
+      console.log('🔥 Imediato: Criando nova instância StripeRegistration');
+      window.stripeRegistrationInstance = new StripeRegistration();
+    }
+  }, 100);
+}
+</script>

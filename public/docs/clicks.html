@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics de Cliques - LinkFlow Documentação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#1F2937'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-primary">LinkFlow</a>
+                    <span class="ml-2 text-sm text-gray-500">/ Analytics de Cliques</span>
+                </div>
+                <a href="../" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Voltar ao Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                <li><a href="index.html" class="hover:text-primary">Documentação</a></li>
+                <li>→</li>
+                <li class="text-gray-900 font-medium">Analytics de Cliques</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Analytics de Cliques</h1>
+            <p class="text-xl text-gray-600">Rastreamento detalhado de cliques nos seus links de afiliação</p>
+        </div>
+
+        <!-- Content -->
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Navigation Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow p-6 sticky top-8">
+                    <h3 class="font-semibold text-gray-900 mb-4">Nesta página</h3>
+                    <nav class="space-y-2 text-sm">
+                        <a href="#overview" class="block text-gray-600 hover:text-primary">Visão Geral</a>
+                        <a href="#access" class="block text-gray-600 hover:text-primary">Como Acessar</a>
+                        <a href="#metrics" class="block text-gray-600 hover:text-primary">Métricas Disponíveis</a>
+                        <a href="#charts" class="block text-gray-600 hover:text-primary">Gráficos e Visualizações</a>
+                        <a href="#plan-differences" class="block text-gray-600 hover:text-primary">Diferenças por Plano</a>
+                        <a href="#optimization" class="block text-gray-600 hover:text-primary">Otimização</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Overview -->
+                <section id="overview" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">🖱️ Visão Geral</h2>
+                    <p class="text-gray-600 mb-6">
+                        O Analytics de Cliques oferece insights detalhados sobre o comportamento dos visitantes 
+                        que clicam nos seus links de afiliação. Esta ferramenta é essencial para otimizar 
+                        suas estratégias de marketing.
+                    </p>
+
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+                        <h3 class="font-semibold text-purple-900 mb-3">🚀 Por que usar Analytics de Cliques?</h3>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm text-purple-700">
+                            <div>
+                                <h4 class="font-medium mb-2">📊 Entender seu público</h4>
+                                <p>Descubra de onde vêm seus visitantes, que dispositivos usam e quando estão mais ativos.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium mb-2">⏰ Otimizar horários</h4>
+                                <p>Identifique os melhores horários para publicar e maximizar o engajamento.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium mb-2">📱 Adaptar conteúdo</h4>
+                                <p>Saiba se seu público usa mais mobile ou desktop para adaptar seu material.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium mb-2">📈 Medir efetividade</h4>
+                                <p>Compare a performance de diferentes fontes de tráfego e campanhas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Access -->
+                <section id="access" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">🎯 Como Acessar</h2>
+                    <p class="text-gray-600 mb-6">Localização e acesso ao Analytics de Cliques:</p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Via Menu Principal</h3>
+                                <p class="text-gray-600">
+                                    No menu lateral, procure por "Análise Shopee" → "Análise de Cliques Shopee"
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                2
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Via Dashboard</h3>
+                                <p class="text-gray-600">
+                                    No dashboard, clique em qualquer métrica de cliques para acessar a análise detalhada
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800">Plano Starter</h3>
+                                <p class="mt-1 text-sm text-red-700">
+                                    O Analytics de Cliques Avançado é exclusivo dos planos Pro e Elite. 
+                                    Usuários Starter são redirecionados para a página de upgrade.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Metrics -->
+                <section id="metrics" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Métricas Disponíveis</h2>
+                    <p class="text-gray-600 mb-6">Todas as métricas coletadas e analisadas:</p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Métricas Gerais -->
+                        <div class="space-y-4">
+                            <h3 class="font-semibold text-gray-900 text-lg">📈 Métricas Gerais</h3>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Total de Cliques</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Quantidade total de cliques únicos em todos os seus links no período analisado.
+                                </p>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Cliques com SubID</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Cliques que possuem identificador de campanha para rastreamento avançado.
+                                </p>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Horário de Pico</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Horário do dia com maior número de cliques, ideal para agendar publicações.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Análises Demográficas -->
+                        <div class="space-y-4">
+                            <h3 class="font-semibold text-gray-900 text-lg">🌍 Análises Demográficas</h3>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Cliques por Região</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Distribuição geográfica dos cliques (estados do Brasil).
+                                    Ajuda a entender onde concentrar esforços.
+                                </p>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Cliques por Referrer</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Origem dos visitantes: Instagram, Facebook, YouTube, Google, etc.
+                                    Essencial para ROI por canal.
+                                </p>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold mb-2">Top Região/Referrer</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Identificação automática da melhor região e fonte de tráfego.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Charts -->
+                <section id="charts" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Gráficos e Visualizações</h2>
+                    <p class="text-gray-600 mb-6">Visualizações interativas para facilitar a análise:</p>
+
+                    <div class="space-y-6">
+                        <!-- Gráficos de Pizza -->
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🥧 Gráficos de Pizza</h3>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-1">Cliques por Fonte</h4>
+                                    <p>Distribuição percentual dos cliques por referrer (Instagram, Facebook, etc.)</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-1">Cliques por Região</h4>
+                                    <p>Distribuição geográfica com cores distintas para cada estado</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gráficos de Linha -->
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">📈 Gráficos de Linha</h3>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-1">Cliques por Hora</h4>
+                                    <p>Linha temporal mostrando distribuição de cliques ao longo do dia (0h às 23h)</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-1">Cliques por Dia</h4>
+                                    <p>Evolução diária dos cliques para identificar tendências e padrões</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interatividade -->
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">🖱️ Funcionalidades Interativas</h3>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
+                                <li>• <strong>Hover:</strong> Passe o mouse sobre os gráficos para ver detalhes</li>
+                                <li>• <strong>Zoom:</strong> Clique e arraste para ampliar períodos específicos</li>
+                                <li>• <strong>Legendas:</strong> Clique nas legendas para ocultar/mostrar séries</li>
+                                <li>• <strong>Export:</strong> Botão para salvar gráficos como imagem</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Plan Differences -->
+                <section id="plan-differences" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">💎 Diferenças por Plano</h2>
+                    <p class="text-gray-600 mb-6">Recursos disponíveis em cada plano:</p>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Starter -->
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <div class="text-center mb-4">
+                                <h3 class="text-lg font-semibold">Starter</h3>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    R$ 59,90/mês
+                                </span>
+                            </div>
+                            <div class="text-center py-8">
+                                <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                                <p class="text-gray-600 text-sm">Analytics de Cliques não disponível</p>
+                                <p class="text-gray-500 text-xs mt-2">Faça upgrade para acessar</p>
+                            </div>
+                        </div>
+
+                        <!-- Pro -->
+                        <div class="border border-green-200 rounded-lg p-6 bg-green-50">
+                            <div class="text-center mb-4">
+                                <h3 class="text-lg font-semibold">Pro</h3>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    R$ 97,90/mês
+                                </span>
+                            </div>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>✓ Todas as métricas básicas</li>
+                                <li>✓ Gráficos interativos</li>
+                                <li>✓ Análise por referrer</li>
+                                <li>✓ Análise por região</li>
+                                <li>✓ Análise temporal</li>
+                                <li>✓ Identificação de picos</li>
+                            </ul>
+                        </div>
+
+                        <!-- Elite -->
+                        <div class="border border-orange-200 rounded-lg p-6 bg-orange-50">
+                            <div class="text-center mb-4">
+                                <h3 class="text-lg font-semibold">Elite</h3>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                    R$ 147,90/mês
+                                </span>
+                            </div>
+                            <ul class="text-sm text-orange-700 space-y-1">
+                                <li>✓ Tudo do plano Pro</li>
+                                <li>✓ Análises mais profundas</li>
+                                <li>✓ Relatórios personalizados</li>
+                                <li>✓ Suporte estratégico</li>
+                                <li>✓ Consultorias de otimização</li>
+                                <li>✓ Acesso prioritário a novos recursos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Optimization -->
+                <section id="optimization" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">🚀 Como Usar para Otimização</h2>
+                    <p class="text-gray-600 mb-6">Estratégias práticas para usar os dados de cliques:</p>
+
+                    <div class="space-y-6">
+                        <!-- Timing -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-blue-900 mb-3">⏰ Otimização de Horários</h3>
+                            <div class="space-y-2 text-blue-700 text-sm">
+                                <p><strong>Identifique o horário de pico:</strong> Use o gráfico "Cliques por Hora" para encontrar quando seu público está mais ativo.</p>
+                                <p><strong>Agende publicações:</strong> Publique novos produtos 30-60 minutos antes do horário de pico.</p>
+                                <p><strong>Stories e posts temporários:</strong> Use os horários de maior engajamento para conteúdo que expira.</p>
+                            </div>
+                        </div>
+
+                        <!-- Channels -->
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-green-900 mb-3">📱 Otimização por Canal</h3>
+                            <div class="space-y-2 text-green-700 text-sm">
+                                <p><strong>Foque no top referrer:</strong> Invista mais tempo e energia no canal que traz mais cliques.</p>
+                                <p><strong>Teste novos canais:</strong> Se um canal específico está fraco, experimente ajustar a estratégia.</p>
+                                <p><strong>Conteúdo específico:</strong> Adapte o formato do conteúdo para cada rede social.</p>
+                            </div>
+                        </div>
+
+                        <!-- Geography -->
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-orange-900 mb-3">🌍 Otimização Geográfica</h3>
+                            <div class="space-y-2 text-orange-700 text-sm">
+                                <p><strong>Produtos regionais:</strong> Promova produtos específicos para regiões com mais cliques.</p>
+                                <p><strong>Linguagem local:</strong> Use gírias e referências regionais no seu conteúdo.</p>
+                                <p><strong>Horários de fuso:</strong> Considere o fuso horário das regiões que mais convertem.</p>
+                            </div>
+                        </div>
+
+                        <!-- Daily Patterns -->
+                        <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-purple-900 mb-3">📅 Padrões Diários e Semanais</h3>
+                            <div class="space-y-2 text-purple-700 text-sm">
+                                <p><strong>Identifique tendências:</strong> Use o gráfico "Cliques por Dia" para encontrar padrões semanais.</p>
+                                <p><strong>Campanhas especiais:</strong> Lance promoções nos dias de maior movimento.</p>
+                                <p><strong>Preparação de conteúdo:</strong> Crie mais conteúdo para os dias que historicamente convertem melhor.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-yellow-800">Dica Importante</h3>
+                                <p class="mt-1 text-sm text-yellow-700">
+                                    Analise os dados semanalmente e faça ajustes graduais. Mudanças muito bruscas podem prejudicar o algoritmo das redes sociais.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Navigation -->
+                <div class="flex justify-between pt-8 border-t">
+                    <a href="analytics.html" class="flex items-center text-gray-600 hover:text-primary">
+                        ← Anterior: Analytics Shopee
+                    </a>
+                    <a href="plans.html" class="flex items-center text-gray-600 hover:text-primary">
+                        Próximo: Planos & Funcionalidades →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

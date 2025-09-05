@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos & Funcionalidades - LinkFlow Documentação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#1F2937'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-primary">LinkFlow</a>
+                    <span class="ml-2 text-sm text-gray-500">/ Planos & Funcionalidades</span>
+                </div>
+                <a href="../" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Voltar ao Sistema
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                <li><a href="index.html" class="hover:text-primary">Documentação</a></li>
+                <li>→</li>
+                <li class="text-gray-900 font-medium">Planos & Funcionalidades</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Planos & Funcionalidades</h1>
+            <p class="text-xl text-gray-600">Entenda as diferenças entre os planos e escolha o ideal para você</p>
+        </div>
+
+        <!-- Content -->
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Navigation Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow p-6 sticky top-8">
+                    <h3 class="font-semibold text-gray-900 mb-4">Nesta página</h3>
+                    <nav class="space-y-2 text-sm">
+                        <a href="#overview" class="block text-gray-600 hover:text-primary">Visão Geral</a>
+                        <a href="#comparison" class="block text-gray-600 hover:text-primary">Comparação de Planos</a>
+                        <a href="#starter" class="block text-gray-600 hover:text-primary">Plano Starter</a>
+                        <a href="#pro" class="block text-gray-600 hover:text-primary">Plano Pro</a>
+                        <a href="#elite" class="block text-gray-600 hover:text-primary">Plano Elite</a>
+                        <a href="#trial" class="block text-gray-600 hover:text-primary">Período de Teste</a>
+                        <a href="#upgrade" class="block text-gray-600 hover:text-primary">Como Fazer Upgrade</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Overview -->
+                <section id="overview" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">💎 Visão Geral dos Planos</h2>
+                    <p class="text-gray-600 mb-6">
+                        O LinkFlow oferece três planos para atender diferentes necessidades de afiliados Shopee, 
+                        desde iniciantes até profissionais avançados.
+                    </p>
+
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl">🥉</span>
+                            </div>
+                            <h3 class="font-semibold text-lg">Starter</h3>
+                            <p class="text-gray-600 text-sm">Para iniciantes</p>
+                            <div class="text-2xl font-bold text-blue-600 mt-2">R$ 59,90</div>
+                        </div>
+
+                        <div class="text-center border-2 border-green-200 rounded-lg p-4 bg-green-50">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl">🥈</span>
+                            </div>
+                            <h3 class="font-semibold text-lg">Pro</h3>
+                            <p class="text-gray-600 text-sm">Mais popular</p>
+                            <div class="text-2xl font-bold text-green-600 mt-2">R$ 97,90</div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl">🥇</span>
+                            </div>
+                            <h3 class="font-semibold text-lg">Elite</h3>
+                            <p class="text-gray-600 text-sm">Para profissionais</p>
+                            <div class="text-2xl font-bold text-orange-600 mt-2">R$ 147,90</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">🎁 Teste Gratuito</h3>
+                                <p class="mt-1 text-sm text-blue-700">
+                                    Novos usuários começam com 14 dias grátis do plano Pro para testar todas as funcionalidades!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Comparison Table -->
+                <section id="comparison" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">📋 Comparação Detalhada</h2>
+                    <p class="text-gray-600 mb-6">Compare as funcionalidades de cada plano:</p>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Funcionalidade
+                                    </th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Starter
+                                    </th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider bg-green-50">
+                                        Pro
+                                    </th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Elite
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Links de redirecionamento
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">50</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">Ilimitados</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Análise de comissões Shopee
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Estatísticas
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">Básicas</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">Avançadas</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">Avançadas</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Rastreamento
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">Básico</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">Avançado</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">Avançado</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Analytics de cliques
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-red-600">❌</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Exportar relatórios PDF
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-red-600">❌</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Suporte via WhatsApp
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Suporte estratégico
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-red-600">❌</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center bg-green-50">
+                                        <span class="text-red-600">❌</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <span class="text-green-600">✓</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Starter Plan -->
+                <section id="starter" class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="text-3xl mr-3">🥉</span>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Plano Starter</h2>
+                            <p class="text-blue-600 font-semibold">R$ 59,90/mês</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">
+                        Ideal para quem está começando na afiliação Shopee e quer testar a plataforma com funcionalidades essenciais.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3">✅ O que está incluído:</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    15 links de redirecionamento
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Análise de comissões Shopee
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Estatísticas básicas
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Rastreamento básico
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Suporte via WhatsApp
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3">❌ Limitações:</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-center">
+                                    <span class="text-red-500 mr-2">❌</span>
+                                    Analytics de cliques avançados
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-red-500 mr-2">❌</span>
+                                    Relatórios PDF
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-red-500 mr-2">❌</span>
+                                    Análise de performance avançada
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-red-500 mr-2">❌</span>
+                                    Análise de conversão
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-red-500 mr-2">❌</span>
+                                    Suporte estratégico
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-blue-900 mb-2">👥 Para quem é recomendado:</h4>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Iniciantes na afiliação Shopee</li>
+                            <li>• Pessoas que vendem poucos produtos</li>
+                            <li>• Quem quer validar o modelo de negócio</li>
+                            <li>• Usuários com orçamento limitado</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Pro Plan -->
+                <section id="pro" class="bg-white rounded-lg shadow p-6 border-2 border-green-200">
+                    <div class="flex items-center mb-4">
+                        <span class="text-3xl mr-3">🥈</span>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Plano Pro</h2>
+                            <div class="flex items-center space-x-2">
+                                <p class="text-green-600 font-semibold">R$ 97,90/mês</p>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Mais Popular
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">
+                        O plano mais equilibrado, ideal para afiliados que querem crescer com ferramentas profissionais 
+                        e análises detalhadas para otimizar resultados.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3">✅ Tudo do Starter +</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    50 links de redirecionamento
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Estatísticas avançadas
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Rastreamento avançado
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Analytics de cliques completo
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Análise de performance avançada
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Análise de conversão
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Relatórios PDF profissionais
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3">🚀 Vantagens exclusivas:</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2 mt-1">📊</span>
+                                    <div>
+                                        <strong>Gráficos interativos:</strong> Visualize dados de cliques por hora, região e fonte
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-500 mr-2 mt-1">🎯</span>
+                                    <div>
+                                        <strong>ROI detalhado:</strong> Calcule o retorno sobre investimento em ads
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-orange-500 mr-2 mt-1">📈</span>
+                                    <div>
+                                        <strong>Otimização guiada:</strong> Identifique melhores horários e canais
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-green-900 mb-2">👥 Para quem é recomendado:</h4>
+                        <ul class="text-sm text-green-700 space-y-1">
+                            <li>• Afiliados com experiência intermediária</li>
+                            <li>• Quem promove múltiplos produtos</li>
+                            <li>• Usuários que investem em publicidade</li>
+                            <li>• Pessoas que querem dados detalhados para otimização</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Elite Plan -->
+                <section id="elite" class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="text-3xl mr-3">🥇</span>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Plano Elite</h2>
+                            <p class="text-orange-600 font-semibold">R$ 147,90/mês</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">
+                        Para profissionais sérios que precisam de recursos ilimitados e suporte estratégico 
+                        personalizado para maximizar resultados.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3">✅ Tudo do Pro +</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Links ilimitados
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Suporte estratégico personalizado
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Consultoria de otimização
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Relatórios personalizados
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Prioridade no suporte
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    Acesso antecipado a novos recursos
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-3">🎯 Diferenciais únicos:</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start">
+                                    <span class="text-gold-500 mr-2 mt-1">👨‍💼</span>
+                                    <div>
+                                        <strong>Consultoria estratégica:</strong> Sessões mensais com especialistas
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-500 mr-2 mt-1">📊</span>
+                                    <div>
+                                        <strong>Análises customizadas:</strong> Relatórios específicos para seu nicho
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2 mt-1">🚀</span>
+                                    <div>
+                                        <strong>Escalabilidade total:</strong> Sem limites para crescer
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-orange-900 mb-2">👥 Para quem é recomendado:</h4>
+                        <ul class="text-sm text-orange-700 space-y-1">
+                            <li>• Afiliados profissionais com alto volume</li>
+                            <li>• Agências de marketing digital</li>
+                            <li>• Usuários que promovem centenas de produtos</li>
+                            <li>• Quem quer consultoria estratégica personalizada</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Trial Period -->
+                <section id="trial" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">🎁 Período de Teste Gratuito</h2>
+                    <p class="text-gray-600 mb-6">
+                        Todos os novos usuários recebem 14 dias grátis do plano Pro para testar todas as funcionalidades!
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-blue-900 mb-3">✨ O que você ganha:</h3>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• 14 dias completos de acesso Pro</li>
+                                <li>• Até 50 links de redirecionamento</li>
+                                <li>• Todas as análises avançadas</li>
+                                <li>• Analytics de cliques completo</li>
+                                <li>• Relatórios PDF ilimitados</li>
+                                <li>• Suporte completo via WhatsApp</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-green-900 mb-3">🎯 Como aproveitar:</h3>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• Crie seus primeiros links</li>
+                                <li>• Importe dados de comissão da Shopee</li>
+                                <li>• Teste as análises avançadas</li>
+                                <li>• Gere relatórios PDF</li>
+                                <li>• Explore o analytics de cliques</li>
+                                <li>• Entre em contato com o suporte</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-yellow-800">Importante sobre o trial</h3>
+                                <p class="mt-1 text-sm text-yellow-700">
+                                    Após os 14 dias, você pode escolher qualquer plano ou cancelar sem custos. 
+                                    Não cobramos cartão de crédito durante o período de teste.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Upgrade Process -->
+                <section id="upgrade" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">⬆️ Como Fazer Upgrade</h2>
+                    <p class="text-gray-600 mb-6">Processo simples e seguro para fazer upgrade do seu plano:</p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Acessar a página de planos</h3>
+                                <p class="text-gray-600 mb-3">
+                                    No menu lateral, clique em "Planos & Preços" ou no botão "Upgrade" disponível em várias páginas.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                2
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Escolher o plano desejado</h3>
+                                <p class="text-gray-600 mb-3">
+                                    Compare os planos e clique em "Assinar" no plano que melhor atende suas necessidades.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                3
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Preencher dados de pagamento</h3>
+                                <p class="text-gray-600 mb-3">
+                                    Insira os dados do seu cartão de crédito no checkout seguro processado pelo Stripe.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                4
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Ativação automática</h3>
+                                <p class="text-gray-600 mb-3">
+                                    Após a confirmação do pagamento, seu plano é ativado automaticamente e você pode usar todas as funcionalidades.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-green-900 mb-2">🔒 Segurança</h3>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• Processamento seguro via Stripe</li>
+                                <li>• Certificado SSL 256-bit</li>
+                                <li>• Dados protegidos</li>
+                                <li>• Sem armazenamento de dados do cartão</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-blue-900 mb-2">💳 Formas de pagamento</h3>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Cartão de crédito (Visa, Mastercard)</li>
+                                <li>• Cobrança recorrente automática</li>
+                                <li>• Faturamento mensal</li>
+                                <li>• Cancelamento a qualquer momento</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Navigation -->
+                <div class="flex justify-between pt-8 border-t">
+                    <a href="clicks.html" class="flex items-center text-gray-600 hover:text-primary">
+                        ← Anterior: Analytics de Cliques
+                    </a>
+                    <a href="faq.html" class="flex items-center text-gray-600 hover:text-primary">
+                        Próximo: Perguntas Frequentes →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

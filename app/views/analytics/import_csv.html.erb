@@ -1,0 +1,303 @@
+<div class="max-w-4xl mx-auto space-y-6">
+  <!-- Header -->
+  <div class="bg-white shadow rounded-lg p-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Importar Dados de Comissões</h1>
+        <p class="text-gray-600">Importe seu relatório de comissões da Shopee em formato CSV</p>
+      </div>
+      <%= link_to analytics_path, class: "text-blue-600 hover:text-blue-700 flex items-center" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Voltar ao Analytics
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Instruções -->
+  <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-blue-800">Como usar esta ferramenta</h3>
+        <div class="mt-2 text-sm text-blue-700">
+          <ul class="list-disc list-inside space-y-1">
+            <li>Baixe seu relatório de comissões da Shopee em formato CSV</li>
+            <li>O arquivo deve conter as colunas padrão do relatório de afiliados</li>
+            <li>Dados duplicados serão automaticamente atualizados</li>
+            <li>O processo pode levar alguns minutos para arquivos grandes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulário de upload -->
+  <div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Upload do Arquivo CSV</h2>
+    
+    <%= form_with url: analytics_import_csv_path, method: :post, multipart: true, class: "space-y-6" do |form| %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Selecione o arquivo CSV
+        </label>
+        
+        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
+          <div class="space-y-1 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="flex text-sm text-gray-600">
+              <label for="csv_file" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                <span>Selecione um arquivo</span>
+                <%= form.file_field :csv_file, 
+                    id: "csv_file",
+                    accept: ".csv",
+                    required: true,
+                    class: "sr-only",
+                    onchange: "updateFileName(this)" %>
+              </label>
+              <p class="pl-1">ou arraste aqui</p>
+            </div>
+            <p class="text-xs text-gray-500">
+              Apenas arquivos CSV até 10MB
+            </p>
+            <p id="file-name" class="text-sm text-green-600 font-medium hidden"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de Gastos com Ads -->
+      <div class="border-t border-gray-200 pt-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">💰 Gastos com Anúncios (Opcional)</h3>
+        <p class="text-sm text-gray-600 mb-4">Informe os gastos com anúncios para calcular o ROI de cada SubID automaticamente.</p>
+        
+        <!-- Investimento total -->
+        <div class="mb-6">
+          <label for="total_investment" class="block text-sm font-medium text-gray-700 mb-2">
+            Investimento total em anúncios (opcional)
+          </label>
+          <%= form.number_field :total_investment, 
+              id: "total_investment",
+              step: 0.01,
+              min: 0,
+              placeholder: "0,00",
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+          <p class="text-xs text-gray-500 mt-1">Valor total investido em anúncios para todos os SubIDs neste período</p>
+        </div>
+
+        <!-- SubIDs e Gastos -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h4 class="text-md font-medium text-gray-900">SubIDs e Gastos</h4>
+            <button type="button" 
+                    id="add-subid-btn"
+                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm flex items-center transition-colors">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Adicionar
+            </button>
+          </div>
+          
+          <div id="subid-fields-container" class="space-y-3">
+            <!-- Campos dinâmicos serão adicionados aqui via JavaScript -->
+          </div>
+          
+          <div class="text-sm text-gray-500 italic">
+            💡 Adicione os SubIDs e seus respectivos gastos para um cálculo preciso do ROI
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-4">
+        <div class="text-sm text-gray-500">
+          <p>💡 <strong>Dica:</strong> Certifique-se de que o arquivo contém todas as colunas necessárias</p>
+        </div>
+        
+        <button type="submit" 
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                id="submit-btn">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+          <span id="submit-text">Importar Dados</span>
+        </button>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Exemplo de formato -->
+  <div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Formato Esperado do CSV</h2>
+    <p class="text-sm text-gray-600 mb-4">Seu arquivo CSV deve conter as seguintes colunas (baseado no relatório padrão da Shopee):</p>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coluna</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descrição</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exemplo</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ID do pedido</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Identificador único do pedido</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2508293BSACY8J</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Status do Pedido</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Status atual do pedido</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Concluído</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Comissão líquida do afiliado(R$)</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Valor da comissão recebida</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2.758</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Valor de Compra(R$)</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Valor total da venda</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">19.7</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Canal</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Canal de origem do tráfego</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Shopeevideo-Shopee</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+      <p class="text-sm text-yellow-800">
+        <strong>Importante:</strong> O sistema tentará mapear automaticamente as colunas, mas certifique-se de que os nomes das colunas estejam exatamente como no relatório original da Shopee.
+      </p>
+    </div>
+  </div>
+
+  <!-- Estatísticas atuais -->
+  <% if current_user.commissions.any? %>
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Dados Atuais</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="text-center p-4 bg-blue-50 rounded-lg">
+          <p class="text-2xl font-bold text-blue-600"><%= current_user.commissions.count %></p>
+          <p class="text-sm text-blue-600">Total de Pedidos</p>
+        </div>
+        <div class="text-center p-4 bg-green-50 rounded-lg">
+          <p class="text-2xl font-bold text-green-600">R$ <%= number_with_precision(current_user.commissions.sum(:affiliate_commission), precision: 2, delimiter: '.', separator: ',') %></p>
+          <p class="text-sm text-green-600">Total de Comissões</p>
+        </div>
+        <div class="text-center p-4 bg-purple-50 rounded-lg">
+          <p class="text-2xl font-bold text-purple-600"><%= current_user.commissions.group(:channel).count.keys.count %></p>
+          <p class="text-sm text-purple-600">Canais Ativos</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+function updateFileName(input) {
+  const fileNameElement = document.getElementById('file-name');
+  const submitBtn = document.getElementById('submit-btn');
+  const submitText = document.getElementById('submit-text');
+  
+  if (input.files && input.files[0]) {
+    const fileName = input.files[0].name;
+    const fileSize = (input.files[0].size / 1024 / 1024).toFixed(2); // MB
+    
+    fileNameElement.textContent = `Arquivo selecionado: ${fileName} (${fileSize} MB)`;
+    fileNameElement.classList.remove('hidden');
+    
+    // Validação de tamanho
+    if (input.files[0].size > 10 * 1024 * 1024) { // 10MB
+      fileNameElement.textContent = 'Arquivo muito grande! Máximo 10MB.';
+      fileNameElement.classList.remove('text-green-600');
+      fileNameElement.classList.add('text-red-600');
+      submitBtn.disabled = true;
+    } else {
+      fileNameElement.classList.remove('text-red-600');
+      fileNameElement.classList.add('text-green-600');
+      submitBtn.disabled = false;
+    }
+  }
+}
+
+// Loading state no submit
+document.querySelector('form').addEventListener('submit', function() {
+  const submitBtn = document.getElementById('submit-btn');
+  const submitText = document.getElementById('submit-text');
+  
+  submitBtn.disabled = true;
+  submitText.textContent = 'Importando...';
+  
+  // Adicionar spinner
+  submitBtn.innerHTML = `
+    <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+    Importando dados...
+  `;
+});
+
+// Funcionalidade dos campos dinâmicos de SubID
+let subidCounter = 0;
+
+function addSubidField() {
+  subidCounter++;
+  const container = document.getElementById('subid-fields-container');
+  
+  const fieldDiv = document.createElement('div');
+  fieldDiv.className = 'flex items-center space-x-3 p-3 border border-gray-200 rounded-lg';
+  fieldDiv.id = `subid-field-${subidCounter}`;
+  
+  fieldDiv.innerHTML = `
+    <div class="flex-1">
+      <input type="text" 
+             name="subid_data[${subidCounter}][subid]" 
+             placeholder="Nome do SubID"
+             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+    </div>
+    <div class="flex-1">
+      <input type="number" 
+             name="subid_data[${subidCounter}][ad_spend]" 
+             placeholder="Gasto em R$"
+             step="0.01"
+             min="0"
+             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+    </div>
+    <button type="button" 
+            onclick="removeSubidField(${subidCounter})"
+            class="text-red-600 hover:text-red-800 transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+      </svg>
+    </button>
+  `;
+  
+  container.appendChild(fieldDiv);
+}
+
+function removeSubidField(id) {
+  const field = document.getElementById(`subid-field-${id}`);
+  if (field) {
+    field.remove();
+  }
+}
+
+// Event listener para o botão adicionar
+document.getElementById('add-subid-btn').addEventListener('click', addSubidField);
+
+// Adicionar um campo inicial
+addSubidField();
+</script>

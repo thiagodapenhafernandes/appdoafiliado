@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Stripe</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Debug Stripe Loading</h1>
+    <div id="results"></div>
+    
+    <script>
+        const log = (message) => {
+            console.log(message);
+            const results = document.getElementById('results');
+            results.innerHTML += '<p>' + message + '</p>';
+        };
+        
+        log('🚀 Iniciando teste de carregamento do Stripe');
+        
+        // Teste 1: Verificar se Stripe carregou
+        if (typeof Stripe !== 'undefined') {
+            log('✅ Stripe.js carregado com sucesso');
+            
+            // Teste 2: Tentar inicializar
+            try {
+                const stripe = Stripe('pk_test_51...');
+                log('✅ Stripe inicializado (com chave dummy)');
+            } catch (error) {
+                log('❌ Erro ao inicializar Stripe: ' + error.message);
+            }
+        } else {
+            log('❌ Stripe.js não carregou');
+        }
+        
+        // Teste 3: Verificar conexão de rede
+        fetch('https://api.stripe.com/v1/tokens', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(() => log('✅ API Stripe acessível'))
+        .catch(error => log('❌ Erro ao acessar API Stripe: ' + error.message));
+    </script>
+</body>
+</html>

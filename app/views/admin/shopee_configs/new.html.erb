@@ -1,0 +1,134 @@
+<div class="bg-white overflow-hidden shadow rounded-lg">
+  <div class="px-4 py-5 sm:px-6">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+      Nova Configuração Shopee Master
+    </h3>
+    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+      Configure as credenciais do aplicativo master para integração centralizada com a Shopee
+    </p>
+  </div>
+
+  <div class="px-4 py-5 sm:p-6">
+    <%= form_with(model: @config, local: true, url: admin_shopee_configs_path, class: "space-y-6") do |form| %>
+      <% if @config.errors.any? %>
+        <div class="rounded-md bg-red-50 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833-.229 2.5 1.732 2.5z"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                Há <%= pluralize(@config.errors.count, "erro") %> que impedem este registro de ser salvo:
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul role="list" class="list-disc list-inside space-y-1">
+                  <% @config.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Market Field -->
+      <div>
+        <%= form.label :market, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :market, 
+                        options_for_select([
+                          ['Brasil', 'BR'], 
+                          ['México', 'MX'], 
+                          ['Colômbia', 'CO'], 
+                          ['Chile', 'CL']
+                        ], @config.market), 
+                        { prompt: 'Selecione o mercado' }, 
+                        { class: "border mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" } %>
+        <p class="mt-2 text-sm text-gray-500">Selecione o mercado para esta configuração master</p>
+      </div>
+
+      <!-- Master App ID Field -->
+      <div>
+        <%= form.label :master_app_id, "App ID do Master", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :master_app_id, 
+                            class: "border pl-3 pr-10 py-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md",
+                            placeholder: "Digite o App ID do aplicativo master da Shopee" %>
+        <p class="mt-2 text-sm text-gray-500">O App ID fornecido pela Shopee para seu aplicativo master</p>
+      </div>
+
+      <!-- Master App Secret Field -->
+      <div>
+        <%= form.label :master_app_secret, "App Secret do Master", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.password_field :master_app_secret, 
+                                class: "border pl-3 pr-10 py-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md",
+                                placeholder: "Digite o App Secret do aplicativo master" %>
+        <p class="mt-2 text-sm text-gray-500">O App Secret fornecido pela Shopee (será criptografado automaticamente)</p>
+      </div>
+
+      <!-- Active Field -->
+      <div class="flex items-start">
+        <div class="flex items-center h-5">
+          <%= form.check_box :active, 
+                             class: "border pl-3 pr-10 py-2 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" %>
+        </div>
+        <div class="ml-3 text-sm">
+          <%= form.label :active, "Ativo", class: "font-medium text-gray-700" %>
+          <p class="text-gray-500">Marque para ativar esta configuração imediatamente</p>
+        </div>
+      </div>
+
+      <!-- Warning Alert -->
+      <div class="rounded-md bg-yellow-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833-.229 2.5 1.732 2.5z"></path>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-yellow-800">Importante</h3>
+            <div class="mt-2 text-sm text-yellow-700">
+              <ul class="list-disc list-inside space-y-1">
+                <li>As credenciais serão criptografadas automaticamente no banco de dados</li>
+                <li>Teste a conexão após salvar para verificar se as credenciais estão corretas</li>
+                <li>Apenas uma configuração pode estar ativa por mercado</li>
+                <li>Usuários poderão usar esta configuração para autenticação centralizada</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="pt-5">
+        <div class="flex justify-end space-x-3">
+          <%= link_to "Cancelar", admin_shopee_configs_path, 
+                      class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= form.submit "Salvar Configuração", 
+                          class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Info Section -->
+  <div class="px-4 py-5 sm:p-6 bg-gray-50">
+    <h4 class="text-lg font-medium text-gray-900 mb-4">Como obter as credenciais</h4>
+    <div class="prose text-sm text-gray-600">
+      <ol class="list-decimal list-inside space-y-2">
+        <li>Acesse o <a href="https://open.shopee.com" target="_blank" class="text-indigo-600 hover:text-indigo-500">Shopee Open Platform</a></li>
+        <li>Faça login com sua conta Shopee</li>
+        <li>Crie um novo aplicativo ou acesse um existente</li>
+        <li>Na seção "Basic Info", encontre o <strong>App ID</strong> e <strong>App Secret</strong></li>
+        <li>Configure os callbacks e URLs necessários</li>
+        <li>Cole as credenciais nos campos acima</li>
+      </ol>
+      
+      <div class="mt-4 p-3 bg-blue-50 rounded-md">
+        <p class="text-blue-800"><strong>Dica:</strong> Certifique-se de que seu aplicativo Shopee está configurado para o mercado correto e possui as permissões necessárias para afiliados.</p>
+      </div>
+    </div>
+  </div>
+</div>

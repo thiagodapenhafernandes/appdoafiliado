@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <title>App do Afiliado - Maximize seus ganhos na Shopee</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Transforme seus links de afiliado em máquinas de conversão. Analise comissões, gerencie campanhas e maximize resultados na Shopee com dados em tempo real.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <!-- Tailwind CSS -->
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/site/images/favicon.svg">
+    
+    <style>
+      body { font-family: 'Inter', sans-serif; }
+      
+      /* Custom App Colors */
+      :root {
+        --primary: #6366f1;
+        --secondary: #f59e0b;
+        --accent: #10b981;
+        --dark: #1f2937;
+      }
+      
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      
+      /* Gradient backgrounds */
+      .gradient-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      }
+      
+      .gradient-secondary {
+        background: linear-gradient(135deg, #f59e0b 0%, #10b981 100%);
+      }
+    </style>
+  </head>
+
+      <body class="font-sans bg-gray-50 min-h-screen">
+    <% if user_signed_in? %>
+      <!-- Layout with Sidebar for logged users -->
+      <div class="flex min-h-screen bg-gray-50">
+        <!-- Desktop Sidebar -->
+        <div class="hidden md:flex md:w-64 md:flex-col fixed md:relative h-full md:h-auto">
+          <div class="flex flex-col h-full pt-5 bg-white shadow-xl border-r border-gray-200">
+            <!-- Logo -->
+            <div class="flex items-center flex-shrink-0 px-4 mb-8">
+              <%= link_to root_path, class: "flex items-center space-x-2" do %>
+                <div class="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                  <i class="fas fa-chart-line text-white text-sm"></i>
+                </div>
+                <span class="text-xl font-bold text-gray-900">App do Afiliado</span>
+              <% end %>
+            </div>
+            
+            <!-- User Info -->
+            <div class="px-4 mb-6">
+              <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 gradient-primary rounded-full flex items-center justify-center">
+                    <span class="text-white font-semibold text-sm">
+                      <%= current_user.email.first.upcase %>
+                    </span>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-700 truncate">
+                      <%= current_user.email %>
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      <% if current_user.on_trial? %>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
+                          <i class="fas fa-clock mr-1"></i>
+                          Teste: <%= pluralize(current_user.trial_days_remaining, 'dia') %>
+                        </span>
+                      <% elsif current_user.current_subscription %>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                          <i class="fas fa-star mr-1"></i>
+                          <%= current_user.current_subscription.plan.name %>
+                        </span>
+                      <% else %>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                          <i class="fas fa-user mr-1"></i>
+                          Usuário Básico
+                        </span>
+                      <% end %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-2 space-y-1">
+              <!-- Dashboard -->
+              <%= link_to dashboard_path, 
+                  class: "group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 #{ 
+                    request.path == dashboard_path ? 
+                    'bg-primary/10 text-primary border border-primary/20' : 
+                    'text-gray-600 hover:bg-gray-50 hover:text-primary' 
+                  }" do %>
+                <i class="fas fa-chart-pie mr-3 w-5 h-5 text-center"></i>
+                Dashboard
+                <% if request.path == dashboard_path %>
+                  <i class="fas fa-chevron-right ml-auto text-xs"></i>
+                <% end %>
+              <% end %>
+
+              <!-- Links -->
+              <%= link_to links_path, 
+                  class: "group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 #{ 
+                    request.path.start_with?(links_path) ? 
+                    'bg-primary/10 text-primary border border-primary/20' : 
+                    'text-gray-600 hover:bg-gray-50 hover:text-primary' 
+                  }" do %>
+                <i class="fas fa-link mr-3 w-5 h-5 text-center"></i>
+                Meus Links
+                <% if request.path.start_with?(links_path) %>
+                  <i class="fas fa-chevron-right ml-auto text-xs"></i>
+                <% end %>
+              <% end %>
+
+              <!-- Análise Shopee -->
+              <div class="space-y-1">
+                <div class="group flex items-center px-3 py-3 text-sm font-medium text-gray-700 rounded-lg bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20">
+                  <i class="fas fa-chart-line mr-2 w-4 h-4 text-center text-secondary"></i>
+                  <i class="fab fa-shopify mr-1 w-4 h-4 text-center text-orange-500"></i>
+                  Análise Shopee
+                  <i class="fas fa-chevron-down ml-auto text-xs text-gray-400"></i>
+                </div>
+                
+                <!-- Submenu -->
+                <div class="ml-4 space-y-1 pl-4 border-l border-gray-200">
+                  <%= link_to analytics_path, 
+                      class: "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 #{ 
+                        request.path.start_with?('/analytics') && !request.path.start_with?('/clicks_analytics') ? 
+                        'bg-accent/10 text-accent border border-accent/20' : 
+                        'text-gray-600 hover:bg-gray-50 hover:text-accent' 
+                      }" do %>
+                    <i class="fas fa-coins mr-3 w-4 h-4 text-center"></i>
+                    Análise de Comissões
+                    <% if current_user.has_basic_analytics_only? %>
+                      <span class="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full font-medium">Básico</span>
+                    <% end %>
+                    <% if request.path.start_with?('/analytics') && !request.path.start_with?('/clicks_analytics') %>
+                      <i class="fas fa-chevron-right ml-auto text-xs"></i>
+                    <% end %>
+                  <% end %>
+                  
+                  <% if current_user.can_access_advanced_tracking? %>
+                    <%= link_to clicks_analytics_path, 
+                        class: "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 #{ 
+                          request.path.start_with?('/clicks_analytics') ? 
+                          'bg-accent/10 text-accent border border-accent/20' : 
+                          'text-gray-600 hover:bg-gray-50 hover:text-accent' 
+                        }" do %>
+                      <i class="fas fa-mouse-pointer mr-3 w-4 h-4 text-center"></i>
+                      Análise de Cliques
+                      <span class="ml-auto bg-accent/10 text-accent text-xs px-2 py-1 rounded-full font-medium">Avançado</span>
+                      <% if request.path.start_with?('/clicks_analytics') %>
+                        <i class="fas fa-chevron-right ml-auto text-xs"></i>
+                      <% end %>
+                    <% end %>
+                  <% else %>
+                    <div class="group flex items-center px-3 py-2 text-sm font-medium text-gray-400 rounded-lg cursor-not-allowed bg-gray-50/50">
+                      <i class="fas fa-lock mr-3 w-4 h-4 text-center"></i>
+                      Análise de Cliques
+                      <span class="ml-auto bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full font-medium">Pro/Elite</span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+
+              <!-- Shopee Integration -->
+              <%= link_to shopee_integration_path, 
+                  class: "group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 #{ 
+                    request.path.start_with?('/shopee_integration') ? 
+                    'bg-secondary/10 text-secondary border border-secondary/20' : 
+                    'text-gray-600 hover:bg-gray-50 hover:text-secondary' 
+                  }" do %>
+                <i class="fas fa-bolt mr-3 w-5 h-5 text-center"></i>
+                Integração Shopee
+                <% if current_user.shopee_affiliate_integration&.active? %>
+                  <span class="ml-auto w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <% else %>
+                  <span class="ml-auto w-2 h-2 bg-gray-300 rounded-full"></span>
+                <% end %>
+                <% if request.path.start_with?('/shopee_integration') %>
+                  <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                <% end %>
+              <% end %>
+
+              <!-- Plans -->
+              <%= link_to plans_path, 
+                  class: "group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 #{ 
+                    request.path.start_with?(plans_path) ? 
+                    'bg-secondary/10 text-secondary border border-secondary/20' : 
+                    'text-gray-600 hover:bg-gray-50 hover:text-secondary' 
+                  }" do %>
+                <i class="fas fa-gem mr-3 w-5 h-5 text-center"></i>
+                Planos & Preços
+                <% if request.path.start_with?(plans_path) %>
+                  <i class="fas fa-chevron-right ml-auto text-xs"></i>
+                <% end %>
+              <% end %>
+
+              <!-- Divider -->
+              <div class="border-t border-gray-200 my-4 mx-2"></div>
+
+              <!-- API -->
+              <a href="#" class="group flex items-center px-3 py-3 text-sm font-medium text-gray-400 rounded-lg cursor-not-allowed bg-gray-50/50">
+                <i class="fas fa-code mr-3 w-5 h-5 text-center"></i>
+                API & Webhooks
+                <span class="ml-auto bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full font-medium">Pro</span>
+              </a>
+
+              <!-- Integrations -->
+              <a href="#" class="group flex items-center px-3 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-primary transition-all duration-200">
+                <i class="fas fa-puzzle-piece mr-3 w-5 h-5 text-center"></i>
+                Integrações
+                <span class="ml-auto bg-accent/10 text-accent text-xs px-2 py-1 rounded-full font-medium">Em breve</span>
+              </a>
+
+              <!-- Account -->
+              <%= link_to edit_user_registration_path, 
+                  class: "group flex items-center px-3 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-primary transition-all duration-200" do %>
+                <i class="fas fa-user-cog mr-3 w-5 h-5 text-center"></i>
+                Minha Conta
+              <% end %>
+
+              <!-- Support -->
+              <a href="#" class="group flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                <svg class="mr-3 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12l.01.01M12 12l.01.01m-.01-.01l.01.01m-.01-.01l.01.01M12 12l.01.01m-.01-.01l.01.01m-.01-.01l.01.01m-.01-.01l.01.01"></path>
+                </svg>
+                Suporte
+              </a>
+
+              <!-- Admin Panel (only for admins) -->
+              <% if current_user&.admin? || current_user&.super_admin? %>
+                <div class="border-t border-gray-200 my-4 mx-2"></div>
+                <%= link_to admin_dashboard_index_path, class: "group flex items-center px-3 py-3 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 hover:text-red-700 transition-all duration-200" do %>
+                  <i class="fas fa-shield-alt mr-3 w-5 h-5 text-center"></i>
+                  Painel Admin
+                  <span class="ml-auto bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Admin</span>
+                <% end %>
+              <% end %>
+            </nav>
+
+            <!-- Bottom Section -->
+            <div class="flex-shrink-0 px-4 py-4 border-t border-gray-200 bg-gray-50/50">
+              <%= button_to destroy_user_session_path, method: :delete, 
+                  class: "group flex items-center px-3 py-3 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 hover:text-red-700 transition-all duration-200 w-full border-0 bg-transparent cursor-pointer",
+                  form: { class: "w-full" } do %>
+                <i class="fas fa-sign-out-alt mr-3 w-5 h-5 text-center"></i>
+                Sair
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobile-sidebar-overlay" class="fixed inset-0 flex z-40 md:hidden hidden">
+          <div class="fixed inset-0 bg-gray-600 bg-opacity-75" aria-hidden="true"></div>
+          <div class="relative flex-1 flex flex-col max-w-xs w-full bg-white sidebar-mobile">
+            <div class="absolute top-0 right-0 -mr-12 pt-2">
+              <button id="close-sidebar" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <span class="sr-only">Fechar menu</span>
+                <i class="fas fa-times text-white text-lg"></i>
+              </button>
+            </div>
+            
+            <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+              <div class="flex-shrink-0 flex items-center px-4 mb-8">
+                <%= link_to root_path, class: "flex items-center space-x-2" do %>
+                  <div class="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                    <i class="fas fa-chart-line text-white text-sm"></i>
+                  </div>
+                  <span class="text-xl font-bold text-gray-900">App do Afiliado</span>
+                <% end %>
+              </div>
+              
+              <!-- Mobile User Info -->
+              <div class="px-4 mb-6">
+                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 gradient-primary rounded-full flex items-center justify-center">
+                      <span class="text-white font-semibold text-sm">
+                        <%= current_user.email.first.upcase %>
+                      </span>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm font-medium text-gray-700 truncate">
+                        <%= current_user.email %>
+                      </p>
+                      <p class="text-xs text-gray-500">
+                        <% if current_user.on_trial? %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
+                            <i class="fas fa-clock mr-1"></i>
+                            Teste: <%= pluralize(current_user.trial_days_remaining, 'dia') %>
+                          </span>
+                        <% elsif current_user.current_subscription %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                            <i class="fas fa-star mr-1"></i>
+                            <%= current_user.current_subscription.plan.name %>
+                          </span>
+                        <% else %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                            <i class="fas fa-user mr-1"></i>
+                            Usuário Básico
+                          </span>
+                        <% end %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Mobile Navigation -->
+              <nav class="px-2 space-y-1">
+                <%= link_to dashboard_path, class: "group flex items-center px-3 py-3 text-base font-medium rounded-lg #{ request.path == dashboard_path ? 'bg-primary/10 text-primary border border-primary/20' : 'text-gray-600 hover:bg-gray-50 hover:text-primary' }" do %>
+                  <i class="fas fa-chart-pie mr-4 w-6 h-6 text-center"></i>
+                  Dashboard
+                <% end %>
+
+                <%= link_to links_path, class: "group flex items-center px-3 py-3 text-base font-medium rounded-lg #{ request.path.start_with?(links_path) ? 'bg-primary/10 text-primary border border-primary/20' : 'text-gray-600 hover:bg-gray-50 hover:text-primary' }" do %>
+                  <i class="fas fa-link mr-4 w-6 h-6 text-center"></i>
+                  Meus Links
+                <% end %>
+
+                <%= link_to plans_path, class: "group flex items-center px-3 py-3 text-base font-medium rounded-lg #{ request.path.start_with?(plans_path) ? 'bg-secondary/10 text-secondary border border-secondary/20' : 'text-gray-600 hover:bg-gray-50 hover:text-secondary' }" do %>
+                  <i class="fas fa-gem mr-4 w-6 h-6 text-center"></i>
+                  Planos
+                <% end %>
+
+                <%= link_to edit_user_registration_path, class: "group flex items-center px-3 py-3 text-base font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-primary" do %>
+                  <i class="fas fa-user-cog mr-4 w-6 h-6 text-center"></i>
+                  Minha Conta
+                <% end %>
+
+                <div class="border-t border-gray-200 my-4"></div>
+
+                <%= button_to destroy_user_session_path, method: :delete, 
+                    class: "group flex items-center px-3 py-3 text-base font-medium text-red-600 rounded-lg hover:bg-red-50 hover:text-red-700 w-full border-0 bg-transparent cursor-pointer",
+                    form: { class: "w-full" } do %>
+                  <i class="fas fa-sign-out-alt mr-4 w-6 h-6 text-center"></i>
+                  Sair
+                <% end %>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="md:ml-64 flex-1 flex flex-col">
+          <!-- Top Header Bar -->
+          <header class="bg-white shadow-sm border-b border-gray-200 md:hidden">
+            <div class="flex items-center justify-between px-4 py-3">
+              <button id="mobile-menu-button" class="text-gray-600 hover:text-primary">
+                <i class="fas fa-bars text-xl"></i>
+              </button>
+              
+              <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 bg-gradient-primary rounded flex items-center justify-center">
+                  <i class="fas fa-chart-line text-white text-xs"></i>
+                </div>
+                <span class="text-lg font-bold text-gray-900">App do Afiliado</span>
+              </div>
+              
+              <div class="w-8"></div>
+            </div>
+          </header>
+              
+              <h1 class="text-2xl font-semibold text-gray-900">
+                <% case request.path %>
+                <% when dashboard_path %>
+                  Dashboard
+                <% when links_path %>
+                  Meus Links
+                <% when plans_path %>
+                  Planos & Preços
+                <% when new_link_path %>
+                  Criar Novo Link
+                <% else %>
+                  LinkFlow
+                <% end %>
+              </h1>
+              
+              <!-- Quick actions -->
+              <div class="flex items-center space-x-4">
+                <!-- Trial/Plan status -->
+                <% if current_user.on_trial? %>
+                  <div class="bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-1">
+                    <span class="text-xs font-medium text-yellow-800">
+                      Teste: <%= pluralize(current_user.trial_days_remaining, 'dia') %> restante(s)
+                    </span>
+                  </div>
+                <% elsif current_user.current_subscription %>
+                  <div class="bg-green-50 border border-green-200 rounded-lg px-3 py-1">
+                    <span class="text-xs font-medium text-green-800">
+                      Plano <%= current_user.current_subscription.plan.name %>
+                    </span>
+                  </div>
+                <% end %>
+
+                <!-- New Link Button -->
+                <% if request.path != new_link_path %>
+                  <%= link_to new_link_path, 
+                      class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center" do %>
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Novo Link
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </header>
+
+          <!-- Flash Messages -->
+          <% if notice %>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 mx-6 mt-4 rounded">
+              <%= notice %>
+            </div>
+          <% end %>
+
+          <% if alert %>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mx-6 mt-4 rounded">
+              <%= alert %>
+            </div>
+          <% end %>
+
+          <!-- Main content -->
+          <main class="flex-1 p-6 bg-gray-50">
+            <%= yield %>
+          </main>
+        </div>
+      </div>
+
+    <% else %>
+      <!-- Layout for non-logged users -->
+      <nav class="bg-white shadow">
+        <div class="container mx-auto px-4">
+          <div class="flex justify-between items-center py-4">
+            <div>
+              <%= link_to root_path, class: "text-xl font-bold text-gray-800" do %>
+                LinkFlow
+              <% end %>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+              <%= link_to plans_path, class: "text-gray-700 hover:text-gray-900 font-medium" do %>
+                Planos
+              <% end %>
+              
+              <%= link_to new_user_session_path, class: "text-gray-700 hover:text-gray-900" do %>
+                Entrar
+              <% end %>
+              
+              <%= link_to new_user_registration_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors" do %>
+                Criar Conta
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Flash Messages -->
+      <% if notice %>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 mx-4 mt-4">
+          <%= notice %>
+        </div>
+      <% end %>
+
+      <% if alert %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 mx-4 mt-4">
+          <%= alert %>
+        </div>
+      <% end %>
+
+      <!-- Main Content -->
+      <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <%= yield %>
+      </main>
+    <% end %>
+  </body>
+</html>

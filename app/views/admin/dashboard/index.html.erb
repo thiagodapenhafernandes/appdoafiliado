@@ -1,0 +1,185 @@
+<div class="mb-8">
+  <h1 class="text-3xl font-bold text-gray-900">Painel Administrativo</h1>
+  <p class="mt-2 text-gray-600">Visão geral do sistema Link Flow</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 bg-indigo-500 rounded-md flex items-center justify-center">
+            <span class="text-white text-sm font-semibold">👥</span>
+          </div>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Total de Usuários</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= @users_count %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
+            <span class="text-white text-sm font-semibold">📋</span>
+          </div>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Planos Ativos</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= @plans_count %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
+            <span class="text-white text-sm font-semibold">💰</span>
+          </div>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Receita Mensal</dt>
+            <dd class="text-lg font-medium text-gray-900">R$ <%= number_with_precision(@total_revenue / 100.0, precision: 2) %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white overflow-hidden shadow rounded-lg">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
+            <span class="text-white text-sm font-semibold">🔗</span>
+          </div>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">Links Ativos</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= Link.count %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Subscriptions -->
+<div class="bg-white shadow overflow-hidden sm:rounded-md">
+  <div class="px-4 py-5 sm:px-6">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">Assinaturas Recentes</h3>
+    <p class="mt-1 max-w-2xl text-sm text-gray-500">Últimas 10 assinaturas criadas no sistema</p>
+  </div>
+  
+  <% if @recent_subscriptions.any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @recent_subscriptions.each do |subscription| %>
+        <li>
+          <div class="px-4 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                    <span class="text-sm font-medium text-white">
+                      <%= subscription.user.first_name.first.upcase %>
+                    </span>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="flex items-center">
+                    <p class="text-sm font-medium text-indigo-600">
+                      <%= link_to subscription.user.full_name, admin_user_path(subscription.user) %>
+                    </p>
+                    <p class="ml-2 text-sm text-gray-500">
+                      <%= subscription.plan.name %>
+                    </p>
+                  </div>
+                  <div class="mt-1">
+                    <p class="text-sm text-gray-900">
+                      R$ <%= number_with_precision(subscription.plan.price, precision: 2) %>/mês
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                  <%= subscription.status == 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                  <%= subscription.status.humanize %>
+                </span>
+                <p class="ml-3 text-sm text-gray-500">
+                  <%= time_ago_in_words(subscription.created_at) %> atrás
+                </p>
+              </div>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="px-4 py-12 text-center">
+      <p class="text-gray-500">Nenhuma assinatura encontrada</p>
+    </div>
+  <% end %>
+</div>
+
+<!-- Quick Actions -->
+<div class="mt-8">
+  <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Ações Rápidas</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <%= link_to admin_plans_path, class: "bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow" do %>
+      <div class="flex items-center">
+        <div class="text-2xl mr-3">📋</div>
+        <div>
+          <h4 class="font-medium text-gray-900">Gerenciar Planos</h4>
+          <p class="text-sm text-gray-500">Criar e editar planos de assinatura</p>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to admin_users_path, class: "bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow" do %>
+      <div class="flex items-center">
+        <div class="text-2xl mr-3">👥</div>
+        <div>
+          <h4 class="font-medium text-gray-900">Gerenciar Usuários</h4>
+          <p class="text-sm text-gray-500">Visualizar e editar usuários</p>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to admin_settings_path, class: "bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow" do %>
+      <div class="flex items-center">
+        <div class="text-2xl mr-3">🔧</div>
+        <div>
+          <h4 class="font-medium text-gray-900">Configurações</h4>
+          <p class="text-sm text-gray-500">Configurações globais do sistema</p>
+        </div>
+      </div>
+    <% end %>
+
+    <% if current_user.super_admin? %>
+      <%= link_to admin_stripe_config_index_path, class: "bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow" do %>
+        <div class="flex items-center">
+          <div class="text-2xl mr-3">⚙️</div>
+          <div>
+            <h4 class="font-medium text-gray-900">Configurar Stripe</h4>
+            <p class="text-sm text-gray-500">Configurações de pagamento</p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

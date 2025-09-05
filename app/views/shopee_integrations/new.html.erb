@@ -1,0 +1,380 @@
+<!-- app/views/shopee_integrations/new.html.erb -->
+<div class="max-w-4xl mx-auto p-6">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Configurar Integração Shopee</h1>
+    <p class="mt-2 text-gray-600">
+      Escolha o método de integração que melhor se adapta às suas necessidades.
+    </p>
+  </div>
+
+  <!-- Integration Method Selection -->
+  <div id="method-selection" class="grid md:grid-cols-2 gap-6 mb-8">
+    <!-- Centralized Method -->
+    <% if @centralized_available %>
+      <div class="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6 relative integration-option cursor-pointer hover:border-green-300 transition-colors" data-type="centralized">
+        <div class="absolute top-4 right-4">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            Recomendado
+          </span>
+        </div>
+        
+        <div class="mb-4">
+          <h3 class="text-xl font-semibold text-gray-900">Integração Simplificada</h3>
+          <p class="text-sm text-gray-600 mt-2">Use suas credenciais Shopee existentes</p>
+        </div>
+        
+        <div class="space-y-3 text-sm text-gray-700">
+          <div class="flex items-center">
+            <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Não precisa criar aplicativo Shopee</span>
+          </div>
+          <div class="flex items-center">
+            <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Setup em poucos cliques</span>
+          </div>
+          <div class="flex items-center">
+            <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Gerenciamento automático de tokens</span>
+          </div>
+        </div>
+        
+        <div class="mt-6 text-center">
+          <span class="inline-block bg-green-600 text-white py-2 px-4 rounded-lg font-medium">
+            Usar Integração Simplificada
+          </span>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Individual Method -->
+    <div class="bg-white border-2 border-gray-200 rounded-xl p-6 integration-option cursor-pointer hover:border-blue-300 transition-colors" data-type="individual">
+      <div class="mb-4">
+        <h3 class="text-xl font-semibold text-gray-900">Aplicativo Próprio</h3>
+        <p class="text-sm text-gray-600 mt-2">Use seu próprio aplicativo Shopee</p>
+      </div>
+      
+      <div class="space-y-3 text-sm text-gray-700">
+        <div class="flex items-center">
+          <svg class="h-4 w-4 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span>Controle total sobre o aplicativo</span>
+        </div>
+        <div class="flex items-center">
+          <svg class="h-4 w-4 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span>Rate limits dedicados</span>
+        </div>
+        <div class="flex items-center">
+          <svg class="h-4 w-4 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.598 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+          </svg>
+          <span>Requer criação de aplicativo</span>
+        </div>
+      </div>
+      
+      <div class="mt-6 text-center">
+        <span class="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg font-medium">
+          Usar Aplicativo Próprio
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forms Container -->
+  <div id="forms-container">
+    <!-- Centralized Auth Form -->
+    <% if @centralized_available %>
+      <div id="centralized-form" class="integration-form hidden">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Integração Simplificada</h2>
+          
+          <%= form_with model: @integration, url: shopee_integration_path, method: :post, 
+              local: false, html: { class: "space-y-6", id: "centralized-integration-form" } do |form| %>
+            
+            <%= form.hidden_field :auth_type, value: 'centralized' %>
+            
+            <% if @integration.errors.any? %>
+              <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div class="flex">
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">
+                      <%= pluralize(@integration.errors.count, "erro") %> encontrado<%= @integration.errors.count > 1 ? "s" : "" %>:
+                    </h3>
+                    <div class="mt-2 text-sm text-red-700">
+                      <ul class="list-disc list-inside space-y-1">
+                        <% @integration.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Market Selection -->
+            <div>
+              <%= form.label :market, "Mercado *", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.select :market, 
+                  options_from_collection_for_select(@available_markets.select { |m| m[:centralized_available] }, :code, :name, @integration.market || 'BR'),
+                  { prompt: 'Selecione seu mercado' },
+                  { class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" } %>
+              <p class="mt-1 text-sm text-gray-500">
+                Escolha o mercado onde você é afiliado Shopee
+              </p>
+            </div>
+
+            <!-- Shopee User ID -->
+            <div>
+              <%= form.label :shopee_user_id, "ID do Usuário Shopee *", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_field :shopee_user_id, 
+                  class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500",
+                  placeholder: "Seu ID de usuário na Shopee" %>
+              <p class="mt-1 text-sm text-gray-500">
+                Você pode encontrar seu ID na sua conta de afiliado Shopee
+              </p>
+            </div>
+
+            <!-- Authorization Info -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 class="text-sm font-semibold text-blue-900 mb-2">Autorização OAuth</h3>
+              <p class="text-sm text-blue-700 mb-3">
+                Após salvar, você será redirecionado para autorizar o LinkFlow a acessar sua conta Shopee de forma segura.
+              </p>
+              <div class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100">
+                <svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                Processo seguro
+              </div>
+            </div>
+
+            <div class="flex justify-end space-x-4">
+              <button type="button" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors back-to-selection">
+                Voltar
+              </button>
+              <%= form.submit "Configurar Integração", 
+                  class: "px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Individual Auth Form -->
+    <div id="individual-form" class="integration-form hidden">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Configurar Aplicativo Próprio</h2>
+        
+        <!-- Instructions Card -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <h3 class="text-sm font-semibold text-blue-900 mb-2">Como obter suas credenciais:</h3>
+          <ol class="list-decimal list-inside space-y-1 text-sm text-blue-800">
+            <li>Acesse o <a href="https://open.shopee.com/" target="_blank" class="underline hover:text-blue-600">Shopee Open Platform</a></li>
+            <li>Faça login com sua conta Shopee Partner</li>
+            <li>Crie um novo aplicativo ou acesse um existente</li>
+            <li>Copie o <strong>App ID</strong> e <strong>Secret</strong> do seu aplicativo</li>
+            <li>Configure as permissões necessárias para Affiliate API</li>
+          </ol>
+        </div>
+
+        <%= form_with model: @integration, url: shopee_integration_path, method: :post, 
+            local: false, html: { class: "space-y-6", id: "individual-integration-form" } do |form| %>
+          
+          <%= form.hidden_field :auth_type, value: 'individual' %>
+          
+          <% if @integration.errors.any? %>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+              <div class="flex">
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-red-800">
+                    <%= pluralize(@integration.errors.count, "erro") %> encontrado<%= @integration.errors.count > 1 ? "s" : "" %>:
+                  </h3>
+                  <div class="mt-2 text-sm text-red-700">
+                    <ul class="list-disc list-inside space-y-1">
+                      <% @integration.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Market Selection -->
+          <div>
+            <%= form.label :market, "Mercado *", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.select :market, 
+                options_from_collection_for_select(@available_markets, :code, :name, @integration.market || 'BR'),
+                { prompt: 'Selecione seu mercado' },
+                { class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <!-- App ID Field -->
+          <div>
+            <%= form.label :app_id, "App ID *", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.text_field :app_id, 
+                class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
+                placeholder: "Digite o App ID do seu aplicativo Shopee" %>
+            <p class="mt-1 text-sm text-gray-500">
+              O App ID é fornecido pelo Shopee Open Platform quando você cria um aplicativo.
+            </p>
+          </div>
+
+          <!-- Secret Field -->
+          <div>
+            <%= form.label :secret, "Secret *", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.password_field :secret, 
+                class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500",
+                placeholder: "Digite o Secret do seu aplicativo" %>
+            <p class="mt-1 text-sm text-gray-500">
+              O Secret é usado para autenticar suas requisições à API. Mantenha-o seguro.
+            </p>
+          </div>
+
+          <!-- Active Status -->
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :active, 
+                  checked: true,
+                  class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" %>
+            </div>
+            <div class="ml-3 text-sm">
+              <%= form.label :active, "Ativar integração automaticamente", class: "font-medium text-gray-700" %>
+              <p class="text-gray-500">A integração começará a sincronizar conversões automaticamente.</p>
+            </div>
+          </div>
+
+          <!-- Test Connection Option -->
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input type="checkbox" id="test_before_save" name="test_before_save" value="1" checked
+                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="test_before_save" class="font-medium text-yellow-700">Testar conexão antes de salvar</label>
+                <p class="text-yellow-600">Recomendado: verificar se as credenciais estão corretas antes de salvar.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-4">
+            <button type="button" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors back-to-selection">
+              Voltar
+            </button>
+            <%= form.submit "Salvar Configuração", 
+                class: "px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Progress Modal -->
+<div id="progress-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Processando...</h3>
+        <p class="text-sm text-gray-600">Configurando sua integração Shopee...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const methodSelection = document.getElementById('method-selection');
+  const formsContainer = document.getElementById('forms-container');
+  const integrationOptions = document.querySelectorAll('.integration-option');
+  const integrationForms = document.querySelectorAll('.integration-form');
+  const backButtons = document.querySelectorAll('.back-to-selection');
+  const forms = document.querySelectorAll('form');
+  const modal = document.getElementById('progress-modal');
+
+  // Handle method selection
+  integrationOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      const type = this.dataset.type;
+      showForm(type);
+    });
+  });
+
+  // Handle back buttons
+  backButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      showMethodSelection();
+    });
+  });
+
+  function showForm(type) {
+    methodSelection.classList.add('hidden');
+    integrationForms.forEach(form => form.classList.add('hidden'));
+    document.getElementById(`${type}-form`).classList.remove('hidden');
+  }
+
+  function showMethodSelection() {
+    methodSelection.classList.remove('hidden');
+    integrationForms.forEach(form => form.classList.add('hidden'));
+  }
+
+  // Handle form submissions
+  forms.forEach(form => {
+    form.addEventListener('ajax:before', function(event) {
+      const testCheckbox = document.getElementById('test_before_save');
+      if (testCheckbox && testCheckbox.checked) {
+        modal.classList.remove('hidden');
+      }
+    });
+
+    form.addEventListener('ajax:complete', function() {
+      modal.classList.add('hidden');
+    });
+
+    form.addEventListener('ajax:success', function(event) {
+      const data = event.detail[0];
+      
+      if (data.success) {
+        showNotification(data.message || 'Configuração salva com sucesso!', 'success');
+        
+        setTimeout(() => {
+          window.location.href = data.redirect_url || '/shopee_integration';
+        }, 1500);
+      } else {
+        showNotification(data.message || 'Erro ao salvar configuração', 'error');
+      }
+    });
+
+    form.addEventListener('ajax:error', function(event) {
+      const data = event.detail[0];
+      showNotification(data.error || 'Erro ao processar solicitação', 'error');
+    });
+  });
+
+  function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 5000);
+  }
+});
+</script>

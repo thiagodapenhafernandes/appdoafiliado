@@ -1,0 +1,75 @@
+<div class="mb-8">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Gerenciar Usuários</h1>
+      <p class="mt-2 text-gray-600">Visualize e gerencie todos os usuários do sistema</p>
+    </div>
+  </div>
+</div>
+
+<div class="bg-white shadow overflow-hidden sm:rounded-md">
+  <% if @users.any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @users.each do |user| %>
+        <li>
+          <div class="px-4 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                    <span class="text-sm font-medium text-white">
+                      <%= user.first_name&.first&.upcase || user.email.first.upcase %>
+                    </span>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="flex items-center">
+                    <p class="text-sm font-medium text-indigo-600">
+                      <%= link_to user.full_name.present? ? user.full_name : user.email, admin_user_path(user) %>
+                    </p>
+                    <%= role_badge(user) %>
+                  </div>
+                  <div class="mt-1">
+                    <p class="text-sm text-gray-900"><%= user.email %></p>
+                    <p class="text-sm text-gray-500">
+                      <% if user.on_trial? %>
+                        Trial: <%= pluralize(user.trial_days_remaining, 'dia') %> restantes
+                      <% elsif user.current_subscription %>
+                        <%= user.current_subscription.plan.name %> - <%= subscription_status_badge(user.current_subscription) %>
+                      <% else %>
+                        Sem assinatura ativa
+                      <% end %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <p class="text-sm text-gray-500">
+                  Criado <%= time_ago_in_words(user.created_at) %> atrás
+                </p>
+                <%= link_to "Ver", admin_user_path(user),
+                    class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+                <% unless user == current_user %>
+                  <%= link_to "Editar", edit_admin_user_path(user),
+                      class: "text-indigo-600 hover:text-indigo-900 text-sm font-medium" %>
+                <% end %>
+              </div>
+            </div>
+            
+            <div class="mt-2 flex items-center text-xs text-gray-500 space-x-4">
+              <span>Links: <%= user.links.count %></span>
+              <span>Comissões: <%= user.commissions.count %></span>
+              <% if user.current_subscription %>
+                <span>Receita: R$ <%= number_with_precision(user.current_subscription.plan.price, precision: 2) %>/mês</span>
+              <% end %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="px-4 py-12 text-center">
+      <p class="text-gray-500">Nenhum usuário encontrado</p>
+    </div>
+  <% end %>
+</div>
