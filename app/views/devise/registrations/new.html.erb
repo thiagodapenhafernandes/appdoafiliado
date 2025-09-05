@@ -1,8 +1,26 @@
 <div class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" style="min-height: 100vh;">
   <div class="max-w-2xl mx-auto space-y-8">
     <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Criar sua conta
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray    console.log('Construtor StripeRegistration chamado');
+    
+    // Aguardar um pouco para o DOM estar completamente pronto
+    setTimeout(() => {
+      this.init();
+    }, 100);
+  }
+  
+  init() {
+    console.log('Método init() chamado');
+    
+    // Aguardar DOM estar pronto
+    if (document.readyState === 'loading') {
+      console.log('DOM ainda carregando, aguardando...');
+      document.addEventListener('DOMContentLoaded', () => this.setup());
+    } else {
+      console.log('DOM já carregado, iniciando setup...');
+      this.setup();
+    }
+  } sua conta
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600">
         Ou
@@ -220,17 +238,17 @@ class StripeRegistration {
   }
   
   setup() {
-    console.log('📄 Setup iniciado - DOM ready');
+    console.log('Setup iniciado - DOM ready');
     
     // Verificar elementos essenciais
     this.form = document.getElementById('registration-form');
     this.submitButton = document.getElementById('submit-button');
     
-    console.log('🔍 Form encontrado:', !!this.form);
-    console.log('🔍 Submit button encontrado:', !!this.submitButton);
+    console.log('Form encontrado:', !!this.form);
+    console.log('Submit button encontrado:', !!this.submitButton);
     
     if (!this.form || !this.submitButton) {
-      console.error('❌ Elementos essenciais não encontrados');
+      console.error('Elementos essenciais não encontrados');
       console.log('- Form element:', this.form);
       console.log('- Submit button:', this.submitButton);
       return;
@@ -241,25 +259,25 @@ class StripeRegistration {
   }
   
   waitForStripe() {
-    console.log('⏳ Aguardando Stripe carregar...');
+    console.log('Aguardando Stripe carregar...');
     
     let attempts = 0;
     const maxAttempts = 50; // 5 segundos
     
     const checkStripe = () => {
       attempts++;
-      console.log('🔍 Tentativa ' + attempts + ': typeof Stripe =', typeof Stripe);
+      console.log('Tentativa ' + attempts + ': typeof Stripe =', typeof Stripe);
       
       if (typeof Stripe !== 'undefined') {
-        console.log('✅ Stripe.js finalmente carregado!');
+        console.log('Stripe.js finalmente carregado!');
         this.initializeStripe();
         this.setupEventListeners();
         this.setupPlanSelection();
       } else if (attempts < maxAttempts) {
-        console.log('⏳ Stripe ainda não carregou, tentativa ' + attempts + '/' + maxAttempts + '...');
+        console.log('Stripe ainda não carregou, tentativa ' + attempts + '/' + maxAttempts + '...');
         setTimeout(checkStripe, 100);
       } else {
-        console.error('❌ Timeout aguardando Stripe carregar após 5 segundos');
+        console.error('Timeout aguardando Stripe carregar após 5 segundos');
         this.handleStripeUnavailable();
       }
     };
@@ -402,7 +420,14 @@ class StripeRegistration {
         if (errorElement) {
           errorElement.textContent = event.error ? event.error.message : '';
         }
-        console.log('🎫 Status do cartão:', event.complete ? 'válido' : 'incompleto');
+        console.log('Status do cartao:', event.complete ? 'valido' : 'incompleto');
+      });
+      
+      this.cardElement.on('focus', () => {
+        const errorElement = document.getElementById('card-errors');
+        if (errorElement) {
+          errorElement.textContent = '';
+        }
       });
       
     } catch (error) {
@@ -422,18 +447,6 @@ class StripeRegistration {
       console.error('❌ Botão de submit não encontrado para habilitar');
     }
   }
-        this.cardElement.on('focus', () => {
-          const errorElement = document.getElementById('card-errors');
-          if (errorElement) {
-            errorElement.textContent = '';
-          }
-        });
-      }
-      
-    } catch (error) {
-      console.error('❌ Erro ao inicializar Stripe:', error);
-      this.showError('Erro ao carregar sistema de pagamento');
-    }
   }
   
   setupEventListeners() {
