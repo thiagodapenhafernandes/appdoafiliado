@@ -248,7 +248,7 @@ class StripeRegistration {
     
     const checkStripe = () => {
       attempts++;
-      console.log(`🔍 Tentativa ${attempts}: typeof Stripe =`, typeof Stripe);
+      console.log('🔍 Tentativa ' + attempts + ': typeof Stripe =', typeof Stripe);
       
       if (typeof Stripe !== 'undefined') {
         console.log('✅ Stripe.js finalmente carregado!');
@@ -256,7 +256,7 @@ class StripeRegistration {
         this.setupEventListeners();
         this.setupPlanSelection();
       } else if (attempts < maxAttempts) {
-        console.log(`⏳ Stripe ainda não carregou, tentativa ${attempts}/${maxAttempts}...`);
+        console.log('⏳ Stripe ainda não carregou, tentativa ' + attempts + '/' + maxAttempts + '...');
         setTimeout(checkStripe, 100);
       } else {
         console.error('❌ Timeout aguardando Stripe carregar após 5 segundos');
@@ -485,11 +485,11 @@ class StripeRegistration {
     
     // Validar campos básicos
     for (const field of fields) {
-      const element = document.querySelector(`[name="${field.name}"]`);
+      const element = document.querySelector('[name="' + field.name + '"]');
       const value = element ? element.value.trim() : '';
       
       if (field.required && !value) {
-        this.showFieldError(`${field.label} é obrigatório`, element);
+        this.showFieldError(field.label + ' é obrigatório', element);
         return false;
       }
       
@@ -499,7 +499,7 @@ class StripeRegistration {
       }
       
       if (field.minLength && value.length < field.minLength) {
-        this.showFieldError(`${field.label} deve ter pelo menos ${field.minLength} caracteres`, element);
+        this.showFieldError(field.label + ' deve ter pelo menos ' + field.minLength + ' caracteres', element);
         return false;
       }
     }
@@ -529,7 +529,7 @@ class StripeRegistration {
     const email = document.querySelector('[name="user[email]"]').value.trim();
     
     return {
-      name: `${firstName} ${lastName}`,
+      name: firstName + ' ' + lastName,
       email: email,
     };
   }
