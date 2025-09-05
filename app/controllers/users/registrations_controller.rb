@@ -29,6 +29,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # Verificar se pagamento é obrigatório (configurável)
     payment_required = Setting.payment_required?
     simple_signup_allowed = Setting.allow_simple_signup?
+    stripe_unavailable = params[:stripe_unavailable] == 'true'
+    
+    # Se Stripe não estiver disponível em produção, permitir cadastro simples temporariamente
+    if stripe_unavailable && payment_required
+      Rails.logger.warn "Stripe unavailable for user #{resource.email}, allowing temporary simple signup"
+      simple_signup_allowed = true
+      payment_required = false
+    end
     
     if payment_required && params[:payment_method_id].blank? && !simple_signup_allowed
       resource.errors.add(:base, "Método de pagamento é obrigatório")
@@ -119,7 +127,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
           Rails.logger.info "Creating simple signup for user #{resource.email}"
           trial_days = Setting.trial_days
           resource.update!(trial_ends_at: trial_days.days.from_now)
-          set_flash_message! :notice, "Conta criada com sucesso! Você tem #{trial_days} dias de teste grátis."
+          
+          if stripe_unavailable
+            # Marcar usuário para configurar pagamento depois
+            resource.update!(stripe_setup_needed: true)
+            set_flash_message! :notice, "Conta criada com sucesso! Sistema de pagamento temporariamente indisponível. Você pode configurar o pagamento depois no seu painel. Teste grátis de #{trial_days} dias ativo."
+          else
+            set_flash_message! :notice, "Conta criada com sucesso! Você tem #{trial_days} dias de teste grátis."
+          end
+          
           sign_up(resource_name, resource)
           respond_with resource, location: after_sign_up_path_for(resource)
         else

@@ -271,10 +271,39 @@ class StripeRegistration {
   handleStripeUnavailable() {
     console.error('❌ Stripe não disponível');
     
-    // Em modo de desenvolvimento, permitir cadastro sem Stripe para debug
-    const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    // Verificar se estamos em ambiente de produção ou desenvolvimento
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
     
-    if (isDevelopment) {
+    if (isProduction) {
+      console.log('🌐 Ambiente de produção: Implementando fallback para Stripe indisponível');
+      
+      // Em produção, vamos permitir o cadastro mas alertar que o pagamento será configurado depois
+      this.enableSubmitButtonWithFallback();
+      this.updateStatus(false);
+      
+      // Alterar o comportamento do formulário para permitir cadastro sem Stripe
+      if (this.form) {
+        this.form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          console.log('🌐 Produção: Submetendo formulário sem validação Stripe');
+          
+          // Validar campos básicos
+          if (!this.validateForm()) {
+            return;
+          }
+          
+          // Adicionar flag indicando que o Stripe não estava disponível
+          const stripeUnavailableInput = document.createElement('input');
+          stripeUnavailableInput.type = 'hidden';
+          stripeUnavailableInput.name = 'stripe_unavailable';
+          stripeUnavailableInput.value = 'true';
+          this.form.appendChild(stripeUnavailableInput);
+          
+          // Submeter formulário
+          this.form.submit();
+        });
+      }
+    } else {
       console.log('🚧 Modo desenvolvimento: Habilitando cadastro sem Stripe para debug');
       this.enableSubmitButtonWithWarning();
       this.updateStatus(false);
@@ -283,18 +312,20 @@ class StripeRegistration {
       if (this.form) {
         this.form.addEventListener('submit', (e) => {
           console.log('🚧 Debug: Formulário submetido sem Stripe');
-          alert('⚠️ MODO DEBUG: Stripe não disponível. Em produção isso não funcionaria.');
+          alert('⚠️ MODO DEBUG: Stripe não disponível. Em produção isso seria tratado diferentemente.');
         });
       }
-    } else {
-      this.showError('Sistema de pagamento não disponível. Verifique sua conexão e recarregue a página.');
-      this.updateStatus(false);
-      
-      if (this.submitButton) {
-        this.submitButton.disabled = true;
-        this.submitButton.style.opacity = '0.5';
-        this.submitButton.value = 'Sistema de pagamento indisponível';
-      }
+    }
+  }
+  
+  enableSubmitButtonWithFallback() {
+    if (this.submitButton) {
+      this.submitButton.disabled = false;
+      this.submitButton.style.opacity = '1';
+      this.submitButton.style.cursor = 'pointer';
+      this.submitButton.style.backgroundColor = '#f59e0b'; // Amber color for fallback
+      this.submitButton.value = 'Criar conta (Pagamento será configurado depois)';
+      console.log('🌐 Botão habilitado em modo fallback');
     }
   }
   
@@ -494,7 +525,7 @@ class StripeRegistration {
       }
       
       if (field.type === 'email' && value && !this.isValidEmail(value)) {
-        this.showFieldError('Email deve ter um formato válido', element);
+        this.showFieldError('Email deve ter um formato valido', element);
         return false;
       }
       

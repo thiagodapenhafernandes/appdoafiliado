@@ -4,12 +4,12 @@ require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm'
 
-set :application_name, 'brokers360graus'
-set :domain, '67.205.173.95' #'brokers360graus.com.br'
-set :deploy_to, '/home/brokers360graus.com.br/deploy'
-set :repository, 'git@bitbucket.org:thiago_pfernandes/brokers360graus.git'
+set :application_name, 'appdoafiliado'
+set :domain, '167.99.5.194' #'appdoafiliado.com.br'
+set :deploy_to, '/home/appdoafiliado.com.br/deploy'
+set :repository, 'git@bitbucket.org:thiago_pfernandes/appdoafiliado.git'
 set :branch, 'master'
-set :user, 'brokers360graus.com.br'
+set :user, 'appdoafiliado.com.br'
 set :rails_env, 'production'
 
 set :term_mode, :nil
@@ -25,7 +25,7 @@ set :shared_files, fetch(:shared_files, []).push('config/database.yml',
 set :shared_dirs, fetch(:shared_dirs, []).push('public/uploads')
 
 task :remote_environment do
-  invoke :'rvm:use', 'ruby-3.3.5@brokers360graus'
+  invoke :'rvm:use', 'ruby-3.3.5@app.appdoafiliado'
 end
 
 task :setup do
@@ -65,8 +65,8 @@ end
 
 # Diretórios úteis
 set :pids_path, "#{fetch(:shared_path)}/tmp/pids"
-set :puma_state, "#{fetch(:pids_path)}/brokers360graus.com.br.state"
-set :puma_pid,   "#{fetch(:pids_path)}/brokers360graus.com.br.pid"
+set :puma_state, "#{fetch(:pids_path)}/appdoafiliado.com.br.state"
+set :puma_pid,   "#{fetch(:pids_path)}/appdoafiliado.com.br.pid"
 
 desc "Start Puma"
 task :start do
