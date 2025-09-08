@@ -1,6 +1,7 @@
 # Comandos disponíveis:
-# mina deploy          # faz deploy da versão atual
+# mina deploy          # faz deploy da versão atual (inclui update do symlink rails)
 # mina setup           # configura diretórios e arquivos iniciais no servidor
+# mina update_rails_symlink # atualiza o symlink /home/appdoafiliado.com.br/rails
 # mina start           # inicia o Puma
 # mina stop            # para o Puma via pumactl
 # mina restart         # reinicia o Puma via pumactl
@@ -60,6 +61,20 @@ task :setup do
   command %[touch "#{fetch(:shared_path)}/config/secrets.yml"]
   command %[touch "#{fetch(:shared_path)}/.env"]
   command  %[echo "-----> Be sure to edit shared files: database.yml, .env, and secrets.yml"]
+  
+  # Create the rails symlink for nginx
+  command %[echo "-----> Creating Rails symlink for Nginx..."]
+  command %[rm -f /home/appdoafiliado.com.br/rails]
+  command %[ln -sf "#{fetch(:current_path)}" /home/appdoafiliado.com.br/rails]
+  command %[echo "-----> Rails symlink created: /home/appdoafiliado.com.br/rails -> #{fetch(:current_path)}"]
+end
+
+desc "Update Rails symlink for Nginx"
+task :update_rails_symlink do
+  command %[echo "-----> Updating Rails symlink for Nginx..."]
+  command %[rm -f /home/appdoafiliado.com.br/rails]
+  command %[ln -sf "#{fetch(:current_path)}" /home/appdoafiliado.com.br/rails]
+  command %[echo "-----> Rails symlink updated: /home/appdoafiliado.com.br/rails -> #{fetch(:current_path)}"]
 end
 
 desc "Deploys the current version to the server."
@@ -71,6 +86,7 @@ task :deploy do
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
+    invoke :'update_rails_symlink'
     # invoke :'stop'
     # invoke :'start'
     # invoke :'restart_nginx'    
