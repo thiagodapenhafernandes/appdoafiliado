@@ -2,6 +2,9 @@
 # are invoked here are part of Puma's configuration DSL. For more information
 # about methods provided by the DSL, see https://puma.io/puma/Puma/DSL.html.
 
+# Require daemon mode for production
+require 'puma/daemon' if ENV.fetch("RAILS_ENV") { "development" } == "production"
+
 # Puma can serve each request in a thread from an internal thread pool.
 # The `threads` method setting takes two numbers: a minimum and maximum.
 # Any libraries that use thread pools should be configured to match
@@ -31,8 +34,13 @@ end
 # terminating a worker in development environments.
 worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
-# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-port ENV.fetch("PORT") { 3000 }
+# Specifies the `port` that Puma will listen on to receive requests
+if rails_env == "production"
+  bind "tcp://127.0.0.1:9292"
+  daemonize true
+else
+  port ENV.fetch("PORT") { 3000 }
+end
 
 # Specifies the `environment` that Puma will run in.
 environment rails_env
