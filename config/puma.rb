@@ -14,7 +14,6 @@ tmp_dir = "#{app_dir}/tmp"
 
 if rails_env == "production"
   bind "tcp://127.0.0.1:9292"
-  daemonize true
 else
   port ENV.fetch("PORT", 3000)
 end
