@@ -101,6 +101,43 @@ class AnalyticsController < ApplicationController
               disposition: 'attachment'
   end
 
+  def update_ad_spend
+    # Verificar se o usuário tem acesso aos analytics
+    return render json: { success: false, error: 'Access denied' }, status: 403 unless current_user.can_access_advanced_analytics?
+    
+    subid = params[:subid] == 'Não informado' ? nil : params[:subid]
+    ad_spend = params[:ad_spend].to_f
+
+    # Buscar ou criar o registro de gasto com ads para este SubID
+    ad_spend_record = current_user.subid_ad_spends.find_or_initialize_by(subid: subid)
+    ad_spend_record.ad_spend = ad_spend
+    ad_spend_record.period_start = Date.current.beginning_of_month
+    ad_spend_record.period_end = Date.current.end_of_month
+
+    if ad_spend_record.save
+      # Recalcular métricas para resposta
+      @commissions = current_user.all_commissions_unified.where.not(order_status: 'cancelled')
+      scope = subid.present? ? @commissions.where(sub_id1: subid) : @commissions.where(sub_id1: [nil, ''])
+      
+      commission_value = scope.sum(:affiliate_commission) || 0
+      orders_count = scope.count
+      roi = ad_spend > 0 ? ((commission_value.to_f - ad_spend) / ad_spend * 100) : 0
+      cpa = orders_count > 0 && ad_spend > 0 ? (ad_spend / orders_count) : 0
+
+      render json: {
+        success: true,
+        ad_spend: ad_spend,
+        roi: roi,
+        cpa: cpa,
+        formatted_ad_spend: ActionController::Base.helpers.number_with_precision(ad_spend, precision: 2, delimiter: '.', separator: ','),
+        formatted_roi: ActionController::Base.helpers.number_with_precision(roi, precision: 1),
+        formatted_cpa: ActionController::Base.helpers.number_with_precision(cpa, precision: 2, delimiter: '.', separator: ',')
+      }
+    else
+      render json: { success: false, errors: ad_spend_record.errors.full_messages }, status: 422
+    end
+  end
+
   private
 
   def calculate_date_range(range)
@@ -197,12 +234,6 @@ class AnalyticsController < ApplicationController
                          SUM(purchase_value) as total_sales')
                 .order('total_commission DESC')
                 .limit(20)
-  end
-
-  def daily_performance_evolution
-    @commissions.group_by_day(:order_date)
-                .group(:channel)
-                .sum(:affiliate_commission)
   end
 
   def conversion_funnel_data
@@ -501,7 +532,6 @@ class AnalyticsController < ApplicationController
   def daily_performance_evolution
     # Agrupar comissões por data usando ActiveRecord
     daily_data = @commissions.group_by_day(:order_date)
-                            .group(:order_date)
                             .sum(:affiliate_commission)
     
     result = []

@@ -39,7 +39,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
     
     if payment_required && params[:payment_method_id].blank? && !simple_signup_allowed
-      resource.errors.add(:base, "Método de pagamento é obrigatório")
+      resource.errors.add(:base, I18n.t('registrations.payment_method_required'))
       clean_up_passwords resource
       set_minimum_password_length
       respond_with resource
@@ -58,7 +58,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           begin
             payment_method_id = params[:payment_method_id]
             create_stripe_subscription_with_trial(resource, @selected_plan, payment_method_id)
-            set_flash_message! :notice, "Conta criada com sucesso! Sua assinatura está ativa com #{Setting.trial_days} dias de teste grátis."
+            set_flash_message! :notice, :signed_up_with_stripe_trial, trial_days: Setting.trial_days
             sign_up(resource_name, resource)
             respond_with resource, location: after_sign_up_path_for(resource)
           rescue Stripe::CardError => e
@@ -67,47 +67,47 @@ class Users::RegistrationsController < Devise::RegistrationsController
             resource.destroy
             case e.code
             when 'card_declined'
-              flash[:alert] = "Cartão recusado. Verifique os dados ou tente outro cartão."
+            flash[:alert] = I18n.t('stripe_errors.card_declined')
             when 'expired_card'
-              flash[:alert] = "Cartão expirado. Use um cartão válido."
+              flash[:alert] = I18n.t('stripe_errors.expired_card')
             when 'incorrect_cvc'
-              flash[:alert] = "Código de segurança incorreto."
+              flash[:alert] = I18n.t('stripe_errors.incorrect_cvc')
             when 'insufficient_funds'
-              flash[:alert] = "Fundos insuficientes no cartão."
+              flash[:alert] = I18n.t('stripe_errors.insufficient_funds')
             else
-              flash[:alert] = "Erro no cartão: #{e.user_message || e.message}"
+              flash[:alert] = I18n.t('stripe_errors.generic_error')
             end
             redirect_to new_user_registration_path(plan: @selected_plan.id)
           rescue Stripe::RateLimitError => e
             Rails.logger.error "Stripe rate limit for #{resource.email}: #{e.message}"
             resource.destroy
-            flash[:alert] = "Muitas tentativas. Tente novamente em alguns minutos."
+            flash[:alert] = I18n.t('stripe_errors.rate_limit')
             redirect_to new_user_registration_path(plan: @selected_plan.id)
           rescue Stripe::InvalidRequestError => e
             Rails.logger.error "Stripe invalid request for #{resource.email}: #{e.message}"
             resource.destroy
-            flash[:alert] = "Dados inválidos. Verifique as informações e tente novamente."
+            flash[:alert] = I18n.t('stripe_errors.invalid_request')
             redirect_to new_user_registration_path(plan: @selected_plan.id)
           rescue Stripe::AuthenticationError => e
             Rails.logger.error "Stripe auth error for #{resource.email}: #{e.message}"
             resource.destroy
-            flash[:alert] = "Erro de configuração do sistema. Entre em contato conosco."
+            flash[:alert] = I18n.t('stripe_errors.authentication_error')
             redirect_to new_user_registration_path(plan: @selected_plan.id)
           rescue Stripe::APIConnectionError => e
             Rails.logger.error "Stripe connection error for #{resource.email}: #{e.message}"
             resource.destroy
             if simple_signup_allowed
-              flash[:alert] = "Problema de conexão com sistema de pagamento. Tente o cadastro simples."
+              flash[:alert] = I18n.t('stripe_errors.connection_error_simple')
               redirect_to new_user_registration_path(plan: @selected_plan.id, simple: true)
             else
-              flash[:alert] = "Problema de conexão com sistema de pagamento. Verifique sua internet e tente novamente."
+              flash[:alert] = I18n.t('stripe_errors.connection_error')
               redirect_to new_user_registration_path(plan: @selected_plan.id)
             end
           rescue Stripe::StripeError => e
             # Handle other Stripe errors
             Rails.logger.error "Generic Stripe error for #{resource.email}: #{e.message}"
             resource.destroy
-            flash[:alert] = "Erro no sistema de pagamento. Tente novamente em alguns minutos."
+            flash[:alert] = I18n.t('stripe_errors.generic_error')
             redirect_to new_user_registration_path(plan: @selected_plan.id)
           rescue => e
             # Handle any other errors
@@ -115,10 +115,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
             Rails.logger.error e.backtrace.join("\n")
             resource.destroy
             if simple_signup_allowed
-              flash[:alert] = "Erro inesperado. Tente o cadastro simples ou entre em contato conosco."
+              flash[:alert] = I18n.t('stripe_errors.unexpected_error_simple')
               redirect_to new_user_registration_path(plan: @selected_plan.id, simple: true)
             else
-              flash[:alert] = "Erro inesperado. Tente novamente ou entre em contato conosco."
+              flash[:alert] = I18n.t('stripe_errors.unexpected_error')
               redirect_to new_user_registration_path(plan: @selected_plan.id)
             end
           end
@@ -131,9 +131,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
           if stripe_unavailable
             # Marcar usuário para configurar pagamento depois
             resource.update!(stripe_setup_needed: true)
-            set_flash_message! :notice, "Conta criada com sucesso! Sistema de pagamento temporariamente indisponível. Você pode configurar o pagamento depois no seu painel. Teste grátis de #{trial_days} dias ativo."
+            set_flash_message! :notice, :signed_up_with_stripe_unavailable, trial_days: trial_days
           else
-            set_flash_message! :notice, "Conta criada com sucesso! Você tem #{trial_days} dias de teste grátis."
+            set_flash_message! :notice, :signed_up_with_trial, trial_days: trial_days
           end
           
           sign_up(resource_name, resource)
@@ -141,7 +141,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         else
           # Nenhuma opção válida
           resource.destroy
-          flash[:alert] = "Método de pagamento é obrigatório para criar uma conta."
+          flash[:alert] = I18n.t('registrations.payment_method_required_to_create')
           redirect_to new_user_registration_path(plan: @selected_plan.id)
         end
       else

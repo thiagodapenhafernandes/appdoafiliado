@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Flow - Demo para Vídeo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .animate-pulse-light { animation: pulse 4s ease-in-out infinite; }
+        .ai-glow { 
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+            to { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+        }
+        /* Reduzir uso de CPU com menos animações */
+        .animate-bounce-slow { animation: bounce 4s infinite; }
+        
+        /* Controle específico do gráfico */
+        .chart-container {
+            position: relative;
+            height: 250px !important;
+            max-height: 250px !important;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .chart-container canvas {
+            max-height: 250px !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">Link Flow</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                        <i class="fas fa-robot mr-1"></i> IA Ativa
+                    </div>
+                    <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Alert de IA -->
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-4 mb-6 text-white ai-glow">
+            <div class="flex items-center">
+                <i class="fas fa-brain text-2xl mr-3"></i>
+                <div>
+                    <h3 class="font-bold">🚨 Oportunidade Detectada pela IA!</h3>
+                    <p class="text-blue-100">Produtos de "Casa e Jardim" vão explodir em 48h. Sugerimos aumentar investimento em 300%.</p>
+                </div>
+                <button class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded ml-auto">
+                    Aplicar Sugestão
+                </button>
+            </div>
+        </div>
+
+        <!-- Métricas Principais -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i class="fas fa-dollar-sign text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Comissões Hoje</p>
+                        <p class="text-2xl font-bold text-gray-900" data-animate="revenue" data-base-value="2847.90">R$ 2.847,90</p>
+                        <p class="text-sm text-green-600">+340% vs ontem</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i class="fas fa-mouse-pointer text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Cliques Hoje</p>
+                        <p class="text-2xl font-bold text-gray-900" data-animate="clicks" data-base-value="8234">8.234</p>
+                        <p class="text-sm text-blue-600">+89% vs ontem</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                        <i class="fas fa-percentage text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Taxa de Conversão</p>
+                        <p class="text-2xl font-bold text-gray-900">12.7%</p>
+                        <p class="text-sm text-purple-600">+5.2% vs média</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+                        <i class="fas fa-chart-line text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">ROI Médio</p>
+                        <p class="text-2xl font-bold text-gray-900">487%</p>
+                        <p class="text-sm text-orange-600">+156% vs média</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Previsões da IA -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-crystal-ball text-purple-600 mr-2"></i>
+                    Previsões IA - Próximas 72h
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-green-800">Casa e Jardim</p>
+                            <p class="text-sm text-green-600">Explosão prevista em 48h</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-green-800 font-bold">↗ +450%</p>
+                            <button class="text-xs bg-green-600 text-white px-2 py-1 rounded">INVESTIR</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-blue-800">Eletrônicos</p>
+                            <p class="text-sm text-blue-600">Crescimento sustentado</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-blue-800 font-bold">↗ +125%</p>
+                            <button class="text-xs bg-blue-600 text-white px-2 py-1 rounded">MANTER</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-red-800">Moda Verão</p>
+                            <p class="text-sm text-red-600">Queda esperada</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-red-800 font-bold">↘ -67%</p>
+                            <button class="text-xs bg-red-600 text-white px-2 py-1 rounded">PAUSAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico de Performance -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+                    Performance em Tempo Real
+                </h3>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links Inteligentes -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="p-6 border-b">
+                <h3 class="text-lg font-bold text-gray-900">
+                    <i class="fas fa-link text-blue-600 mr-2"></i>
+                    Links Inteligentes - Otimizados por IA
+                </h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Link</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status IA</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cliques</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Conversões</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Comissão</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-home text-green-600 mr-2"></i>
+                                    <span class="font-medium">Casa Inteligente Kit</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs animate-bounce-slow">
+                                    🤖 AUTO-OTIMIZADO
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 font-medium">2.847</td>
+                            <td class="px-6 py-4 font-medium text-green-600">367 (12.9%)</td>
+                            <td class="px-6 py-4 font-bold text-green-600">R$ 1.234,56</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-mobile-alt text-blue-600 mr-2"></i>
+                                    <span class="font-medium">Smartphone Galaxy Pro</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                                    🎯 OTIMIZANDO
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 font-medium">1.923</td>
+                            <td class="px-6 py-4 font-medium text-blue-600">245 (12.7%)</td>
+                            <td class="px-6 py-4 font-bold text-blue-600">R$ 892,30</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-tshirt text-orange-600 mr-2"></i>
+                                    <span class="font-medium">Conjunto Fitness Premium</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs">
+                                    ⚠️ PAUSAR EM 2H
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 font-medium">856</td>
+                            <td class="px-6 py-4 font-medium text-orange-600">67 (7.8%)</td>
+                            <td class="px-6 py-4 font-bold text-orange-600">R$ 234,70</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Insights da IA -->
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-6 text-white">
+            <h3 class="text-xl font-bold mb-4">
+                <i class="fas fa-lightbulb mr-2"></i>
+                Insights Exclusivos da IA
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white/10 rounded-lg p-4">
+                    <h4 class="font-bold mb-2">🎯 Melhor Horário</h4>
+                    <p class="text-sm">Publique entre 14h-16h para +89% de engajamento</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4">
+                    <h4 class="font-bold mb-2">💰 Nicho em Alta</h4>
+                    <p class="text-sm">"Smart Home" crescendo 340% nos últimos 7 dias</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4">
+                    <h4 class="font-bold mb-2">📱 Dispositivo Top</h4>
+                    <p class="text-sm">67% das conversões vêm de mobile (otimize mobile-first)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gráfico de Performance - Otimizado
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        
+        // Configuração otimizada para performance
+        Chart.defaults.font.size = 12;
+        Chart.defaults.animation.duration = 1000; // Reduzir duração da animação
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+        
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                datasets: [{
+                    label: 'Comissões (R$)',
+                    data: [120, 190, 450, 890, 1200, 1847],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                }, {
+                    label: 'Previsão IA',
+                    data: [null, null, null, null, null, 1847, 2400, 3200],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    borderDash: [5, 5],
+                    tension: 0.4,
+                    pointRadius: 2,
+                    pointHoverRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Crucial para controlar altura
+                aspectRatio: 2, // Proporção width/height
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                layout: {
+                    padding: {
+                        top: 10,
+                        bottom: 10
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 15
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 3500, // Limitar altura máxima
+                        ticks: {
+                            maxTicksLimit: 5,
+                            callback: function(value) {
+                                return 'R$ ' + value;
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxTicksLimit: 6
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                elements: {
+                    line: {
+                        borderWidth: 2
+                    }
+                }
+            }
+        });
+        
+        // Forçar redimensionamento correto do gráfico
+        setTimeout(() => {
+            chart.resize();
+            const canvas = document.getElementById('performanceChart');
+            canvas.style.maxHeight = '250px';
+            canvas.style.height = '250px';
+        }, 100);
+
+        // Animações controladas com limite de execuções
+        let animationCount = 0;
+        const maxAnimations = 10; // Máximo 10 animações (30 segundos)
+        let animationInterval;
+        let isPageVisible = true;
+        
+        // Pausar animações quando página não estiver visível
+        document.addEventListener('visibilitychange', function() {
+            isPageVisible = !document.hidden;
+            if (!isPageVisible && animationInterval) {
+                clearInterval(animationInterval);
+            } else if (isPageVisible && animationCount < maxAnimations) {
+                startAnimations();
+            }
+        });
+        
+        function startAnimations() {
+            if (animationInterval) clearInterval(animationInterval);
+            
+            animationInterval = setInterval(() => {
+                if (animationCount >= maxAnimations || !isPageVisible) {
+                    clearInterval(animationInterval);
+                    return;
+                }
+                
+                // Cache dos elementos para evitar busca repetitiva
+                const revenueElements = document.querySelectorAll('[data-animate="revenue"]');
+                const clickElements = document.querySelectorAll('[data-animate="clicks"]');
+                
+                // Atualizar apenas elementos específicos
+                revenueElements.forEach(el => {
+                    const baseValue = parseFloat(el.dataset.baseValue || '2847.90');
+                    const variation = (Math.random() - 0.5) * 200; // ±100
+                    const newValue = Math.max(0, baseValue + variation);
+                    el.textContent = 'R$ ' + newValue.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                });
+                
+                clickElements.forEach(el => {
+                    const baseValue = parseInt(el.dataset.baseValue || '8234');
+                    const variation = Math.floor((Math.random() - 0.5) * 1000); // ±500
+                    const newValue = Math.max(0, baseValue + variation);
+                    el.textContent = newValue.toLocaleString('pt-BR');
+                });
+                
+                animationCount++;
+            }, 3000);
+        }
+        
+        // Iniciar animações
+        startAnimations();
+        
+        // Cleanup quando a página for fechada
+        window.addEventListener('beforeunload', function() {
+            if (animationInterval) {
+                clearInterval(animationInterval);
+            }
+            if (chart) {
+                chart.destroy();
+            }
+        });
+    </script>
+</body>
+</html>

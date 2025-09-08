@@ -5,7 +5,7 @@
 # Create Super Admin User
 puts "Creating super admin user..."
 
-super_admin = User.find_or_create_by(email: 'admin@linkflow.com') do |user|
+super_admin = User.find_or_create_by(email: 'admin@unitymob.com.br') do |user|
   user.first_name = 'Super'
   user.last_name = 'Admin'
   user.password = 'admin123'

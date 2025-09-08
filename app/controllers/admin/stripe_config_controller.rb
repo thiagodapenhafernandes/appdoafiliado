@@ -8,6 +8,7 @@ class Admin::StripeConfigController < Admin::BaseController
     }
     @products = fetch_stripe_products
     @webhooks = fetch_stripe_webhooks
+    @subscriptions = fetch_recent_subscriptions
   end
 
   def update_config
@@ -130,5 +131,33 @@ class Admin::StripeConfigController < Admin::BaseController
 
   def stripe_configured?
     ENV['STRIPE_SECRET_KEY'].present?
+  end
+
+  def fetch_recent_subscriptions
+    return [] unless stripe_configured?
+    
+    begin
+      subscriptions = Stripe::Subscription.list(
+        limit: 20,
+        status: 'all',
+        expand: ['data.customer', 'data.items.data.price.product']
+      )
+      
+      subscriptions.data.map do |sub|
+        {
+          id: sub.id,
+          customer_email: sub.customer.email,
+          status: sub.status,
+          trial_end: sub.trial_end ? Time.at(sub.trial_end) : nil,
+          current_period_end: Time.at(sub.current_period_end),
+          plan_name: sub.items.data.first&.price&.product&.name,
+          amount: sub.items.data.first&.price&.unit_amount,
+          metadata: sub.metadata
+        }
+      end
+    rescue Stripe::StripeError => e
+      Rails.logger.error "Erro ao buscar subscriptions Stripe: #{e.message}"
+      []
+    end
   end
 end

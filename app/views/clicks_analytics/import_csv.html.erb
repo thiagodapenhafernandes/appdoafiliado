@@ -1,0 +1,120 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Importar CSV de Cliques</h1>
+          <p class="text-gray-600">Faça upload do relatório de cliques da Shopee para análise detalhada</p>
+        </div>
+        <%= link_to clicks_analytics_path, class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors" do %>
+          ← Voltar para Analytics
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <% if flash[:success] %>
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+        <%= flash[:success] %>
+      </div>
+    <% end %>
+
+    <% if flash[:error] %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
+
+    <% if flash[:warning] %>
+      <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+        <%= flash[:warning] %>
+        <% if flash[:errors] %>
+          <details class="mt-2">
+            <summary class="cursor-pointer font-semibold">Ver erros (clique para expandir)</summary>
+            <ul class="mt-2 ml-4 list-disc">
+              <% flash[:errors].each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </details>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Upload Form -->
+    <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-8">
+      <%= form_with url: clicks_analytics_import_csv_path, multipart: true, local: true, class: "space-y-6" do |f| %>
+        <!-- File Upload Area -->
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+          <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="mt-4">
+            <%= f.file_field :csv_file, 
+                accept: ".csv", 
+                required: true,
+                class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" %>
+            <p class="mt-2 text-sm text-gray-500">
+              Selecione o arquivo CSV de cliques da Shopee
+            </p>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <%= f.submit "📤 Importar Dados de Cliques", 
+              class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Instructions -->
+    <div class="bg-blue-50 rounded-lg p-6 border border-blue-200">
+      <h3 class="text-lg font-semibold text-blue-900 mb-4">📋 Instruções para Import</h3>
+      
+      <div class="space-y-4 text-blue-800">
+        <div>
+          <h4 class="font-semibold">1. Como obter o CSV de Cliques:</h4>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-sm">
+            <li>Acesse seu painel da Shopee Open Platform</li>
+            <li>Vá em "Relatórios" → "Cliques do Website"</li>
+            <li>Selecione o período desejado</li>
+            <li>Faça o download do arquivo CSV</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold">2. Formato esperado do CSV:</h4>
+          <div class="bg-white rounded p-3 mt-2 font-mono text-xs overflow-x-auto">
+            <div class="text-gray-600">Headers esperados:</div>
+            <div class="text-blue-600">ID dos Cliques, Tempo dos Cliques, Região dos Cliques, Sub_id, Referenciador</div>
+            <div class="text-gray-600 mt-2">Exemplo:</div>
+            <div class="text-gray-800">CLK001, 2025-09-05 10:30:00, SP, minha_campanha, instagram.com</div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-semibold">3. Campos importantes:</h4>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-sm">
+            <li><strong>ID dos Cliques:</strong> Identificador único do clique</li>
+            <li><strong>Tempo dos Cliques:</strong> Data e hora do clique</li>
+            <li><strong>Região dos Cliques:</strong> Estado ou região de origem</li>
+            <li><strong>Sub_id:</strong> Identificador da campanha (opcional)</li>
+            <li><strong>Referenciador:</strong> Fonte do tráfego (Instagram, Facebook, etc.)</li>
+          </ul>
+        </div>
+
+        <div class="bg-yellow-50 border border-yellow-200 rounded p-3">
+          <h4 class="font-semibold text-yellow-800">⚠️ Observações:</h4>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-yellow-700">
+            <li>Arquivo deve estar em formato CSV (UTF-8)</li>
+            <li>Registros duplicados serão atualizados automaticamente</li>
+            <li>Campos com "----" ou vazios serão ignorados</li>
+            <li>Máximo de 10.000 registros por arquivo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

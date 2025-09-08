@@ -11,7 +11,7 @@ O sistema Link Flow agora possui um sistema completo de administração com trê
 ## Acesso ao Sistema Admin
 
 ### Credenciais do Super Admin
-- **Email**: admin@linkflow.com
+- **Email**: admin@unitymob.com.br
 - **Senha**: admin123
 
 ### URLs de Acesso
@@ -99,7 +99,7 @@ stripe:
 ### Criar Super Admin
 ```bash
 User.create!(
-  email: 'admin@linkflow.com',
+  email: 'admin@unitymob.com.br',
   password: 'admin123',
   first_name: 'Super',
   last_name: 'Admin',

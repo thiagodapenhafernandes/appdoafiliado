@@ -1,0 +1,155 @@
+# Traduções do ActiveRecord em Português Brasileiro
+pt-BR:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'A validação falhou: %{errors}'
+        restrict_dependent_destroy:
+          has_one: Não é possível excluir o registro pois existe um %{record} dependente
+          has_many: Não é possível excluir o registro pois existem %{record} dependentes
+    models:
+      user: "Usuário"
+      plan: "Plano"
+      subscription: "Assinatura"
+      link: "Link"
+      device: "Dispositivo"
+      setting: "Configuração"
+      commission: "Comissão"
+      affiliate_conversion: "Conversão de Afiliado"
+    attributes:
+      user:
+        name: "Nome"
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmação da senha"
+        current_password: "Senha atual"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+        trial_ends_at: "Trial termina em"
+        stripe_customer_id: "ID do cliente Stripe"
+        stripe_setup_needed: "Configuração do Stripe necessária"
+      plan:
+        name: "Nome"
+        description: "Descrição"
+        price: "Preço"
+        stripe_price_id: "ID do preço no Stripe"
+        features: "Funcionalidades"
+        trial_days: "Dias de trial"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      subscription:
+        user_id: "Usuário"
+        plan_id: "Plano"
+        stripe_subscription_id: "ID da assinatura no Stripe"
+        status: "Status"
+        current_period_start: "Início do período atual"
+        current_period_end: "Fim do período atual"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      link:
+        original_url: "URL original"
+        shortened_url: "URL encurtada"
+        title: "Título"
+        description: "Descrição"
+        user_id: "Usuário"
+        clicks_count: "Número de cliques"
+        active: "Ativo"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+  
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d de %B"
+      long: "%d de %B de %Y"
+    day_names:
+      - Domingo
+      - Segunda-feira
+      - Terça-feira
+      - Quarta-feira
+      - Quinta-feira
+      - Sexta-feira
+      - Sábado
+    abbr_day_names:
+      - Dom
+      - Seg
+      - Ter
+      - Qua
+      - Qui
+      - Sex
+      - Sáb
+    month_names:
+      - ~
+      - Janeiro
+      - Fevereiro
+      - Março
+      - Abril
+      - Maio
+      - Junho
+      - Julho
+      - Agosto
+      - Setembro
+      - Outubro
+      - Novembro
+      - Dezembro
+    abbr_month_names:
+      - ~
+      - Jan
+      - Fev
+      - Mar
+      - Abr
+      - Mai
+      - Jun
+      - Jul
+      - Ago
+      - Set
+      - Out
+      - Nov
+      - Dez
+    order:
+      - :day
+      - :month
+      - :year
+  
+  time:
+    formats:
+      default: "%a, %d de %B de %Y, %H:%M:%S %z"
+      short: "%d de %B, %H:%M"
+      long: "%A, %d de %B de %Y, %H:%M:%S %z"
+    am: ''
+    pm: ''
+  
+  # Traduções de validação
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: deve ser aceito
+      blank: não pode ficar em branco
+      confirmation: não é igual a %{attribute}
+      empty: não pode ficar vazio
+      equal_to: deve ser igual a %{count}
+      even: deve ser par
+      exclusion: não está disponível
+      greater_than: deve ser maior que %{count}
+      greater_than_or_equal_to: deve ser maior ou igual a %{count}
+      inclusion: não está incluído na lista
+      invalid: não é válido
+      less_than: deve ser menor que %{count}
+      less_than_or_equal_to: deve ser menor ou igual a %{count}
+      model_invalid: 'A validação falhou: %{errors}'
+      not_a_number: não é um número
+      not_an_integer: não é um número inteiro
+      odd: deve ser ímpar
+      other_than: deve ser diferente de %{count}
+      present: deve ficar em branco
+      required: é obrigatório
+      taken: já está em uso
+      too_long:
+        one: 'é muito longo (máximo: 1 caractere)'
+        other: 'é muito longo (máximo: %{count} caracteres)'
+      too_short:
+        one: 'é muito curto (mínimo: 1 caractere)'
+        other: 'é muito curto (mínimo: %{count} caracteres)'
+      wrong_length:
+        one: não possui o tamanho esperado (1 caractere)
+        other: não possui o tamanho esperado (%{count} caracteres)

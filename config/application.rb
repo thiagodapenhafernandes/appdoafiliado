@@ -35,6 +35,10 @@ module LinkFlow
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    
+    # Configuração de idioma
+    config.i18n.default_locale = :'pt-BR'
+    config.i18n.available_locales = [:'pt-BR', :en]
 
     config.hosts << "dev.unitymob.com.br"
     config.hosts << "app.appdoafiliado.com.br"

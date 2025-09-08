@@ -58,6 +58,11 @@ class User < ApplicationRecord
     current_subscription&.plan
   end
 
+  def chosen_plan
+    # Retorna o plano que o usuário escolheu, mesmo durante o trial
+    current_subscription&.plan
+  end
+
   def can_create_links?
     return false unless active_subscription? || on_trial?
     

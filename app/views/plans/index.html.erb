@@ -1,11 +1,11 @@
 <div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
   <!-- Header section -->
-  <div class="container mx-auto px-4 py-16">
-    <div class="text-center mb-16">
-      <h1 class="text-5xl font-bold text-gray-800 mb-4">
+  <div class="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="text-center mb-8 sm:mb-12">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
         Escolha o Plano Perfeito
       </h1>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+      <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
         Transforme seus links em ferramentas poderosas de marketing e análise. 
         Comece gratuitamente e escale conforme seu negócio cresce.
       </p>
@@ -36,61 +36,61 @@
 
     <!-- Plans grid -->
     <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
         <% @plans.each_with_index do |plan, index| %>
-          <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 <%= 'ring-4 ring-blue-500 relative' if index == 1 %>">
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 <%= 'ring-4 ring-blue-500 relative scale-105' if index == 1 %>">
             <% if index == 1 %>
               <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
                   🔥 Mais Popular
                 </span>
               </div>
             <% end %>
             
-            <div class="p-8">
-              <div class="text-center mb-8">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2"><%= plan.name %></h3>
-                <p class="text-gray-600 mb-6"><%= plan.description %></p>
+            <div class="p-6 lg:p-8">
+              <div class="text-center mb-6">
+                <h3 class="text-xl lg:text-2xl font-bold text-gray-800 mb-2"><%= plan.name %></h3>
+                <p class="text-gray-600 text-sm lg:text-base mb-4"><%= plan.description %></p>
                 
-                <div class="mb-6">
+                <div class="mb-4">
                   <% if plan.price == 0 %>
-                    <span class="text-4xl font-bold text-gray-800">Gratuito</span>
+                    <span class="text-3xl lg:text-4xl font-bold text-gray-800">Gratuito</span>
                   <% else %>
                     <span class="text-lg text-gray-500">R$</span>
-                    <span class="text-4xl font-bold text-gray-800"><%= plan.price.to_i %></span>
+                    <span class="text-3xl lg:text-4xl font-bold text-gray-800"><%= plan.price.to_i %></span>
                     <span class="text-gray-600">/mês</span>
                   <% end %>
                 </div>
               </div>
               
-              <div class="space-y-4 mb-8">
+              <div class="space-y-3 mb-6">
                 <% if plan.features.present? %>
                   <% plan.features.each do |feature| %>
                     <div class="flex items-center">
-                      <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <svg class="w-4 h-4 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                       </svg>
-                      <span class="text-gray-600"><%= feature %></span>
+                      <span class="text-gray-600 text-sm lg:text-base"><%= feature %></span>
                     </div>
                   <% end %>
                 <% else %>
                   <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-4 h-4 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="text-gray-600">Acesso completo à plataforma</span>
+                    <span class="text-gray-600 text-sm lg:text-base">Acesso completo à plataforma</span>
                   </div>
                   <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-4 h-4 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="text-gray-600">Dashboard de analytics</span>
+                    <span class="text-gray-600 text-sm lg:text-base">Dashboard de analytics</span>
                   </div>
                   <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-4 h-4 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="text-gray-600">Relatórios detalhados</span>
+                    <span class="text-gray-600 text-sm lg:text-base">Relatórios detalhados</span>
                   </div>
                 <% end %>
               </div>
@@ -114,9 +114,9 @@
     </div>
 
     <!-- Benefits section -->
-    <div class="max-w-4xl mx-auto mt-20">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-800 mb-4">
+    <div class="max-w-4xl mx-auto mt-16">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
           Por que escolher nossa plataforma?
         </h2>
         <p class="text-gray-600">
@@ -124,15 +124,15 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
         <div class="text-center">
           <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-gray-800 mb-2">Analytics Avançados</h3>
-          <p class="text-gray-600">Acompanhe clicks, origens, dispositivos e muito mais em tempo real</p>
+          <h3 class="text-lg lg:text-xl font-semibold text-gray-800 mb-2">Analytics Avançados</h3>
+          <p class="text-gray-600 text-sm lg:text-base">Acompanhe clicks, origens, dispositivos e muito mais em tempo real</p>
         </div>
 
         <div class="text-center">
@@ -141,8 +141,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-gray-800 mb-2">100% Seguro</h3>
-          <p class="text-gray-600">Seus dados e links protegidos com a melhor segurança do mercado</p>
+          <h3 class="text-lg lg:text-xl font-semibold text-gray-800 mb-2">100% Seguro</h3>
+          <p class="text-gray-600 text-sm lg:text-base">Seus dados e links protegidos com a melhor segurança do mercado</p>
         </div>
 
         <div class="text-center">
@@ -151,20 +151,20 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-gray-800 mb-2">Rápido e Confiável</h3>
-          <p class="text-gray-600">Links que carregam instantaneamente, disponíveis 24/7</p>
+          <h3 class="text-lg lg:text-xl font-semibold text-gray-800 mb-2">Rápido e Confiável</h3>
+          <p class="text-gray-600 text-sm lg:text-base">Links que carregam instantaneamente, disponíveis 24/7</p>
         </div>
       </div>
     </div>
 
     <!-- CTA section for non-logged users -->
     <% unless user_signed_in? %>
-      <div class="max-w-4xl mx-auto mt-20 text-center">
-        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
-          <h2 class="text-3xl font-bold mb-4">
+      <div class="max-w-4xl mx-auto mt-16 text-center">
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 lg:p-12 text-white">
+          <h2 class="text-2xl lg:text-3xl font-bold mb-4">
             Pronto para começar?
           </h2>
-          <p class="text-xl mb-8 opacity-90">
+          <p class="text-lg lg:text-xl mb-6 lg:mb-8 opacity-90">
             Crie sua conta gratuita e comece a usar nossa plataforma hoje mesmo
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">

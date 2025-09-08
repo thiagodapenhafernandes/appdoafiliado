@@ -6,9 +6,12 @@ Rails.application.routes.draw do
   get 'analytics/import_csv'
   post 'analytics/import_csv'
   get 'analytics/export_pdf'
+  patch 'analytics/update_ad_spend'
   
   # Click Analytics routes
   get 'clicks_analytics', to: 'clicks_analytics#index'
+  get 'clicks_analytics/import_csv', to: 'clicks_analytics#import_csv'
+  post 'clicks_analytics/import_csv', to: 'clicks_analytics#process_csv_upload'
   
   # Devise routes
   devise_for :users, controllers: {

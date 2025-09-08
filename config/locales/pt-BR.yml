@@ -1,0 +1,75 @@
+pt-BR:
+  hello: "Olá mundo"
+  
+  # Traduções de suporte do Rails
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " e "
+      last_word_connector: " e "
+  
+  # Traduções customizadas da aplicação
+  user:
+    account_created_with_trial: "Conta criada com sucesso! Você tem 14 dias de teste grátis"
+    welcome_message: "Bem-vindo ao UnityMob!"
+    trial_period_info: "Você tem %{days} dias de teste grátis"
+  
+  # Mensagens específicas do sistema de registro
+  registrations:
+    account_created_with_stripe: "Conta criada com sucesso! Sua assinatura está ativa com %{trial_days} dias de teste grátis."
+    account_created_simple: "Conta criada com sucesso! Você tem %{trial_days} dias de teste grátis."
+    account_created_stripe_unavailable: "Conta criada com sucesso! Sistema de pagamento temporariamente indisponível. Você pode configurar o pagamento depois no seu painel. Teste grátis de %{trial_days} dias ativo."
+    payment_method_required: "Método de pagamento é obrigatório"
+    payment_method_required_to_create: "Método de pagamento é obrigatório para criar uma conta."
+    
+  # Mensagens de erro do Stripe
+  stripe_errors:
+    card_declined: "Cartão recusado. Verifique os dados ou tente outro cartão."
+    expired_card: "Cartão expirado. Use um cartão válido."
+    incorrect_cvc: "Código de segurança incorreto."
+    insufficient_funds: "Fundos insuficientes no cartão."
+    rate_limit: "Muitas tentativas. Tente novamente em alguns minutos."
+    invalid_request: "Dados inválidos. Verifique as informações e tente novamente."
+    authentication_error: "Erro de configuração do sistema. Entre em contato conosco."
+    connection_error: "Problema de conexão com sistema de pagamento. Verifique sua internet e tente novamente."
+    connection_error_simple: "Problema de conexão com sistema de pagamento. Tente o cadastro simples."
+    generic_error: "Erro no sistema de pagamento. Tente novamente em alguns minutos."
+    unexpected_error: "Erro inesperado. Tente novamente ou entre em contato conosco."
+    unexpected_error_simple: "Erro inesperado. Tente o cadastro simples ou entre em contato conosco."
+  
+  # Mensagens de planos
+  plans:
+    select_plan: "Selecione seu Plano"
+    monthly: "Mensal"
+    yearly: "Anual"
+    free_trial: "14 dias grátis"
+    choose_plan: "Escolher Plano"
+    features: "Funcionalidades"
+    per_month: "por mês"
+    per_year: "por ano"
+    
+  # Mensagens de formulários
+  forms:
+    name: "Nome"
+    email: "E-mail"
+    password: "Senha"
+    password_confirmation: "Confirmar Senha"
+    create_account: "Criar Conta"
+    sign_up: "Cadastrar"
+    sign_in: "Entrar"
+    
+  # Botões e ações
+  buttons:
+    save: "Salvar"
+    cancel: "Cancelar"
+    edit: "Editar"
+    delete: "Excluir"
+    confirm: "Confirmar"
+    back: "Voltar"
+    
+  # Mensagens de erro
+  errors:
+    required_field: "Este campo é obrigatório"
+    invalid_email: "E-mail inválido"
+    password_too_short: "Senha muito curta"
+    passwords_dont_match: "Senhas não conferem"

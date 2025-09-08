@@ -221,9 +221,14 @@
               <div class="text-sm text-gray-500">pedidos</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">R$ <%= number_with_precision(data[:ad_spend] || 0, precision: 2, delimiter: '.', separator: ',') %></div>
+              <div class="editable-ad-spend" data-subid="<%= subid.present? ? subid : 'Não informado' %>" data-value="<%= data[:ad_spend] || 0 %>">
+                <div class="ad-spend-display text-sm text-gray-900 cursor-pointer hover:bg-gray-100 p-1 rounded">
+                  R$ <span class="ad-spend-value"><%= number_with_precision(data[:ad_spend] || 0, precision: 2, delimiter: '.', separator: ',') %></span>
+                </div>
+                <input type="number" class="ad-spend-input hidden w-full text-sm border-gray-300 rounded px-2 py-1" step="0.01" min="0">
+              </div>
               <% cpa = data[:orders] > 0 && data[:ad_spend] ? data[:ad_spend] / data[:orders] : 0 %>
-              <div class="text-sm text-gray-500">CPA: R$ <%= number_with_precision(cpa, precision: 2, delimiter: '.', separator: ',') %></div>
+              <div class="text-sm text-gray-500">CPA: R$ <span class="cpa-value"><%= number_with_precision(cpa, precision: 2, delimiter: '.', separator: ',') %></span></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium <%= roi > 0 ? 'text-green-600' : roi < 0 ? 'text-red-600' : 'text-gray-600' %>">
@@ -259,6 +264,110 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Funcionalidade de edição inline para Gasto em Ads
+  const editableAdSpends = document.querySelectorAll('.editable-ad-spend');
+  
+  editableAdSpends.forEach(function(editable) {
+    const display = editable.querySelector('.ad-spend-display');
+    const input = editable.querySelector('.ad-spend-input');
+    const valueSpan = editable.querySelector('.ad-spend-value');
+    const cpaSpan = editable.closest('td').querySelector('.cpa-value');
+    const subid = editable.dataset.subid;
+    
+    // Double-click para editar
+    display.addEventListener('dblclick', function() {
+      const currentValue = parseFloat(editable.dataset.value) || 0;
+      input.value = currentValue.toFixed(2);
+      display.classList.add('hidden');
+      input.classList.remove('hidden');
+      input.focus();
+      input.select();
+    });
+    
+    // Salvar ao pressionar Enter
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        saveAdSpend();
+      } else if (e.key === 'Escape') {
+        cancelEdit();
+      }
+    });
+    
+    // Salvar ao perder o foco
+    input.addEventListener('blur', function() {
+      saveAdSpend();
+    });
+    
+    function saveAdSpend() {
+      const newValue = parseFloat(input.value) || 0;
+      
+      if (newValue === parseFloat(editable.dataset.value)) {
+        cancelEdit();
+        return;
+      }
+      
+      // Mostrar loading
+      display.innerHTML = '<div class="text-gray-500">Salvando...</div>';
+      display.classList.remove('hidden');
+      input.classList.add('hidden');
+      
+      // Fazer requisição AJAX
+      fetch('/analytics/update_ad_spend', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+          subid: subid,
+          ad_spend: newValue
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Atualizar valores
+          editable.dataset.value = data.ad_spend;
+          valueSpan.textContent = data.formatted_ad_spend;
+          cpaSpan.textContent = data.formatted_cpa;
+          
+          // Encontrar e atualizar ROI na mesma linha
+          const roiCell = editable.closest('tr').querySelector('td:nth-child(6)');
+          if (roiCell) {
+            const roiValue = roiCell.querySelector('.text-sm.font-medium');
+            const roiStatus = roiCell.querySelector('.text-sm.text-gray-500');
+            
+            if (roiValue) {
+              roiValue.textContent = data.formatted_roi + '%';
+              // Atualizar cor baseada no ROI
+              roiValue.className = 'text-sm font-medium ' + (data.roi > 0 ? 'text-green-600' : data.roi < 0 ? 'text-red-600' : 'text-gray-600');
+            }
+            
+            if (roiStatus) {
+              roiStatus.textContent = data.roi > 0 ? 'Lucrativo' : data.roi < 0 ? 'Prejuízo' : 'Neutro';
+            }
+          }
+          
+          // Restaurar display normal
+          display.innerHTML = '<div class="ad-spend-display text-sm text-gray-900 cursor-pointer hover:bg-gray-100 p-1 rounded">R$ <span class="ad-spend-value">' + data.formatted_ad_spend + '</span></div>';
+        } else {
+          alert('Erro ao salvar: ' + (data.errors ? data.errors.join(', ') : 'Erro desconhecido'));
+          cancelEdit();
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao salvar o valor');
+        cancelEdit();
+      });
+    }
+    
+    function cancelEdit() {
+      display.classList.remove('hidden');
+      input.classList.add('hidden');
+    }
+  });
+
   // Gráfico de Diretos vs Indiretos
   const directIndirectCtx = document.getElementById('directIndirectChart').getContext('2d');
   

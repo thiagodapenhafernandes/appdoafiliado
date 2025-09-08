@@ -96,8 +96,8 @@ Rails.application.configure do
   
   # Configuração de URL para mailers
   config.action_mailer.default_url_options = { 
-    host: ENV['APP_HOST'] || 'dev.unitymob.com.br',
-    protocol: ENV['APP_PROTOCOL'] || 'https'
+    host: ENV['APP_DOMAIN'] || 'app.unitymob.com.br',
+    protocol: 'https'
   }
   
   # Skip DNS rebinding protection for the default health check endpoint.

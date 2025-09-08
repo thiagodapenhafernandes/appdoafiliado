@@ -15,7 +15,7 @@ class ShopeeMasterConfig < ApplicationRecord
     # Scopes
   scope :active, -> { where(active: true) }
   scope :for_market, ->(market) { where(market: market) }
-  scope :configured, -> { where.not(master_app_id: [nil, ''], master_app_secret: [nil, '']) }
+  scope :configured, -> { where.not(encrypted_master_app_id: [nil, ''], encrypted_master_secret: [nil, '']) }
 
   # Class methods
   def self.active_for_market(market)

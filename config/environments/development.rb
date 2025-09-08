@@ -63,7 +63,7 @@ Rails.application.configure do
   config.assets.quiet = true
 
   # Raises error for missing translations.
-  # config.i18n.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = true
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
@@ -74,11 +74,10 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
-  # Devise configuration - URL dinâmica baseada no host da requisição
+  # Devise configuration - URL dinâmica baseada no ENV
   config.action_mailer.default_url_options = { 
-    host: ENV['APP_HOST'] || 'localhost',
-    port: ENV['APP_PORT'] || 3000,
-    protocol: ENV['APP_PROTOCOL'] || 'http'
+    host: ENV['APP_DOMAIN'] || 'localhost:3000',
+    protocol: ENV['APP_URL']&.start_with?('https') ? 'https' : 'http'
   }
   
   # Configurações para resolver problemas de CSRF em desenvolvimento
