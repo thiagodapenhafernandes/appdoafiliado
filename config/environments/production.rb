@@ -91,12 +91,14 @@ Rails.application.configure do
   config.hosts = [
     "dev.unitymob.com.br",
     "unitymob.com.br",
-    /.*\.unitymob\.com\.br/
+    /.*\.unitymob\.com\.br/,
+    "app.appdoafiliado.com.br",
+    /.*\.appdoafiliado\.com\.br/
   ]
   
   # Configuração de URL para mailers
   config.action_mailer.default_url_options = { 
-    host: ENV['APP_DOMAIN'] || 'app.unitymob.com.br',
+    host: ENV['APP_DOMAIN'] || 'app.appdoafiliado.com.br',
     protocol: 'https'
   }
   
