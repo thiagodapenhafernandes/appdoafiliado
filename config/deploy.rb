@@ -1,3 +1,18 @@
+# Comandos disponíveis:
+# mina deploy          # faz deploy da versão atual
+# mina setup           # configura diretórios e arquivos iniciais no servidor
+# mina start           # inicia o Puma
+# mina stop            # para o Puma via pumactl
+# mina restart         # reinicia o Puma via pumactl
+# mina full_stop       # força parada completa (kill + limpeza)
+# mina puma_kill       # mata todos os processos puma (perigoso)
+# mina restart_nginx   # reinicia Nginx
+# mina restart_stack   # reinicia Puma e Nginx com segurança
+# mina status          # mostra status do Puma e porta
+# mina logs            # mostra logs da aplicação
+# mina puma_logs       # mostra logs do Puma
+# mina system_status   # mostra status do sistema (nginx, disco, memória)
+
 # require 'mina/multistage'
 require 'mina/bundler'
 require 'mina/rails'
@@ -16,30 +31,35 @@ set :term_mode, :nil
 set :keep_releases, 5
 
 set :shared_files, fetch(:shared_files, []).push('config/database.yml',
-                                                 'log', 
-                                                 'tmp/pids', 
                                                  '.env',
                                                  'config/master.key',
                                                  'config/credentials.yml.enc')
 
-set :shared_dirs, fetch(:shared_dirs, []).push('public/uploads')
+set :shared_dirs, fetch(:shared_dirs, []).push('log', 
+                                               'tmp/pids',
+                                               'public/uploads')
 
 task :remote_environment do
   invoke :'rvm:use', 'ruby-3.3.5@app.appdoafiliado'
 end
 
 task :setup do
+  command %[mkdir -p "#{fetch(:shared_path)}/log"]
+  command %[chmod g+rx,u+rwx "#{fetch(:shared_path)}/log"]
+  
+  command %[mkdir -p "#{fetch(:shared_path)}/tmp/pids"]
+  command %[chmod g+rx,u+rwx "#{fetch(:shared_path)}/tmp/pids"]
 
-  command %[mkdir -p "#{fetch(:current_path)}/log"]
-  command %[chmod g+rx,u+rwx "#{fetch(:current_path)}/log"]
-  command %(mkdir -p "#{fetch(:shared_path)}/pids/")
+  command %[mkdir -p "#{fetch(:shared_path)}/config"]
+  command %[chmod g+rx,u+rwx "#{fetch(:shared_path)}/config"]
 
-  command %[mkdir -p "#{fetch(:current_path)}/config"]
-  command %[chmod g+rx,u+rwx "#{fetch(:current_path)}/config"]
+  command %[mkdir -p "#{fetch(:shared_path)}/public/uploads"]
+  command %[chmod g+rx,u+rwx "#{fetch(:shared_path)}/public/uploads"]
 
-  command %[touch "#{fetch(:current_path)}/config/database.yml"]
-  command %[touch "#{fetch(:current_path)}/config/secrets.yml"]
-  command  %[echo "-----> Be sure to edit '#{fetch(:current_path)}/config/database.yml' and 'secrets.yml'."]
+  command %[touch "#{fetch(:shared_path)}/config/database.yml"]
+  command %[touch "#{fetch(:shared_path)}/config/secrets.yml"]
+  command %[touch "#{fetch(:shared_path)}/.env"]
+  command  %[echo "-----> Be sure to edit shared files: database.yml, .env, and secrets.yml"]
 end
 
 desc "Deploys the current version to the server."
@@ -116,7 +136,7 @@ end
 
 desc "Restart Nginx"
 task :restart_nginx do
-  command "sudo service nginx restart"
+  command "sudo systemctl restart nginx"
 end
 
 desc "Reload Stack (Puma + Nginx)"
@@ -125,5 +145,45 @@ task :restart_stack do
   sleep 2  # dá tempo de liberar a porta
   invoke :'start'
   invoke :'restart_nginx'
+end
+
+desc "Show Puma status"
+task :status do
+  in_path(fetch(:current_path)) do
+    command %[echo "===> Puma Status:"]
+    command %[ps aux | grep puma | grep -v grep || echo "Puma não está rodando"]
+    command %[echo "===> Porta 9292:"]
+    command %[ss -tlnp | grep :9292 || lsof -i :9292 || echo "Porta 9292 não está em uso"]
+    command %[echo "===> Arquivos PID/State:"]
+    command %[ls -la #{fetch(:puma_pid)} #{fetch(:puma_state)} 2>/dev/null || echo "Arquivos PID/State não encontrados"]
+  end
+end
+
+desc "Show application logs"
+task :logs do
+  in_path(fetch(:current_path)) do
+    command %[echo "===> Últimas 50 linhas do log de produção:"]
+    command %[tail -50 log/production.log 2>/dev/null || echo "Log de produção não encontrado, criando..."]
+    command %[touch log/production.log && echo "Log criado, executando alguma ação para gerar logs..."]
+  end
+end
+
+desc "Show Puma logs"
+task :puma_logs do
+  in_path(fetch(:current_path)) do
+    command %[echo "===> Puma logs:"]
+    command %[tail -50 log/puma_access.log 2>/dev/null || echo "Puma access log não encontrado"]
+    command %[tail -50 log/puma_error.log 2>/dev/null || echo "Puma error log não encontrado"]
+  end
+end
+
+desc "Show system status"
+task :system_status do
+  command %[echo "===> Nginx Status:"]
+  command %[sudo systemctl status nginx --no-pager -l]
+  command %[echo "===> Disk Usage:"]
+  command %[df -h #{fetch(:deploy_to)}]
+  command %[echo "===> Memory Usage:"]
+  command %[free -h]
 end
 
