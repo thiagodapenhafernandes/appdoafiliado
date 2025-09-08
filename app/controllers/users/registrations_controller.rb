@@ -177,6 +177,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create_stripe_subscription_with_trial(user, plan, payment_method_id)
     Rails.logger.info "Creating Stripe subscription for user #{user.id} with plan #{plan.name}"
 
+    # Check if Stripe is properly configured
+    unless plan.stripe_price_id.present? && plan.stripe_price_id != 'price_starter_placeholder' && 
+           plan.stripe_price_id != 'price_pro_placeholder' && plan.stripe_price_id != 'price_elite_placeholder'
+      Rails.logger.warn "Plan #{plan.name} has invalid Stripe price ID: #{plan.stripe_price_id}"
+      raise Stripe::InvalidRequestError.new("Plan not properly configured for Stripe", "stripe_price_id")
+    end
+
     # Create Stripe customer
     stripe_customer = Stripe::Customer.create(
       email: user.email,

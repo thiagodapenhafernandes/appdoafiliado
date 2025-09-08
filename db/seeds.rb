@@ -23,6 +23,7 @@ plans_data = [
     name: "Afiliado Starter",
     description: "Para iniciantes",
     price_cents: 5990, # R$ 59,90
+    stripe_price_id: ENV['STRIPE_STARTER_PRICE_ID'] || 'price_starter_placeholder',
     max_links: 15,
     popular: false,
     features: [
@@ -37,6 +38,7 @@ plans_data = [
     name: "Afiliado Pro",
     description: "Mais popular",
     price_cents: 9790, # R$ 97,90
+    stripe_price_id: ENV['STRIPE_PRO_PRICE_ID'] || 'price_pro_placeholder',
     max_links: 50,
     popular: true,
     features: [
@@ -51,6 +53,7 @@ plans_data = [
     name: "Afiliado Elite",
     description: "Para Experts",
     price_cents: 14790, # R$ 147,90
+    stripe_price_id: ENV['STRIPE_ELITE_PRICE_ID'] || 'price_elite_placeholder',
     max_links: -1, # Ilimitado
     popular: false,
     features: [
@@ -69,10 +72,16 @@ plans_data.each do |plan_data|
     p.description = plan_data[:description]
     p.price_cents = plan_data[:price_cents]
     p.currency = 'BRL'
+    p.stripe_price_id = plan_data[:stripe_price_id]
     p.max_links = plan_data[:max_links]
     p.popular = plan_data[:popular]
     p.features = plan_data[:features]
     p.active = true
+  end
+  
+  # Update existing plans with stripe_price_id if missing
+  if plan.stripe_price_id.blank?
+    plan.update!(stripe_price_id: plan_data[:stripe_price_id])
   end
   
   puts "✅ Plan '#{plan.name}' created/updated"
