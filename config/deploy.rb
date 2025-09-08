@@ -92,7 +92,7 @@ desc "Start Puma"
 task :start do
   in_path(fetch(:current_path)) do
     command %[echo "===> Starting Puma..."]
-    command %[bundle exec puma -C config/puma.rb -e #{fetch(:rails_env)} -d]
+    command %[bundle exec puma -C config/puma.rb -e #{fetch(:rails_env)}]
   end
 end
 
