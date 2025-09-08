@@ -4,8 +4,8 @@ module ShopeeAffiliate
     include HTTParty
     
     # Credenciais master do LinkFlow
-    MASTER_APP_ID = Rails.application.credentials.shopee[:master_app_id]
-    MASTER_SECRET = Rails.application.credentials.shopee[:master_secret]
+    MASTER_APP_ID = ENV['SHOPEE_MASTER_APP_ID']
+    MASTER_SECRET = ENV['SHOPEE_MASTER_SECRET']
     
     base_uri 'https://open-api.affiliate.shopee.com.br/graphql'
     
