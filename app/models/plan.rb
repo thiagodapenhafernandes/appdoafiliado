@@ -8,7 +8,7 @@ class Plan < ApplicationRecord
 
   # Validations
   validates :name, :price_cents, presence: true
-  validates :name, uniqueness: { case_sensitive: false }, unless: :syncing_from_stripe?
+  validates :name, uniqueness: { case_sensitive: false }, unless: :skip_uniqueness_validation?
   validates :price_cents, numericality: { greater_than: 0 }
 
   # Scopes
@@ -43,14 +43,34 @@ class Plan < ApplicationRecord
   # Método para sincronização sem validações conflitantes
   def sync_from_stripe!(attributes = {})
     self.syncing_from_stripe = true
-    update!(attributes)
+    
+    # Se apenas campos técnicos estão sendo atualizados, usar update_columns
+    if attributes.keys.all? { |key| [:stripe_price_id, :price_cents].include?(key.to_sym) }
+      update_columns(attributes)
+    else
+      update!(attributes)
+    end
   ensure
     self.syncing_from_stripe = false
+  end
+
+  # Método alternativo que força update sem validações
+  def force_update_from_stripe!(attributes = {})
+    update_columns(attributes.merge(updated_at: Time.current))
   end
 
   private
 
   def syncing_from_stripe?
     syncing_from_stripe == true
+  end
+
+  def skip_uniqueness_validation?
+    # Pula validação durante sincronização do Stripe
+    syncing_from_stripe == true || 
+    # Ou se é uma atualização de um registro existente com o mesmo nome
+    (persisted? && !name_changed?) ||
+    # Ou se estamos apenas atualizando o stripe_price_id
+    (persisted? && changed_attributes.keys == ['stripe_price_id'])
   end
 end

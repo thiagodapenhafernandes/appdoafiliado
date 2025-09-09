@@ -187,11 +187,22 @@ class Admin::PlansController < Admin::BaseController
         if existing_plan
           # Atualizar plano existente com dados do Stripe
           Rails.logger.info "Atualizando plano existente: #{existing_plan.name}"
-          existing_plan.sync_from_stripe!(
-            name: stripe_product.name,
-            description: stripe_product.description,
-            price_cents: stripe_price.unit_amount
-          )
+          
+          # Primeiro atualizar campos que podem conflitar usando update_columns
+          if existing_plan.name != stripe_product.name
+            Rails.logger.info "Nome mudou de '#{existing_plan.name}' para '#{stripe_product.name}'"
+            existing_plan.force_update_from_stripe!(
+              name: stripe_product.name,
+              description: stripe_product.description,
+              price_cents: stripe_price.unit_amount
+            )
+          else
+            # Se o nome não mudou, pode usar sync normal
+            existing_plan.sync_from_stripe!(
+              description: stripe_product.description,
+              price_cents: stripe_price.unit_amount
+            )
+          end
         else
           # Verificar se existe plano com mesmo nome (para evitar duplicação)
           existing_by_name = Plan.find_by(name: stripe_product.name)
@@ -199,8 +210,8 @@ class Admin::PlansController < Admin::BaseController
           if existing_by_name && existing_by_name.stripe_price_id.blank?
             # Atualizar plano existente sem stripe_price_id
             Rails.logger.info "Vinculando plano existente ao Stripe: #{existing_by_name.name}"
-            existing_by_name.update_column(:stripe_price_id, stripe_price.id)
-            existing_by_name.sync_from_stripe!(
+            existing_by_name.force_update_from_stripe!(
+              stripe_price_id: stripe_price.id,
               price_cents: stripe_price.unit_amount,
               description: stripe_product.description
             )
