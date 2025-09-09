@@ -5,7 +5,7 @@ class Plan < ApplicationRecord
 
   # Validations
   validates :name, :price_cents, presence: true
-  validates :name, uniqueness: true
+  validates :name, uniqueness: { case_sensitive: false }
   validates :price_cents, numericality: { greater_than: 0 }
 
   # Scopes

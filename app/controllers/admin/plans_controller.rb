@@ -50,6 +50,10 @@ class Admin::PlansController < Admin::BaseController
     begin
       sync_plan_with_stripe(@plan)
       redirect_to admin_plan_path(@plan), notice: 'Plano sincronizado com o Stripe!'
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error "Erro de validação na sincronização: #{e.message}"
+      Rails.logger.error "Backtrace: #{e.backtrace.join("\n")}"
+      redirect_to admin_plan_path(@plan), alert: "Erro de validação: #{e.record.errors.full_messages.join(', ')}"
     rescue StandardError => e
       Rails.logger.error "Erro na sincronização: #{e.message}"
       Rails.logger.error "Backtrace: #{e.backtrace.join("\n")}"
@@ -89,8 +93,8 @@ class Admin::PlansController < Admin::BaseController
         metadata: { plan_id: @plan.id }
       })
 
-      # Atualizar o plano apenas com o Price ID
-      @plan.update(stripe_price_id: price.id)
+      # Atualizar o plano apenas com o Price ID (usando update_column para pular validações)
+      @plan.update_column(:stripe_price_id, price.id)
     rescue Stripe::StripeError => e
       Rails.logger.error "Erro ao criar produto/preço no Stripe: #{e.message}"
     end
@@ -119,7 +123,7 @@ class Admin::PlansController < Admin::BaseController
       rescue Stripe::StripeError => e
         Rails.logger.error "Erro ao validar Price ID no Stripe: #{e.message}"
         # Se o Price ID não existe mais no Stripe, remover e recriar
-        plan.update(stripe_price_id: nil)
+        plan.update_column(:stripe_price_id, nil) # Usa update_column para pular validações
       end
     end
 
@@ -145,8 +149,8 @@ class Admin::PlansController < Admin::BaseController
         metadata: { plan_id: plan.id }
       })
 
-      # Atualizar o plano com o Price ID
-      plan.update(stripe_price_id: price.id)
+      # Atualizar o plano com o Price ID (usando update_column para pular validações)
+      plan.update_column(:stripe_price_id, price.id)
       Rails.logger.info "Plano #{plan.name} sincronizado com sucesso! Price ID: #{price.id}"
       
       return true
