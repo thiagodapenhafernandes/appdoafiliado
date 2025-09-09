@@ -18,20 +18,27 @@ class StripeService
       end
     end
 
-    def create_subscription(user, plan)
+    def create_subscription(user, plan, options = {})
       return unless stripe_configured? && plan.stripe_price_id.present?
       
       customer = ensure_customer(user)
       return unless customer
 
       begin
-        subscription = Stripe::Subscription.create({
+        subscription_params = {
           customer: customer.id,
           items: [{ price: plan.stripe_price_id }],
           payment_behavior: 'default_incomplete',
           expand: ['latest_invoice.payment_intent'],
           metadata: { user_id: user.id, plan_id: plan.id }
-        })
+        }
+        
+        # Se skip_trial for true, não adicionar período de teste
+        if options[:skip_trial]
+          subscription_params[:trial_end] = 'now'
+        end
+        
+        subscription = Stripe::Subscription.create(subscription_params)
 
         # Obter dados de período da subscription
         # Tentar diferentes formas de acessar os dados de período

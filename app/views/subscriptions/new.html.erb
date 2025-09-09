@@ -141,6 +141,49 @@
         </div>
       <% end %>
 
+      <!-- Trial period options (only for paid plans) -->
+      <% if @plan.price > 0 %>
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Opções de Assinatura</h3>
+          
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <%= radio_button_tag 'skip_trial', 'false', true, 
+                    id: 'trial_yes', 
+                    class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500' %>
+              </div>
+              <div class="ml-3">
+                <%= label_tag 'trial_yes', class: 'text-sm font-medium text-gray-900' do %>
+                  🎉 Começar com 14 dias grátis
+                <% end %>
+                <p class="text-sm text-gray-600">
+                  Experimente todos os recursos por 14 dias. Após esse período, 
+                  será cobrado R$ <%= number_with_precision(@plan.price, precision: 2) %>/mês.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <%= radio_button_tag 'skip_trial', 'true', false, 
+                    id: 'trial_no', 
+                    class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500' %>
+              </div>
+              <div class="ml-3">
+                <%= label_tag 'trial_no', class: 'text-sm font-medium text-gray-900' do %>
+                  🚀 Começar imediatamente (sem período de teste)
+                <% end %>
+                <p class="text-sm text-gray-600">
+                  Comece a usar todos os recursos agora mesmo. 
+                  Cobrança de R$ <%= number_with_precision(@plan.price, precision: 2) %> será processada hoje.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <!-- Payment form -->
       <div class="bg-white rounded-lg shadow-lg p-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Finalizar Assinatura</h3>

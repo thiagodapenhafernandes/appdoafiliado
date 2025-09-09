@@ -32,7 +32,9 @@ class SubscriptionsController < ApplicationController
     end
     
     # Criar assinatura via Stripe (REAL, não simulação)
-    stripe_result = StripeService.create_subscription(current_user, @plan)
+    # Verificar se deve pular o período de teste baseado no parâmetro
+    skip_trial = params[:skip_trial] == 'true' || params[:subscription]&.[](:skip_trial) == 'true'
+    stripe_result = StripeService.create_subscription(current_user, @plan, skip_trial: skip_trial)
     
     if stripe_result
       @subscription = stripe_result[:local_subscription]
