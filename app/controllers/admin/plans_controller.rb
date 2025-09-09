@@ -187,8 +187,7 @@ class Admin::PlansController < Admin::BaseController
         if existing_plan
           # Atualizar plano existente com dados do Stripe
           Rails.logger.info "Atualizando plano existente: #{existing_plan.name}"
-          existing_plan.syncing_from_stripe = true
-          existing_plan.update!(
+          existing_plan.sync_from_stripe!(
             name: stripe_product.name,
             description: stripe_product.description,
             price_cents: stripe_price.unit_amount
