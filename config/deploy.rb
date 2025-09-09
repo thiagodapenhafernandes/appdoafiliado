@@ -94,12 +94,6 @@ task :deploy do
   end
 end
 
-# mina restart_stack     # reinicia Puma e Nginx com segurança
-# mina start             # inicia o Puma
-# mina stop              # para o Puma
-# mina full_stop         # kill e remove os arquivos .pid/.state
-# mina restart_nginx     # reinicia Nginx
-
 # Diretórios úteis
 set :pids_path, "#{fetch(:shared_path)}/tmp/pids"
 set :puma_state, "#{fetch(:pids_path)}/appdoafiliado.com.br.state"
