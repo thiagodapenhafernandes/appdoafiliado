@@ -114,11 +114,14 @@ class Admin::StripeConfigController < Admin::BaseController
       prices.data.each do |price|
         next unless price.recurring&.interval == 'month'
         
-        # Encontrar ou criar plano local
-        plan = Plan.find_or_initialize_by(stripe_price_id: price.id)
+        # Primeiro, procurar plano existente por stripe_price_id
+        plan = Plan.find_by(stripe_price_id: price.id)
         
-        # Usar sync_from_stripe! para evitar conflitos de validação
-        if plan.persisted?
+        # Se não encontrou por stripe_price_id, procurar por nome
+        plan ||= Plan.find_by(name: product.name)
+        
+        if plan
+          # Plano existente - usar sync_from_stripe! para evitar conflitos de validação
           plan.sync_from_stripe!(
             name: product.name,
             description: product.description,
@@ -126,8 +129,8 @@ class Admin::StripeConfigController < Admin::BaseController
             stripe_price_id: price.id
           )
         else
-          # Para novos registros, usar save! normalmente
-          plan.assign_attributes(
+          # Novo plano - criar normalmente
+          plan = Plan.new(
             name: product.name,
             description: product.description,
             price_cents: price.unit_amount,
