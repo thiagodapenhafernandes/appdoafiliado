@@ -13,7 +13,13 @@ class Admin::PlansController < Admin::BaseController
   end
 
   def create
-    @plan = Plan.new(plan_params)
+    processed_params = plan_params
+    # Processar features se for uma string com quebras de linha
+    if processed_params[:features].is_a?(String) && processed_params[:features].include?("\n")
+      processed_params[:features] = processed_params[:features].split("\n").map(&:strip).reject(&:blank?)
+    end
+    
+    @plan = Plan.new(processed_params)
     
     if @plan.save
       # Criar produto e preço no Stripe
@@ -28,9 +34,13 @@ class Admin::PlansController < Admin::BaseController
   end
 
   def update
-    if @plan.update(plan_params)
-      # Atualizar produto no Stripe se necessário
-      update_stripe_product
+    processed_params = plan_params
+    # Processar features se for uma string com quebras de linha
+    if processed_params[:features].is_a?(String) && processed_params[:features].include?("\n")
+      processed_params[:features] = processed_params[:features].split("\n").map(&:strip).reject(&:blank?)
+    end
+    
+    if @plan.update(processed_params)
       redirect_to admin_plan_path(@plan), notice: 'Plano atualizado com sucesso!'
     else
       render :edit, status: :unprocessable_entity
@@ -64,7 +74,7 @@ class Admin::PlansController < Admin::BaseController
   end
 
   def plan_params
-    params.require(:plan).permit(:name, :description, :price_cents, :stripe_price_id, :features)
+    params.require(:plan).permit(:name, :description, :price_cents, :stripe_price_id, :features, :max_links, :popular, :active)
   end
 
   def create_stripe_product_and_price
@@ -93,19 +103,6 @@ class Admin::PlansController < Admin::BaseController
       @plan.update(stripe_price_id: price.id)
     rescue Stripe::StripeError => e
       Rails.logger.error "Erro ao criar produto/preço no Stripe: #{e.message}"
-    end
-  end
-
-  def update_stripe_product
-    return unless @plan.stripe_product_id.present?
-
-    begin
-      Stripe::Product.update(@plan.stripe_product_id, {
-        name: @plan.name,
-        description: @plan.description
-      })
-    rescue Stripe::StripeError => e
-      Rails.logger.error "Erro ao atualizar produto no Stripe: #{e.message}"
     end
   end
 

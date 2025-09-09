@@ -11,6 +11,7 @@
 # mina restart_stack   # reinicia Puma e Nginx com segurança
 # mina status          # mostra status do Puma e porta
 # mina logs            # mostra logs da aplicação
+# mina tail_logs       # segue logs em tempo real (tail -f)
 # mina puma_logs       # mostra logs do Puma
 # mina system_status   # mostra status do sistema (nginx, disco, memória)
 
@@ -182,6 +183,12 @@ task :logs do
     command %[tail -50 log/production.log 2>/dev/null || echo "Log de produção não encontrado, criando..."]
     command %[touch log/production.log && echo "Log criado, executando alguma ação para gerar logs..."]
   end
+end
+
+desc "Follow production logs in real time"
+task :tail_logs do
+  command %[echo "===> Seguindo logs de produção em tempo real (Ctrl+C para sair):"]
+  command %[tail -f /home/appdoafiliado.com.br/rails/log/production.log]
 end
 
 desc "Show Puma logs"

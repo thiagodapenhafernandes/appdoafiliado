@@ -433,33 +433,26 @@ class AnalyticsController < ApplicationController
 
   # Métodos para análise de performance
   def performance_by_channel
-    # Simulação de dados de performance por canal baseado nos dados existentes
-    total_commissions = @commissions.sum(:affiliate_commission)
-    total_sales = @commissions.sum(:purchase_value)
-    total_orders = @commissions.count
+    # Usar dados reais dos canais baseado nas comissões existentes
+    return [] if @commissions.empty?
     
-    # Distribuir dados simulados por canais baseados nos SubIDs
-    subids = @commissions.pluck(:sub_id1).compact.uniq
+    # Agrupar por canal real dos dados
+    channel_data = @commissions.group(:channel)
+                               .sum(:affiliate_commission)
     
     channels = []
-    ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube'].each_with_index do |channel, index|
-      # Dividir comissões proporcionalmente
-      commission_portion = (total_commissions * (0.15 + index * 0.05 + rand * 0.1))
-      sales_portion = (total_sales * (0.15 + index * 0.05 + rand * 0.1))
-      orders_portion = (total_orders * (0.15 + index * 0.05 + rand * 0.1)).to_i
-      
-      next if orders_portion <= 0
-      
-      avg_ticket = orders_portion > 0 ? (sales_portion / orders_portion) : 0
-      roi = 150 + rand * 100 - 50 # ROI entre 100% e 200%
+    channel_data.each do |channel, total_commission|
+      channel_commissions = @commissions.where(channel: channel)
+      sales = channel_commissions.sum(:purchase_value) || 0
+      orders = channel_commissions.count
+      avg_ticket = orders > 0 ? (sales / orders) : 0
       
       channels << {
-        channel: channel,
-        commissions: commission_portion,
-        sales: sales_portion,
-        orders: orders_portion,
-        avg_ticket: avg_ticket,
-        roi: roi
+        channel: channel || 'Não informado',
+        commissions: total_commission.to_f,
+        sales: sales.to_f,
+        orders: orders,
+        avg_ticket: avg_ticket.to_f
       }
     end
     
@@ -467,32 +460,46 @@ class AnalyticsController < ApplicationController
   end
 
   def performance_by_category
-    # Simulação de dados por categoria baseado nos dados da Shopee
-    categories = ['Eletrônicos', 'Moda', 'Casa & Jardim', 'Beleza', 'Esportes', 'Livros']
-    total_commissions = @commissions.sum(:affiliate_commission)
-    total_sales = @commissions.sum(:purchase_value)
-    total_orders = @commissions.count
+    # Usar dados reais das categorias se disponíveis
+    return [] if @commissions.empty?
+    
+    # Agrupar por categoria real dos dados (usando category_l1, category_l2 ou category_l3)
+    category_data = {}
+    
+    # Tentar agrupar por categoria_l1 primeiro, depois l2, depois l3
+    [:category_l1, :category_l2, :category_l3].each do |category_field|
+      if @commissions.where.not(category_field => [nil, '']).exists?
+        category_data = @commissions.where.not(category_field => [nil, ''])
+                                   .group(category_field)
+                                   .sum(:affiliate_commission)
+        break unless category_data.empty?
+      end
+    end
+    
+    # Se não há categorias nos dados, retornar vazio
+    return [] if category_data.empty?
     
     result = []
-    categories.each_with_index do |category, index|
-      commission_portion = (total_commissions * (0.1 + rand * 0.15))
-      sales_portion = (total_sales * (0.1 + rand * 0.15))
-      orders_portion = (total_orders * (0.1 + rand * 0.15)).to_i
+    category_data.each do |category, total_commission|
+      category_commissions = @commissions.where(
+        'category_l1 = ? OR category_l2 = ? OR category_l3 = ?', 
+        category, category, category
+      )
       
-      next if orders_portion <= 0
-      
-      avg_ticket = orders_portion > 0 ? (sales_portion / orders_portion) : 0
+      sales = category_commissions.sum(:purchase_value) || 0
+      orders = category_commissions.count
+      avg_ticket = orders > 0 ? (sales / orders) : 0
       
       result << {
-        category: category,
-        commissions: commission_portion,
-        sales: sales_portion,
-        orders: orders_portion,
-        avg_ticket: avg_ticket
+        category: category || 'Não informado',
+        commissions: total_commission.to_f,
+        sales: sales.to_f,
+        orders: orders,
+        avg_ticket: avg_ticket.to_f
       }
     end
     
-    result.sort_by { |c| -c[:commissions] }.first(6)
+    result.sort_by { |c| -c[:commissions] }.first(10)
   end
 
   def performance_by_subid
@@ -514,15 +521,16 @@ class AnalyticsController < ApplicationController
       commission_value = scope.sum(:affiliate_commission) || 0
       orders_count = scope.count
       sales_value = scope.sum(:purchase_value) || 0
-      conversion_rate = 2.5 + rand * 3 # Taxa entre 2.5% e 5.5%
+      
+      # Calcular taxa de conversão baseada em dados reais se disponível
+      # Por enquanto, apenas incluir métricas básicas sem conversão simulada
       
       subid_name = subid.present? ? subid : 'Não informado'
       result << {
         subid: subid_name,
         commissions: commission_value.to_f,
         sales: sales_value.to_f,
-        orders: orders_count,
-        conversion_rate: conversion_rate
+        orders: orders_count
       }
     end
     
@@ -555,12 +563,11 @@ class AnalyticsController < ApplicationController
 
   # Métodos para análise de conversão
   def conversion_funnel_data
-    total_clicks = 10000 + rand * 5000 # Simulado
-    total_visits = (total_clicks * 0.8).to_i
-    total_engaged = (total_visits * 0.6).to_i
-    total_orders = @commissions.count
+    # Usar dados reais das tabelas
+    total_clicks = current_user.links.sum(:clicks_count) || 0
+    total_conversions = @commissions.count
     
-    return [] if total_orders == 0
+    return [] if total_clicks == 0
     
     [
       {
@@ -571,108 +578,43 @@ class AnalyticsController < ApplicationController
         conversion_rate: nil
       },
       {
-        name: 'Visitas',
-        icon: '👀',
-        count: total_visits,
-        percentage: (total_visits.to_f / total_clicks * 100),
-        conversion_rate: (total_visits.to_f / total_clicks * 100)
-      },
-      {
-        name: 'Engajamento',
-        icon: '❤️',
-        count: total_engaged,
-        percentage: (total_engaged.to_f / total_clicks * 100),
-        conversion_rate: (total_engaged.to_f / total_visits * 100)
-      },
-      {
         name: 'Conversões',
         icon: '🎯',
-        count: total_orders,
-        percentage: (total_orders.to_f / total_clicks * 100),
-        conversion_rate: (total_orders.to_f / total_engaged * 100)
+        count: total_conversions,
+        percentage: total_conversions > 0 ? (total_conversions.to_f / total_clicks * 100) : 0,
+        conversion_rate: total_conversions > 0 ? (total_conversions.to_f / total_clicks * 100) : 0
       }
     ]
   end
 
   def roi_analysis_data
     total_commissions = @commissions.sum(:affiliate_commission)
-    total_invested = current_user.subid_ad_spends.sum(:ad_spend)
-    
-    # Se não há dados de investimento, simular
-    if total_invested == 0
-      total_invested = total_commissions * 0.6 # Simular 60% de investimento
-    end
+    total_invested = current_user.subid_ad_spends.sum(:ad_spend) if current_user.respond_to?(:subid_ad_spends)
+    total_invested ||= 0
     
     total_return = total_commissions
     overall_roi = total_invested > 0 ? ((total_return - total_invested) / total_invested * 100) : 0
-    
-    # ROI por canal
-    channels_roi = []
-    ['Instagram', 'Facebook', 'TikTok', 'WhatsApp'].each do |channel|
-      invested = total_invested * (0.2 + rand * 0.15)
-      return_value = total_return * (0.2 + rand * 0.15)
-      roi = invested > 0 ? ((return_value - invested) / invested * 100) : 0
-      
-      icon = case channel
-             when 'Instagram' then '📱'
-             when 'Facebook' then '📘'  
-             when 'TikTok' then '🎵'
-             when 'WhatsApp' then '💬'
-             else '🌐'
-             end
-      
-      channels_roi << {
-        channel: channel,
-        icon: icon,
-        invested: invested,
-        return: return_value,
-        roi: roi,
-        campaigns: 3 + rand(5)
-      }
-    end
     
     {
       overall_roi: overall_roi,
       total_invested: total_invested,
       total_return: total_return,
-      by_channel: channels_roi.sort_by { |c| -c[:roi] }
+      by_channel: []
     }
   end
 
   def attribution_analysis_data
     return {} if @commissions.empty?
     
-    # Simulação de dados de atribuição
-    channels = ['Instagram', 'Facebook', 'TikTok', 'WhatsApp']
-    
-    first_click = channels.map do |channel|
-      percentage = 20 + rand * 15
-      { channel: channel, percentage: percentage }
-    end
-    first_click = first_click.sort_by { |c| -c[:percentage] }
-    
-    last_click = channels.map do |channel|
-      percentage = 15 + rand * 20
-      { channel: channel, percentage: percentage }
-    end
-    last_click = last_click.sort_by { |c| -c[:percentage] }
-    
-    # Jornadas do cliente
-    journeys = [
-      { path: ['Instagram', 'Site', 'Compra'], count: 45, percentage: 35.2 },
-      { path: ['Facebook', 'Instagram', 'Compra'], count: 32, percentage: 25.0 },
-      { path: ['TikTok', 'WhatsApp', 'Compra'], count: 28, percentage: 21.9 },
-      { path: ['WhatsApp', 'Compra'], count: 23, percentage: 17.9 }
-    ]
-    
+    # Retornar dados vazios pois não temos dados de atribuição reais
     {
-      first_click: first_click,
-      last_click: last_click,
-      customer_journeys: journeys,
-      top_discovery_channel: first_click.first[:channel],
-      top_conversion_channel: last_click.first[:channel],
-      avg_time_to_conversion: 3.5,
-      avg_touchpoints: 2.8
+      first_click: [],
+      last_click: [],
+      customer_journeys: [],
+      top_discovery_channel: nil,
+      top_conversion_channel: nil,
+      avg_time_to_conversion: 0,
+      avg_touchpoints: 0
     }
   end
 
