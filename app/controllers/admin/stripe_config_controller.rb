@@ -117,14 +117,24 @@ class Admin::StripeConfigController < Admin::BaseController
         # Encontrar ou criar plano local
         plan = Plan.find_or_initialize_by(stripe_price_id: price.id)
         
-        plan.assign_attributes(
-          name: product.name,
-          description: product.description,
-          price_cents: price.unit_amount,
-          stripe_price_id: price.id
-        )
-        
-        plan.save!
+        # Usar sync_from_stripe! para evitar conflitos de validação
+        if plan.persisted?
+          plan.sync_from_stripe!(
+            name: product.name,
+            description: product.description,
+            price_cents: price.unit_amount,
+            stripe_price_id: price.id
+          )
+        else
+          # Para novos registros, usar save! normalmente
+          plan.assign_attributes(
+            name: product.name,
+            description: product.description,
+            price_cents: price.unit_amount,
+            stripe_price_id: price.id
+          )
+          plan.save!
+        end
       end
     end
   end
