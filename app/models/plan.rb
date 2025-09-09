@@ -44,6 +44,9 @@ class Plan < ApplicationRecord
   def sync_from_stripe!(attributes = {})
     self.syncing_from_stripe = true
     
+    # Retorna se não há atributos para atualizar
+    return if attributes.empty?
+    
     # Se apenas campos técnicos estão sendo atualizados, usar update_columns
     if attributes.keys.all? { |key| [:stripe_price_id, :price_cents].include?(key.to_sym) }
       update_columns(attributes)
