@@ -86,8 +86,7 @@ class SubscriptionsController < ApplicationController
     user_params = params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name)
     
     User.create(user_params.merge(
-      role: :user,
-      confirmed_at: Time.current # Auto-confirmar email para facilitar o fluxo
+      role: :user
     ))
   end
 
