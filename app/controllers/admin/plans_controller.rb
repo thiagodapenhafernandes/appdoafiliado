@@ -71,6 +71,17 @@ class Admin::PlansController < Admin::BaseController
     end
   end
 
+  def sync_from_stripe
+    begin
+      sync_plans_from_stripe
+      redirect_to admin_plans_path, notice: 'Planos sincronizados do Stripe com sucesso!'
+    rescue StandardError => e
+      Rails.logger.error "Erro na sincronização do Stripe: #{e.message}"
+      Rails.logger.error "Backtrace: #{e.backtrace.join("\n")}"
+      redirect_to admin_plans_path, alert: "Erro ao sincronizar do Stripe: #{e.message}"
+    end
+  end
+
   private
 
   def set_plan
@@ -155,5 +166,62 @@ class Admin::PlansController < Admin::BaseController
       Rails.logger.error "Erro ao criar produto/preço no Stripe: #{e.message}"
       raise e
     end
+  end
+
+  def sync_plans_from_stripe
+    Rails.logger.info "Iniciando sincronização de planos do Stripe..."
+    
+    # Buscar todos os produtos ativos no Stripe
+    products = Stripe::Product.list(active: true, limit: 100)
+    
+    products.data.each do |stripe_product|
+      # Buscar preços para este produto
+      prices = Stripe::Price.list(product: stripe_product.id, active: true)
+      
+      prices.data.each do |stripe_price|
+        next unless stripe_price.recurring&.interval == 'month' && stripe_price.currency == 'brl'
+        
+        # Verificar se já existe um plano com este price_id
+        existing_plan = Plan.find_by(stripe_price_id: stripe_price.id)
+        
+        if existing_plan
+          # Atualizar plano existente com dados do Stripe
+          Rails.logger.info "Atualizando plano existente: #{existing_plan.name}"
+          existing_plan.syncing_from_stripe = true
+          existing_plan.update!(
+            name: stripe_product.name,
+            description: stripe_product.description,
+            price_cents: stripe_price.unit_amount
+          )
+        else
+          # Verificar se existe plano com mesmo nome (para evitar duplicação)
+          existing_by_name = Plan.find_by(name: stripe_product.name)
+          
+          if existing_by_name && existing_by_name.stripe_price_id.blank?
+            # Atualizar plano existente sem stripe_price_id
+            Rails.logger.info "Vinculando plano existente ao Stripe: #{existing_by_name.name}"
+            existing_by_name.update_column(:stripe_price_id, stripe_price.id)
+            existing_by_name.sync_from_stripe!(
+              price_cents: stripe_price.unit_amount,
+              description: stripe_product.description
+            )
+          else
+            # Criar novo plano
+            Rails.logger.info "Criando novo plano do Stripe: #{stripe_product.name}"
+            plan = Plan.new(
+              name: stripe_product.name,
+              description: stripe_product.description,
+              price_cents: stripe_price.unit_amount,
+              stripe_price_id: stripe_price.id,
+              active: true
+            )
+            plan.syncing_from_stripe = true
+            plan.save!
+          end
+        end
+      end
+    end
+    
+    Rails.logger.info "Sincronização de planos do Stripe concluída!"
   end
 end

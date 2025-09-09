@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       member do
         patch :sync_with_stripe
       end
+      collection do
+        post :sync_from_stripe
+      end
     end
     resources :users do
       member do
