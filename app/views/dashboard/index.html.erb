@@ -296,8 +296,8 @@
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg leading-6 font-medium text-gray-900">Desempenho dos Links</h3>
         <div class="flex items-center space-x-2">
-          <span class="text-sm text-gray-500">22/08/25 - 04/09/25</span>
-          <span class="text-sm text-gray-500">Hoje</span>
+          <span class="text-sm text-gray-500"><%= (Date.current - 13.days).strftime("%d/%m/%y") %> - <%= Date.current.strftime("%d/%m/%y") %></span>
+          <span class="text-sm text-gray-500">Últimos 14 dias</span>
         </div>
       </div>
       
@@ -459,10 +459,10 @@ document.addEventListener('DOMContentLoaded', function() {
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['22/08', '23/08', '24/08', '25/08', '26/08', '27/08', '28/08', '29/08', '30/08', '31/08', '01/09', '02/09', '03/09', '04/09'],
+      labels: <%= raw @chart_labels.to_json %>,
       datasets: [{
         label: 'Cliques',
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        data: <%= raw @chart_data.to_json %>,
         borderColor: '#f97316',
         backgroundColor: 'rgba(249, 115, 22, 0.1)',
         tension: 0.4,
