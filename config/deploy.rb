@@ -184,9 +184,7 @@ task :tail_logs do
   puts "Conectando aos logs em tempo real..."
   puts "Pressione Ctrl+C para sair"
   
-  run do
-    command %[tail -f #{fetch(:shared_path)}/log/production.log]
-  end
+  command %[tail -f #{fetch(:shared_path)}/log/production.log]
 end
 
 desc "Real-time logs with SSH"

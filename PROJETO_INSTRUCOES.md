@@ -2493,13 +2493,67 @@ bundle exec rails server -p 3000
 ```
 
 ### Deployment para Produção
+
+#### 🚀 Processo de Deploy via Mina
 ```bash
-# Deploy via Mina (configurado)
+# 1. Fazer commit das alterações
+git add .
+git commit -m "Descrição das alterações"
+git push origin master
+
+# 2. Deploy via Mina (configurado)
 mina deploy
+
+# 3. Gerenciar serviços Puma
+mina full_stop        # Para completamente a aplicação
+mina start           # Inicia o Puma
+mina restart         # Reinicia o Puma
+mina restart_stack   # Reinicia Puma + Nginx
+mina status          # Verifica status
+mina logs            # Visualiza logs
+mina puma_logs       # Logs específicos do Puma
+mina system_status   # Status completo do sistema
 
 # Versões recentes no servidor:
 # v13-v21: Evoluções do sistema de pagamentos
-# v21: Versão atual com formulário unificado
+# v22: Versão atual com correções analytics e sistema de permissões
+```
+
+#### ⚙️ Configuração Puma (Produção)
+**IMPORTANTE**: O projeto já está configurado com `puma/daemon` para produção
+
+```ruby
+# config/puma.rb - Configuração atual
+require 'puma/daemon' if ENV.fetch("RAILS_ENV") { "development" } == "production"
+
+# Em produção:
+- Workers: 3 (configurável via WEB_CONCURRENCY)
+- Bind: tcp://127.0.0.1:9292
+- Daemon: true (roda em background)
+- PID file: tmp/pids/appdoafiliado.com.br.pid
+- State file: tmp/pids/appdoafiliado.com.br.state
+```
+
+#### 🌐 URLs do Sistema
+- **Produção**: https://app.appdoafiliado.com.br
+- **Site**: https://appdoafiliado.com.br
+- **Servidor**: 167.99.5.194 (usuário: appdoafiliado.com.br)
+
+#### 🔧 Comandos SSH Diretos (se necessário)
+```bash
+# Conectar via SSH
+ssh appdoafiliado.com.br@167.99.5.194
+
+# Navegar para aplicação
+cd /home/appdoafiliado.com.br/deploy/current
+
+# Verificar processos Puma
+ps aux | grep puma
+
+# Iniciar Puma manualmente (se necessário)
+source ~/.rvm/scripts/rvm
+rvm use ruby-3.3.5@app.appdoafiliado
+bundle exec puma -C config/puma.rb
 ```
 
 ### Troubleshooting Comum
