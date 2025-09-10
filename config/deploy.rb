@@ -181,8 +181,26 @@ end
 
 desc "Follow production logs in real time"
 task :tail_logs do
-  command %[echo "===> Seguindo logs de produção em tempo real (Ctrl+C para sair):"]
-  command %[tail -f /home/appdoafiliado.com.br/rails/log/production.log]
+  puts "Conectando aos logs em tempo real..."
+  puts "Pressione Ctrl+C para sair"
+  
+  run do
+    command %[tail -f #{fetch(:shared_path)}/log/production.log]
+  end
+end
+
+desc "Real-time logs with SSH"
+task :live_logs do
+  puts "Logs em tempo real via SSH. Pressione Ctrl+C para sair."
+  exec "ssh #{fetch(:user)}@#{fetch(:domain)} 'tail -f #{fetch(:deploy_to)}/shared/log/production.log'"
+end
+
+desc "Show application logs"
+task :logs do
+  command %[echo "===> Últimas 50 linhas do log de produção:"]
+  command %[tail -50 #{fetch(:shared_path)}/log/production.log 2>/dev/null || echo "Log de produção vazio ou não encontrado"]
+  command %[echo "===> Verificando outros logs disponíveis:"]
+  command %[ls -la #{fetch(:shared_path)}/log/]
 end
 
 desc "Show Puma logs"
