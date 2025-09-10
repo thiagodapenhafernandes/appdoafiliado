@@ -13,71 +13,121 @@
         </div>
       </div>
 
-      <!-- Novo layout melhorado do heatmap -->
-      <div class="space-y-3">
+      <!-- Layout melhorado dos dados horários -->
+      <div class="space-y-4">
+        <% 
+          # Obter dados reais de cliques por hora do banco de dados
+          # Se não houver dados reais, usar dados simulados baseados em padrões típicos
+          if current_user.website_clicks.any?
+            # Dados reais do banco
+            hourly_data = current_user.website_clicks
+              .where(click_time: 30.days.ago..Time.current)
+              .group("EXTRACT(HOUR FROM click_time)")
+              .count
+            total_real_clicks = hourly_data.values.sum
+          else
+            # Dados simulados mais realísticos se não houver dados reais
+            hourly_data = {}
+            total_real_clicks = 0
+          end
+          
+          # Períodos do dia com dados reais ou simulados
+          periods = [
+            { 
+              name: "Madrugada", 
+              hours: "00h-05h", 
+              color: "bg-blue-500", 
+              range: (0..5),
+              clicks: hourly_data.select { |hour, _| (0..5).include?(hour.to_i) }.values.sum 
+            },
+            { 
+              name: "Manhã", 
+              hours: "06h-11h", 
+              color: "bg-green-500", 
+              range: (6..11),
+              clicks: hourly_data.select { |hour, _| (6..11).include?(hour.to_i) }.values.sum 
+            },
+            { 
+              name: "Tarde", 
+              hours: "12h-17h", 
+              color: "bg-orange-500", 
+              range: (12..17),
+              clicks: hourly_data.select { |hour, _| (12..17).include?(hour.to_i) }.values.sum 
+            },
+            { 
+              name: "Noite", 
+              hours: "18h-23h", 
+              color: "bg-purple-500", 
+              range: (18..23),
+              clicks: hourly_data.select { |hour, _| (18..23).include?(hour.to_i) }.values.sum 
+            }
+          ]
+        %>
+        
         <!-- Períodos do dia -->
-        <div class="grid grid-cols-4 gap-3 mb-4">
-          <% 
-            periods = [
-              { name: "Madrugada", hours: "00h-05h", color: "bg-blue-500", intensity: 1 },
-              { name: "Manhã", hours: "06h-11h", color: "bg-green-500", intensity: 3 },
-              { name: "Tarde", hours: "12h-17h", color: "bg-orange-500", intensity: 5 },
-              { name: "Noite", hours: "18h-23h", color: "bg-purple-500", intensity: 4 }
-            ]
-          %>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
           <% periods.each do |period| %>
             <div class="text-center p-3 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
-              <div class="<%= period[:color] %> w-full h-3 rounded-full mb-2 opacity-<%= period[:intensity] * 20 %>"></div>
+              <div class="<%= period[:color] %> w-full h-3 rounded-full mb-2 opacity-80"></div>
               <div class="text-sm font-medium text-gray-900"><%= period[:name] %></div>
               <div class="text-xs text-gray-500"><%= period[:hours] %></div>
-              <div class="text-lg font-bold text-gray-800 mt-1"><%= period[:intensity] * 20 %></div>
+              <div class="text-lg font-bold text-gray-800 mt-1"><%= period[:clicks] %></div>
               <div class="text-xs text-gray-400">cliques</div>
             </div>
           <% end %>
         </div>
 
-        <!-- Heatmap horizontal melhorado com horários visíveis -->
+        <!-- Heatmap horizontal responsivo -->
         <div class="bg-gray-50 p-4 rounded-lg">
           <h4 class="text-sm font-medium text-gray-700 mb-3">Distribuição por Hora</h4>
           
-          <!-- Grid de 24 horas -->
-          <div class="grid grid-cols-12 gap-2">
+          <!-- Grid responsivo de 24 horas -->
+          <div class="flex flex-wrap gap-1 sm:gap-2">
             <% (0..23).each do |hour| %>
               <% 
-                # Simular intensidade baseada em horários mais comuns
-                intensity = case hour
-                when 0..5   then rand(1..2)   # Madrugada - baixa
-                when 6..8   then rand(2..4)   # Manhã cedo - média
-                when 9..11  then rand(4..7)   # Manhã - alta
-                when 12..14 then rand(6..9)   # Almoço/tarde - muito alta
-                when 15..17 then rand(7..10)  # Tarde - pico
-                when 18..20 then rand(5..8)   # Início noite - alta
-                when 21..23 then rand(3..6)   # Noite - média
+                # Usar dados reais se disponíveis, senão simular baseado em padrões típicos
+                clicks = hourly_data[hour.to_f] || hourly_data[hour.to_s] || 0
+                
+                # Se não há dados reais, usar simulação baseada em padrões
+                if total_real_clicks == 0
+                  clicks = case hour
+                  when 0..5   then [0, 1, 2].sample  # Madrugada - muito baixa
+                  when 6..8   then [1, 2, 3].sample  # Manhã cedo - baixa
+                  when 9..11  then [3, 4, 5, 6].sample  # Manhã - média
+                  when 12..14 then [5, 6, 7, 8, 9].sample  # Almoço/tarde - alta
+                  when 15..17 then [7, 8, 9, 10].sample  # Tarde - pico
+                  when 18..20 then [4, 5, 6, 7, 8].sample  # Início noite - média-alta
+                  when 21..23 then [2, 3, 4, 5].sample  # Noite - baixa
+                  end
                 end
                 
-                # Cores baseadas na intensidade
-                color_class = case intensity
-                when 1..2   then "bg-blue-200 text-blue-800"
-                when 3..4   then "bg-green-300 text-green-800"
-                when 5..6   then "bg-yellow-400 text-yellow-900"
-                when 7..8   then "bg-orange-500 text-white"
-                when 9..10  then "bg-red-500 text-white"
-                else "bg-gray-200 text-gray-600"
+                # Determinar cor baseada na intensidade
+                max_clicks = hourly_data.values.max || 10
+                intensity_percent = max_clicks > 0 ? (clicks.to_f / max_clicks * 100) : 0
+                
+                color_class = case intensity_percent
+                when 0..10   then "bg-gray-200 text-gray-600"
+                when 11..25  then "bg-blue-300 text-blue-800"
+                when 26..50  then "bg-green-400 text-green-800"
+                when 51..75  then "bg-yellow-500 text-yellow-900"
+                when 76..90  then "bg-orange-500 text-white"
+                else "bg-red-500 text-white"
                 end
               %>
-              <div class="relative group">
-                <div class="<%= color_class %> h-16 rounded-lg flex flex-col items-center justify-center text-xs font-medium transition-transform hover:scale-105 cursor-pointer shadow-sm">
-                  <!-- Hora sempre visível -->
-                  <div class="text-xs font-bold"><%= sprintf("%02d", hour) %>h</div>
+              <div class="relative group flex-1 min-w-[2.5rem] max-w-[4rem]">
+                <div class="<%= color_class %> h-12 sm:h-14 lg:h-16 rounded-md flex flex-col items-center justify-center text-xs font-medium transition-transform hover:scale-105 cursor-pointer shadow-sm w-full">
+                  <!-- Hora (responsiva) -->
+                  <div class="text-xs font-bold hidden sm:block"><%= sprintf("%02d", hour) %>h</div>
+                  <div class="text-xs font-bold sm:hidden"><%= hour %></div>
                   <!-- Número de cliques -->
-                  <div class="text-lg font-bold"><%= intensity %></div>
+                  <div class="text-sm sm:text-lg font-bold"><%= clicks %></div>
                 </div>
                 
                 <!-- Tooltip melhorado -->
                 <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
                   <div class="bg-gray-900 text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap">
                     <div class="font-semibold"><%= sprintf("%02d:00 - %02d:59", hour, hour) %></div>
-                    <div><%= intensity %> cliques únicos</div>
+                    <div><%= clicks %> cliques únicos</div>
                     <div class="text-gray-300">
                       <%= case hour
                       when 0..5   then "😴 Madrugada"
@@ -93,6 +143,13 @@
               </div>
             <% end %>
           </div>
+          
+          <!-- Legenda responsiva -->
+          <div class="mt-3 text-center">
+            <p class="text-xs text-gray-500">
+              <%= total_real_clicks > 0 ? "📊 Dados reais dos últimos 30 dias" : "📋 Dados simulados - conecte suas análises para ver dados reais" %>
+            </p>
+          </div>
         </div>
 
         <!-- Insights automáticos -->
@@ -106,9 +163,21 @@
             <div class="flex-1">
               <h4 class="text-sm font-medium text-blue-900">💡 Insights Automáticos</h4>
               <div class="mt-2 text-sm text-blue-800 space-y-1">
-                <div>🔥 <strong>Horário de pico:</strong> 14h-17h (período da tarde)</div>
-                <div>📈 <strong>Melhor conversão:</strong> 15h-16h</div>
-                <div>💤 <strong>Menor atividade:</strong> 02h-05h</div>
+                <% if total_real_clicks > 0 %>
+                  <% peak_hour = hourly_data.max_by { |hour, clicks| clicks } %>
+                  <% if peak_hour %>
+                    <div>🔥 <strong>Horário de pico:</strong> <%= sprintf("%02d:00", peak_hour[0].to_i) %> (<%= peak_hour[1] %> cliques)</div>
+                  <% end %>
+                  <% afternoon_clicks = periods[2][:clicks] %>
+                  <% if afternoon_clicks > 0 %>
+                    <div>☀️ <strong>Tarde ativa:</strong> <%= afternoon_clicks %> cliques entre 12h-17h</div>
+                  <% end %>
+                  <div>📊 <strong>Total analisado:</strong> <%= total_real_clicks %> cliques únicos</div>
+                <% else %>
+                  <div>🔥 <strong>Horário de pico típico:</strong> 14h-17h (período da tarde)</div>
+                  <div>📈 <strong>Melhor conversão:</strong> 15h-16h</div>
+                  <div>💤 <strong>Menor atividade:</strong> 02h-05h</div>
+                <% end %>
                 <div>📊 <strong>Recomendação:</strong> Foque campanhas entre 12h-18h</div>
               </div>
             </div>
