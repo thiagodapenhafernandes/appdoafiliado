@@ -134,6 +134,8 @@ class ClicksAnalyticsController < ApplicationController
     end
   end
 
+  
+
   private
 
   def process_csv_analytics_data
