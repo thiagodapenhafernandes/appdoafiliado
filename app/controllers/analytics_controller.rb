@@ -4,8 +4,15 @@ class AnalyticsController < ApplicationController
   before_action :check_pdf_export_access, only: [:export_pdf]
   
   def index
-    # Analisar todos os dados importados (CSV + API) - sem filtro de período
+    # Analisar dados com filtro de período se especificado
     @commissions = current_user.all_commissions_unified.where.not(order_status: 'cancelled')
+    
+    # Aplicar filtro de data se fornecido
+    if params[:start_date].present? && params[:end_date].present?
+      start_date = Date.parse(params[:start_date])
+      end_date = Date.parse(params[:end_date])
+      @commissions = @commissions.where(order_date: start_date.beginning_of_day..end_date.end_of_day)
+    end
     
     # Métricas principais - dados completos (CSV + API)
     @total_commissions = @commissions.sum(:affiliate_commission) || 0
@@ -38,8 +45,15 @@ class AnalyticsController < ApplicationController
   end
 
   def performance
-    # Analisar todos os dados importados do CSV (sem filtro de período)
+    # Analisar dados com filtro de período se especificado
     @commissions = current_user.commissions.where.not(order_status: 'cancelled')
+    
+    # Aplicar filtro de data se fornecido
+    if params[:start_date].present? && params[:end_date].present?
+      start_date = Date.parse(params[:start_date])
+      end_date = Date.parse(params[:end_date])
+      @commissions = @commissions.where(order_date: start_date.beginning_of_day..end_date.end_of_day)
+    end
     
     @performance_by_channel = performance_by_channel
     @performance_by_category = performance_by_category
@@ -49,8 +63,15 @@ class AnalyticsController < ApplicationController
   end
 
   def conversion
-    # Analisar todos os dados importados do CSV (sem filtro de período)
+    # Analisar dados com filtro de período se especificado
     @commissions = current_user.commissions.where.not(order_status: 'cancelled')
+    
+    # Aplicar filtro de data se fornecido
+    if params[:start_date].present? && params[:end_date].present?
+      start_date = Date.parse(params[:start_date])
+      end_date = Date.parse(params[:end_date])
+      @commissions = @commissions.where(order_date: start_date.beginning_of_day..end_date.end_of_day)
+    end
     
     @conversion_funnel = conversion_funnel_data
     @roi_analysis = roi_analysis_data

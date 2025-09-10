@@ -23,6 +23,75 @@
     </div>
   </div>
 
+  <!-- Filtro de Data -->
+  <div class="bg-white rounded-lg shadow p-4">
+    <form method="get" action="<%= analytics_performance_path %>" class="flex flex-wrap items-end gap-4">
+      <div class="flex flex-col">
+        <label for="start_date" class="text-sm font-medium text-gray-700 mb-1">Data Inicial</label>
+        <input type="date" 
+               id="start_date" 
+               name="start_date" 
+               value="<%= params[:start_date] %>"
+               class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      </div>
+      
+      <div class="flex flex-col">
+        <label for="end_date" class="text-sm font-medium text-gray-700 mb-1">Data Final</label>
+        <input type="date" 
+               id="end_date" 
+               name="end_date" 
+               value="<%= params[:end_date] %>"
+               class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      </div>
+      
+      <div class="flex gap-2">
+        <button type="submit" 
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+          </svg>
+          Filtrar
+        </button>
+        
+        <% if params[:start_date].present? || params[:end_date].present? %>
+          <%= link_to analytics_performance_path, 
+              class: "bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center" do %>
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Limpar
+          <% end %>
+        <% end %>
+      </div>
+      
+      <!-- Filtros rápidos -->
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1">Filtros Rápidos</label>
+        <div class="flex gap-2">
+          <%= link_to analytics_performance_path(start_date: 7.days.ago.strftime('%Y-%m-%d'), end_date: Date.current.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Últimos 7 dias
+          <% end %>
+          
+          <%= link_to analytics_performance_path(start_date: 30.days.ago.strftime('%Y-%m-%d'), end_date: Date.current.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Últimos 30 dias
+          <% end %>
+          
+          <%= link_to analytics_performance_path(start_date: Date.current.beginning_of_month.strftime('%Y-%m-%d'), end_date: Date.current.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Este mês
+          <% end %>
+          
+          <%= link_to analytics_performance_path(start_date: 1.month.ago.beginning_of_month.strftime('%Y-%m-%d'), end_date: 1.month.ago.end_of_month.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Mês passado
+          <% end %>
+        </div>
+      </div>
+    </form>
+  </div>
+
   <!-- Performance por Canal -->
   <div class="bg-white rounded-lg shadow">
     <div class="px-6 py-4 border-b border-gray-200">

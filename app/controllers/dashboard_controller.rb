@@ -15,6 +15,9 @@ class DashboardController < ApplicationController
     # Stats for charts
     @links_by_clicks = current_user.links.active.by_clicks.limit(5)
     
+    # Dados para widgets de analytics usando WebsiteClick se disponível
+    prepare_analytics_data
+    
     # Dados para o gráfico de desempenho dos links (últimos 14 dias)
     prepare_performance_chart_data
   end
@@ -63,5 +66,20 @@ class DashboardController < ApplicationController
     end
     
     @chart_data = clicks_data
+  end
+
+  def prepare_analytics_data
+    # Obter dados reais de WebsiteClick se existirem
+    website_clicks = WebsiteClick.where(user: current_user)
+    
+    if website_clicks.exists?
+      # Usar dados reais do banco de dados
+      @clicks_by_referrer = website_clicks.group(:referrer).count
+      @website_clicks_total = website_clicks.count
+    else
+      # Fallback para dados simulados se não houver dados reais
+      @clicks_by_referrer = {}
+      @website_clicks_total = @total_clicks
+    end
   end
 end

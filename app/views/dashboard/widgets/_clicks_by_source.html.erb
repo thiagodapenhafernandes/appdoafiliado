@@ -16,37 +16,90 @@
       <!-- Lista de origens com visual melhorado -->
       <div class="space-y-3">
         <% 
-          origins = [
-            { name: "Instagram", icon: "📱", count: (@total_clicks * 0.35).round, color: "bg-pink-500" },
-            { name: "WhatsApp", icon: "💬", count: (@total_clicks * 0.25).round, color: "bg-green-500" },
-            { name: "Facebook", icon: "👤", count: (@total_clicks * 0.20).round, color: "bg-blue-600" },
-            { name: "YouTube", icon: "📺", count: (@total_clicks * 0.10).round, color: "bg-red-500" },
-            { name: "TikTok", icon: "🎵", count: (@total_clicks * 0.05).round, color: "bg-black" },
-            { name: "Outros", icon: "🔗", count: (@total_clicks * 0.05).round, color: "bg-gray-500" }
-          ]
+          # Verificar se temos dados reais de referrer
+          if @clicks_by_referrer&.any? && @website_clicks_total && @website_clicks_total > 0
+            # Usar dados reais do banco de dados
+            origins = []
+            
+            # Mapear referrers reais para ícones conhecidos
+            referrer_icons = {
+              'Instagram' => { icon: '📱', color: 'bg-pink-500' },
+              'WhatsApp' => { icon: '💬', color: 'bg-green-500' },
+              'Facebook' => { icon: '👤', color: 'bg-blue-600' },
+              'YouTube' => { icon: '📺', color: 'bg-red-500' },
+              'TikTok' => { icon: '🎵', color: 'bg-black' },
+              'Google' => { icon: '🔍', color: 'bg-yellow-500' },
+              'Twitter' => { icon: '🐦', color: 'bg-blue-400' },
+              'LinkedIn' => { icon: '💼', color: 'bg-blue-700' },
+              'Telegram' => { icon: '✈️', color: 'bg-blue-500' },
+              'Pinterest' => { icon: '📌', color: 'bg-red-600' }
+            }
+            
+            @clicks_by_referrer.sort_by { |_, count| -count }.each do |referrer, count|
+              clean_referrer = referrer.to_s.strip
+              clean_referrer = 'Direto' if clean_referrer.blank? || clean_referrer.downcase == 'direct'
+              
+              # Buscar ícone conhecido ou usar padrão
+              referrer_config = referrer_icons[clean_referrer] || { icon: '🔗', color: 'bg-gray-500' }
+              
+              origins << {
+                name: clean_referrer,
+                icon: referrer_config[:icon],
+                count: count,
+                color: referrer_config[:color]
+              }
+            end
+            
+            # Limitar a 6 principais origens para melhor visualização
+            origins = origins.first(6)
+          else
+            # Fallback para dados simulados se não houver dados reais
+            total_for_simulation = @total_clicks || 0
+            
+            origins = [
+              { name: "Instagram", icon: "📱", count: (total_for_simulation * 0.35).round, color: "bg-pink-500" },
+              { name: "WhatsApp", icon: "💬", count: (total_for_simulation * 0.25).round, color: "bg-green-500" },
+              { name: "Facebook", icon: "👤", count: (total_for_simulation * 0.20).round, color: "bg-blue-600" },
+              { name: "YouTube", icon: "📺", count: (total_for_simulation * 0.10).round, color: "bg-red-500" },
+              { name: "TikTok", icon: "🎵", count: (total_for_simulation * 0.05).round, color: "bg-black" },
+              { name: "Outros", icon: "🔗", count: (total_for_simulation * 0.05).round, color: "bg-gray-500" }
+            ]
+          end
+          
+          # Calcular total real dos dados exibidos
+          displayed_total = origins.sum { |origin| origin[:count] }
+          displayed_total = 1 if displayed_total == 0 # Evitar divisão por zero
         %>
         
-        <% origins.each do |origin| %>
-          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-            <div class="flex items-center space-x-3">
-              <div class="<%= origin[:color] %> w-8 h-8 rounded-full flex items-center justify-center text-white font-medium text-sm">
-                <%= origin[:icon] %>
-              </div>
-              <div>
-                <div class="font-medium text-gray-900"><%= origin[:name] %></div>
-                <div class="text-sm text-gray-500"><%= origin[:count] %> cliques</div>
-              </div>
-            </div>
-            <div class="flex items-center space-x-2">
-              <div class="text-right">
-                <div class="text-sm font-medium text-gray-900">
-                  <%= number_with_precision((origin[:count].to_f / @total_clicks * 100), precision: 1) %>%
+        <% if origins.any? %>
+          <% origins.each do |origin| %>
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div class="flex items-center space-x-3">
+                <div class="<%= origin[:color] %> w-8 h-8 rounded-full flex items-center justify-center text-white font-medium text-sm">
+                  <%= origin[:icon] %>
+                </div>
+                <div>
+                  <div class="font-medium text-gray-900"><%= origin[:name] %></div>
+                  <div class="text-sm text-gray-500"><%= number_with_delimiter(origin[:count]) %> cliques</div>
                 </div>
               </div>
-              <div class="w-16 bg-gray-200 rounded-full h-2">
-                <div class="<%= origin[:color] %> h-2 rounded-full" style="width: <%= (origin[:count].to_f / @total_clicks * 100).round(1) %>%"></div>
+              <div class="flex items-center space-x-2">
+                <div class="text-right">
+                  <div class="text-sm font-medium text-gray-900">
+                    <%= number_with_precision((origin[:count].to_f / displayed_total * 100), precision: 1) %>%
+                  </div>
+                </div>
+                <div class="w-16 bg-gray-200 rounded-full h-2">
+                  <div class="<%= origin[:color] %> h-2 rounded-full" style="width: <%= (origin[:count].to_f / displayed_total * 100).round(1) %>%"></div>
+                </div>
               </div>
             </div>
+          <% end %>
+        <% else %>
+          <div class="text-center py-8 text-gray-500">
+            <div class="text-2xl mb-2">📊</div>
+            <p>Nenhum dado de origem disponível ainda.</p>
+            <p class="text-sm">Os dados aparecerão conforme os cliques forem registrados.</p>
           </div>
         <% end %>
       </div>
@@ -58,7 +111,16 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
           <span class="text-sm font-medium text-blue-900">
-            📊 Instagram e WhatsApp representam 60% dos seus cliques
+            <% if @clicks_by_referrer&.any? && @website_clicks_total && @website_clicks_total > 0 %>
+              <% top_source = origins.first %>
+              <% if top_source && origins.length > 1 %>
+                📊 <%= top_source[:name] %> é sua principal fonte com <%= number_with_precision((top_source[:count].to_f / displayed_total * 100), precision: 1) %>% dos cliques
+              <% else %>
+                📊 Dados baseados em <%= number_with_delimiter(displayed_total) %> cliques reais registrados
+              <% end %>
+            <% else %>
+              📊 Dados de exemplo - cliques reais aparecerão quando registrados no sistema
+            <% end %>
           </span>
         </div>
       </div>

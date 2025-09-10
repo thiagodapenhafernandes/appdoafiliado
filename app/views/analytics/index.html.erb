@@ -30,11 +30,125 @@
     </div>
   </div>
 
+  <!-- Filtro de Data -->
+  <div class="bg-white rounded-lg shadow p-4">
+    <form method="get" action="<%= analytics_path %>" class="flex flex-wrap items-end gap-4">
+      <!-- Manter parâmetros da aba atual -->
+      <% if params[:tab].present? %>
+        <%= hidden_field_tag :tab, params[:tab] %>
+      <% end %>
+      
+      <div class="flex flex-col">
+        <label for="start_date" class="text-sm font-medium text-gray-700 mb-1">Data Inicial</label>
+        <input type="date" 
+               id="start_date" 
+               name="start_date" 
+               value="<%= params[:start_date] %>"
+               class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      </div>
+      
+      <div class="flex flex-col">
+        <label for="end_date" class="text-sm font-medium text-gray-700 mb-1">Data Final</label>
+        <input type="date" 
+               id="end_date" 
+               name="end_date" 
+               value="<%= params[:end_date] %>"
+               class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      </div>
+      
+      <div class="flex gap-2">
+        <button type="submit" 
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+          </svg>
+          Filtrar
+        </button>
+        
+        <% if params[:start_date].present? || params[:end_date].present? %>
+          <%= link_to analytics_path(tab: params[:tab]), 
+              class: "bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center" do %>
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Limpar
+          <% end %>
+        <% end %>
+      </div>
+      
+      <!-- Filtros rápidos -->
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1">Filtros Rápidos</label>
+        <div class="flex gap-2">
+          <%= link_to analytics_path(tab: params[:tab], start_date: 7.days.ago.strftime('%Y-%m-%d'), end_date: Date.current.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Últimos 7 dias
+          <% end %>
+          
+          <%= link_to analytics_path(tab: params[:tab], start_date: 30.days.ago.strftime('%Y-%m-%d'), end_date: Date.current.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Últimos 30 dias
+          <% end %>
+          
+          <%= link_to analytics_path(tab: params[:tab], start_date: Date.current.beginning_of_month.strftime('%Y-%m-%d'), end_date: Date.current.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Este mês
+          <% end %>
+          
+          <%= link_to analytics_path(tab: params[:tab], start_date: 1.month.ago.beginning_of_month.strftime('%Y-%m-%d'), end_date: 1.month.ago.end_of_month.strftime('%Y-%m-%d')), 
+              class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-medium transition-colors" do %>
+            Mês passado
+          <% end %>
+        </div>
+      </div>
+    </form>
+    
+    <!-- Indicador do período ativo -->
+    <% if params[:start_date].present? || params[:end_date].present? %>
+      <div class="mt-3 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-600">
+          <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span class="font-medium">Período Filtrado:</span>
+          <span class="ml-2">
+            <% if params[:start_date].present? %>
+              <%= Date.parse(params[:start_date]).strftime('%d/%m/%Y') %>
+            <% else %>
+              Início indefinido
+            <% end %>
+            até
+            <% if params[:end_date].present? %>
+              <%= Date.parse(params[:end_date]).strftime('%d/%m/%Y') %>
+            <% else %>
+              Fim indefinido
+            <% end %>
+          </span>
+        </div>
+        
+        <div class="text-xs text-gray-500">
+          <% if params[:start_date].present? && params[:end_date].present? %>
+            <% days_diff = (Date.parse(params[:end_date]) - Date.parse(params[:start_date])).to_i + 1 %>
+            (<%= days_diff %> <%= days_diff == 1 ? 'dia' : 'dias' %>)
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="mt-3 flex items-center text-sm text-gray-600">
+        <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="font-medium">Exibindo:</span>
+        <span class="ml-2">Todos os dados disponíveis</span>
+      </div>
+    <% end %>
+  </div>
+
   <!-- Tabs Navigation -->
   <div class="bg-white rounded-lg shadow">
     <div class="border-b border-gray-200">
       <nav class="-mb-px flex space-x-8 px-6">
-        <%= link_to analytics_path(tab: 'overview'), 
+        <%= link_to analytics_path(tab: 'overview', start_date: params[:start_date], end_date: params[:end_date]), 
             class: "#{params[:tab].blank? || params[:tab] == 'overview' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" do %>
           <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -42,7 +156,7 @@
           Visão Geral
         <% end %>
 
-        <%= link_to analytics_path(tab: 'categories'), 
+        <%= link_to analytics_path(tab: 'categories', start_date: params[:start_date], end_date: params[:end_date]), 
             class: "#{params[:tab] == 'categories' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" do %>
           <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
@@ -50,7 +164,7 @@
           Comissões por Categoria
         <% end %>
 
-        <%= link_to analytics_path(tab: 'subids'), 
+        <%= link_to analytics_path(tab: 'subids', start_date: params[:start_date], end_date: params[:end_date]), 
             class: "hidden #{params[:tab] == 'subids' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" do %>
           <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
@@ -58,7 +172,7 @@
           Categorias
         <% end %>
         
-        <%= link_to analytics_path(tab: 'subids'), 
+        <%= link_to analytics_path(tab: 'subids', start_date: params[:start_date], end_date: params[:end_date]), 
             class: "#{params[:tab] == 'subids' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" do %>
           <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
@@ -68,7 +182,7 @@
 
         <!-- Abas Premium - Apenas para Pro e Elite -->
         <%= plan_access_overlay('pro') do %>
-          <%= link_to analytics_performance_path, 
+          <%= link_to analytics_performance_path(start_date: params[:start_date], end_date: params[:end_date]), 
               class: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" do %>
             <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -76,7 +190,7 @@
             Performance Avançada
           <% end %>
 
-          <%= link_to analytics_conversion_path, 
+          <%= link_to analytics_conversion_path(start_date: params[:start_date], end_date: params[:end_date]), 
               class: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors" do %>
             <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
