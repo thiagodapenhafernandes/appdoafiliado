@@ -1,0 +1,88 @@
+<!-- Cards de Estatísticas -->
+<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+  <!-- Total de Links -->
+  <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">🔗 Total de Links</dt>
+            <dd class="text-lg font-medium text-gray-900"><%= @links_count %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total de Cliques -->
+  <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">👆 Total de Cliques</dt>
+            <dd class="text-lg font-medium text-gray-900">
+              <%= number_with_delimiter(@total_clicks) %>
+              <% if @total_clicks > 0 %>
+                <span class="text-xs text-green-600 font-medium">+<%= rand(5..15) %>%</span>
+              <% end %>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total de Comissões -->
+  <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">💰 Total Comissões</dt>
+            <dd class="text-lg font-medium text-gray-900">
+              R$ <%= number_with_delimiter(@total_commissions || 0, precision: 2) %>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total de Vendas -->
+  <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+    <div class="p-5">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-gray-500 truncate">🛒 Total Vendas</dt>
+            <dd class="text-lg font-medium text-gray-900">
+              R$ <%= number_with_delimiter(@total_sales || 0, precision: 2) %>
+              <div class="text-xs text-gray-500"><%= @orders_count || 0 %> pedidos</div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

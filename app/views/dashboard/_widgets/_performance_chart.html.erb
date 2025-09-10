@@ -1,0 +1,33 @@
+<!-- Gráfico de Desempenho dos Links -->
+<div class="bg-white shadow rounded-lg">
+  <div class="px-4 py-5 sm:p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">📈 Desempenho dos Links</h3>
+      <div class="flex items-center space-x-2">
+        <span class="text-sm text-gray-500"><%= (Date.current - 13.days).strftime("%d/%m/%y") %> - <%= Date.current.strftime("%d/%m/%y") %></span>
+        <span class="text-sm text-gray-500">Últimos 14 dias</span>
+      </div>
+    </div>
+    
+    <!-- Chart Area -->
+    <div class="mt-4" style="height: 300px;">
+      <canvas id="performanceChart"></canvas>
+    </div>
+    
+    <!-- Estatísticas rápidas -->
+    <div class="mt-4 grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+      <div class="text-center">
+        <div class="text-sm text-gray-500">Total</div>
+        <div class="text-lg font-semibold text-gray-900"><%= @total_clicks %> cliques</div>
+      </div>
+      <div class="text-center">
+        <div class="text-sm text-gray-500">Média/dia</div>
+        <div class="text-lg font-semibold text-gray-900"><%= (@total_clicks / 14.0).round(1) %></div>
+      </div>
+      <div class="text-center">
+        <div class="text-sm text-gray-500">Pico</div>
+        <div class="text-lg font-semibold text-gray-900"><%= @chart_data.max %> cliques</div>
+      </div>
+    </div>
+  </div>
+</div>

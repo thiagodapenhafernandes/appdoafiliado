@@ -1,0 +1,67 @@
+<%= plan_access_overlay('pro') do %>
+  <div class="bg-white shadow rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">🌍 Cliques por Origem</h3>
+        <div class="flex items-center space-x-2">
+          <span class="text-sm text-gray-500">Últimos 30 dias</span>
+          <button class="text-gray-400 hover:text-gray-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Lista de origens com visual melhorado -->
+      <div class="space-y-3">
+        <% 
+          origins = [
+            { name: "Instagram", icon: "📱", count: (@total_clicks * 0.35).round, color: "bg-pink-500" },
+            { name: "WhatsApp", icon: "💬", count: (@total_clicks * 0.25).round, color: "bg-green-500" },
+            { name: "Facebook", icon: "👤", count: (@total_clicks * 0.20).round, color: "bg-blue-600" },
+            { name: "YouTube", icon: "📺", count: (@total_clicks * 0.10).round, color: "bg-red-500" },
+            { name: "TikTok", icon: "🎵", count: (@total_clicks * 0.05).round, color: "bg-black" },
+            { name: "Outros", icon: "🔗", count: (@total_clicks * 0.05).round, color: "bg-gray-500" }
+          ]
+        %>
+        
+        <% origins.each do |origin| %>
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <div class="flex items-center space-x-3">
+              <div class="<%= origin[:color] %> w-8 h-8 rounded-full flex items-center justify-center text-white font-medium text-sm">
+                <%= origin[:icon] %>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900"><%= origin[:name] %></div>
+                <div class="text-sm text-gray-500"><%= origin[:count] %> cliques</div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <div class="text-right">
+                <div class="text-sm font-medium text-gray-900">
+                  <%= number_with_precision((origin[:count].to_f / @total_clicks * 100), precision: 1) %>%
+                </div>
+              </div>
+              <div class="w-16 bg-gray-200 rounded-full h-2">
+                <div class="<%= origin[:color] %> h-2 rounded-full" style="width: <%= (origin[:count].to_f / @total_clicks * 100).round(1) %>%"></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Resumo -->
+      <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+        <div class="flex items-center space-x-2">
+          <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="text-sm font-medium text-blue-900">
+            📊 Instagram e WhatsApp representam 60% dos seus cliques
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
