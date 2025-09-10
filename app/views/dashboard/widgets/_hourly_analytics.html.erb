@@ -25,43 +25,68 @@
               .group("EXTRACT(HOUR FROM click_time)")
               .count
             total_real_clicks = hourly_data.values.sum
+            using_real_data = true
           else
             # Dados simulados mais realísticos se não houver dados reais
             hourly_data = {}
             total_real_clicks = 0
+            using_real_data = false
           end
           
-          # Períodos do dia com dados reais ou simulados
+          # Primeiro, vamos calcular todos os dados horários (reais ou simulados)
+          complete_hourly_data = {}
+          (0..23).each do |hour|
+            if using_real_data
+              # Usar dados reais se disponíveis
+              complete_hourly_data[hour] = hourly_data[hour.to_f] || hourly_data[hour.to_s] || 0
+            else
+              # Simular dados baseado em padrões típicos
+              complete_hourly_data[hour] = case hour
+              when 0..5   then [0, 1, 2].sample  # Madrugada - muito baixa
+              when 6..8   then [1, 2, 3].sample  # Manhã cedo - baixa
+              when 9..11  then [3, 4, 5, 6].sample  # Manhã - média
+              when 12..14 then [5, 6, 7, 8, 9].sample  # Almoço/tarde - alta
+              when 15..17 then [7, 8, 9, 10].sample  # Tarde - pico
+              when 18..20 then [4, 5, 6, 7, 8].sample  # Início noite - média-alta
+              when 21..23 then [2, 3, 4, 5].sample  # Noite - baixa
+              end
+            end
+          end
+          
+          # Agora calcular os períodos baseado nos dados completos
           periods = [
             { 
               name: "Madrugada", 
               hours: "00h-05h", 
               color: "bg-blue-500", 
               range: (0..5),
-              clicks: hourly_data.select { |hour, _| (0..5).include?(hour.to_i) }.values.sum 
+              clicks: (0..5).sum { |hour| complete_hourly_data[hour] || 0 }
             },
             { 
               name: "Manhã", 
               hours: "06h-11h", 
               color: "bg-green-500", 
               range: (6..11),
-              clicks: hourly_data.select { |hour, _| (6..11).include?(hour.to_i) }.values.sum 
+              clicks: (6..11).sum { |hour| complete_hourly_data[hour] || 0 }
             },
             { 
               name: "Tarde", 
               hours: "12h-17h", 
               color: "bg-orange-500", 
               range: (12..17),
-              clicks: hourly_data.select { |hour, _| (12..17).include?(hour.to_i) }.values.sum 
+              clicks: (12..17).sum { |hour| complete_hourly_data[hour] || 0 }
             },
             { 
               name: "Noite", 
               hours: "18h-23h", 
               color: "bg-purple-500", 
               range: (18..23),
-              clicks: hourly_data.select { |hour, _| (18..23).include?(hour.to_i) }.values.sum 
+              clicks: (18..23).sum { |hour| complete_hourly_data[hour] || 0 }
             }
           ]
+          
+          # Recalcular total para dados simulados
+          total_displayed_clicks = complete_hourly_data.values.sum
         %>
         
         <!-- Períodos do dia -->
@@ -85,24 +110,11 @@
           <div class="flex flex-wrap gap-1 sm:gap-2">
             <% (0..23).each do |hour| %>
               <% 
-                # Usar dados reais se disponíveis, senão simular baseado em padrões típicos
-                clicks = hourly_data[hour.to_f] || hourly_data[hour.to_s] || 0
-                
-                # Se não há dados reais, usar simulação baseada em padrões
-                if total_real_clicks == 0
-                  clicks = case hour
-                  when 0..5   then [0, 1, 2].sample  # Madrugada - muito baixa
-                  when 6..8   then [1, 2, 3].sample  # Manhã cedo - baixa
-                  when 9..11  then [3, 4, 5, 6].sample  # Manhã - média
-                  when 12..14 then [5, 6, 7, 8, 9].sample  # Almoço/tarde - alta
-                  when 15..17 then [7, 8, 9, 10].sample  # Tarde - pico
-                  when 18..20 then [4, 5, 6, 7, 8].sample  # Início noite - média-alta
-                  when 21..23 then [2, 3, 4, 5].sample  # Noite - baixa
-                  end
-                end
+                # Usar os dados já calculados no complete_hourly_data
+                clicks = complete_hourly_data[hour] || 0
                 
                 # Determinar cor baseada na intensidade
-                max_clicks = hourly_data.values.max || 10
+                max_clicks = complete_hourly_data.values.max || 10
                 intensity_percent = max_clicks > 0 ? (clicks.to_f / max_clicks * 100) : 0
                 
                 color_class = case intensity_percent
@@ -147,7 +159,7 @@
           <!-- Legenda responsiva -->
           <div class="mt-3 text-center">
             <p class="text-xs text-gray-500">
-              <%= total_real_clicks > 0 ? "📊 Dados reais dos últimos 30 dias" : "📋 Dados simulados - conecte suas análises para ver dados reais" %>
+              <%= using_real_data ? "📊 Dados reais dos últimos 30 dias (#{total_displayed_clicks} cliques)" : "📋 Dados simulados - conecte suas análises para ver dados reais (#{total_displayed_clicks} cliques de exemplo)" %>
             </p>
           </div>
         </div>
@@ -163,8 +175,8 @@
             <div class="flex-1">
               <h4 class="text-sm font-medium text-blue-900">💡 Insights Automáticos</h4>
               <div class="mt-2 text-sm text-blue-800 space-y-1">
-                <% if total_real_clicks > 0 %>
-                  <% peak_hour = hourly_data.max_by { |hour, clicks| clicks } %>
+                <% if using_real_data && total_real_clicks > 0 %>
+                  <% peak_hour = complete_hourly_data.max_by { |hour, clicks| clicks } %>
                   <% if peak_hour %>
                     <div>🔥 <strong>Horário de pico:</strong> <%= sprintf("%02d:00", peak_hour[0].to_i) %> (<%= peak_hour[1] %> cliques)</div>
                   <% end %>
@@ -174,9 +186,15 @@
                   <% end %>
                   <div>📊 <strong>Total analisado:</strong> <%= total_real_clicks %> cliques únicos</div>
                 <% else %>
-                  <div>🔥 <strong>Horário de pico típico:</strong> 14h-17h (período da tarde)</div>
-                  <div>📈 <strong>Melhor conversão:</strong> 15h-16h</div>
-                  <div>💤 <strong>Menor atividade:</strong> 02h-05h</div>
+                  <% peak_hour = complete_hourly_data.max_by { |hour, clicks| clicks } %>
+                  <% if peak_hour %>
+                    <div>🔥 <strong>Horário de pico típico:</strong> <%= sprintf("%02d:00", peak_hour[0].to_i) %> (<%= peak_hour[1] %> cliques)</div>
+                  <% end %>
+                  <% afternoon_clicks = periods[2][:clicks] %>
+                  <% if afternoon_clicks > 0 %>
+                    <div>☀️ <strong>Tarde ativa:</strong> <%= afternoon_clicks %> cliques entre 12h-17h</div>
+                  <% end %>
+                  <div>� <strong>Total simulado:</strong> <%= total_displayed_clicks %> cliques de exemplo</div>
                 <% end %>
                 <div>📊 <strong>Recomendação:</strong> Foque campanhas entre 12h-18h</div>
               </div>
