@@ -1,5 +1,6 @@
 class WebhooksController < ApplicationController
   protect_from_forgery with: :null_session
+  skip_before_action :authenticate_user!
   before_action :verify_webhook_signature
 
   def stripe

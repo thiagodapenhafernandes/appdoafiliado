@@ -92,13 +92,21 @@ class AnalyticsController < ApplicationController
   end
 
   def export_pdf
-    pdf_service = AnalyticsPdfService.new(current_user)
-    pdf_content = pdf_service.generate_report.render
-    
-    send_data pdf_content,
-              filename: "analytics_report_#{Date.current.strftime('%Y%m%d')}.pdf",
-              type: 'application/pdf',
-              disposition: 'attachment'
+    begin
+      pdf_service = AnalyticsPdfService.new(current_user)
+      pdf_content = pdf_service.generate_report.render
+      
+      send_data pdf_content,
+                filename: "analytics_report_#{Date.current.strftime('%Y%m%d')}.pdf",
+                type: 'application/pdf',
+                disposition: 'attachment'
+    rescue => e
+      Rails.logger.error "Erro ao gerar PDF: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      
+      flash[:error] = "Erro ao gerar relatório em PDF: #{e.message}"
+      redirect_to analytics_path
+    end
   end
 
   def update_ad_spend
@@ -227,13 +235,24 @@ class AnalyticsController < ApplicationController
 
   def performance_by_subid
     # Incluir TODOS os registros, inclusive os sem SubID
-    @commissions.group(:sub_id1)
-                .select('sub_id1,
-                         COUNT(*) as orders_count,
-                         SUM(affiliate_commission) as total_commission,
-                         SUM(purchase_value) as total_sales')
-                .order('total_commission DESC')
-                .limit(20)
+    results = @commissions.group(:sub_id1)
+                          .select('sub_id1,
+                                   COUNT(*) as orders_count,
+                                   SUM(affiliate_commission) as total_commission,
+                                   SUM(purchase_value) as total_sales')
+                          .order('total_commission DESC')
+                          .limit(20)
+    
+    # Converter para hash com as chaves esperadas pela view
+    results.map do |result|
+      {
+        subid: result.sub_id1 || 'N/A',
+        commissions: result.total_commission || 0,
+        sales: result.total_sales || 0,
+        orders: result.orders_count || 0,
+        conversion_rate: nil # Não temos dados de cliques por SubID ainda
+      }
+    end
   end
 
   def conversion_funnel_data
@@ -447,12 +466,17 @@ class AnalyticsController < ApplicationController
       orders = channel_commissions.count
       avg_ticket = orders > 0 ? (sales / orders) : 0
       
+      # Calcular ROI básico (para demonstração, assume-se 0 de investimento inicial)
+      # Em um caso real, você teria dados de investimento por canal
+      roi = 0.0 # Placeholder - seria calculado com base em dados de investimento reais
+      
       channels << {
         channel: channel || 'Não informado',
         commissions: total_commission.to_f,
         sales: sales.to_f,
         orders: orders,
-        avg_ticket: avg_ticket.to_f
+        avg_ticket: avg_ticket.to_f,
+        roi: roi
       }
     end
     

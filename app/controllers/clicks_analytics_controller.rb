@@ -18,6 +18,16 @@ class ClicksAnalyticsController < ApplicationController
       process_database_analytics_data
     end
     
+    # Garantir que as variáveis sempre tenham valores padrão
+    @clicks_by_referrer ||= {}
+    @clicks_by_region ||= {}
+    @clicks_by_hour ||= {}
+    @clicks_by_day ||= {}
+    @total_clicks ||= 0
+    @total_commission ||= 0
+    @period_info ||= "Nenhum dado disponível"
+    @peak_hour ||= nil
+    
     respond_to do |format|
       format.html
       format.json { render json: analytics_data }
@@ -241,6 +251,12 @@ class ClicksAnalyticsController < ApplicationController
 
     # Horário de pico
     @peak_hour = find_peak_hour(hourly_data)
+    
+    # Variáveis compatíveis com a view existente
+    @clicks_by_referrer = referrer_data
+    @clicks_by_region = region_data
+    @clicks_by_hour = hourly_data
+    @clicks_by_day = daily_data
   end
 
   def get_data_period_info(start_date, end_date)

@@ -40,7 +40,7 @@ module LinkFlow
     config.i18n.default_locale = :'pt-BR'
     config.i18n.available_locales = [:'pt-BR', :en]
 
-    config.hosts << "dev.unitymob.com.br"
+    config.hosts << "dev.appdoafiliado.com.br"
     config.hosts << "app.appdoafiliado.com.br"
     
     # Configurações para resolver problemas de CSRF com mixed HTTPS/HTTP

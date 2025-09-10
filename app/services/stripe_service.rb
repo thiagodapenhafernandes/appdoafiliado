@@ -114,6 +114,62 @@ class StripeService
       end
     end
 
+    def create_subscription_with_token(user, plan, stripe_token, options = {})
+      return unless stripe_configured? && plan.stripe_price_id.present?
+      
+      begin
+        # Criar ou atualizar customer
+        customer = ensure_customer(user)
+        return unless customer
+
+        # Criar source a partir do token
+        source = Stripe::Source.create({
+          type: 'card',
+          token: stripe_token,
+          currency: 'brl'
+        })
+
+        # Anexar source ao customer
+        Stripe::Customer.update(customer.id, {
+          source: source.id
+        })
+
+        # Criar subscription
+        subscription_params = {
+          customer: customer.id,
+          items: [{ price: plan.stripe_price_id }],
+          metadata: { user_id: user.id, plan_id: plan.id }
+        }
+        
+        # Se skip_trial for true, não adicionar período de teste
+        if options[:skip_trial]
+          subscription_params[:trial_end] = 'now'
+        else
+          subscription_params[:trial_period_days] = 14
+        end
+        
+        subscription = Stripe::Subscription.create(subscription_params)
+
+        # Criar assinatura local
+        local_subscription = user.subscriptions.create!(
+          stripe_subscription_id: subscription.id,
+          plan: plan,
+          status: subscription.status,
+          current_period_start: Time.at(subscription.current_period_start),
+          current_period_end: Time.at(subscription.current_period_end)
+        )
+
+        {
+          subscription: subscription,
+          local_subscription: local_subscription,
+          success: true
+        }
+      rescue Stripe::StripeError => e
+        Rails.logger.error "Erro ao criar assinatura com token: #{e.message}"
+        { success: false, error: e.message }
+      end
+    end
+
     def cancel_subscription(subscription)
       return unless stripe_configured? && subscription.stripe_subscription_id.present?
 

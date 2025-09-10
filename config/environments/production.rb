@@ -89,9 +89,9 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    "dev.unitymob.com.br",
-    "unitymob.com.br",
-    /.*\.unitymob\.com\.br/,
+    "dev.appdoafiliado.com.br",
+    "appdoafiliado.com.br",
+    /.*\.appdoafiliado\.com\.br/,
     "app.appdoafiliado.com.br",
     /.*\.appdoafiliado\.com\.br/
   ]

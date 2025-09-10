@@ -1,0 +1,118 @@
+/* Plan Access Controls */
+.plan-access-overlay {
+  position: relative;
+}
+
+.plan-access-overlay .blur-content {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.plan-access-overlay .upgrade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.plan-access-overlay .upgrade-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e7eb;
+  max-width: 400px;
+  text-align: center;
+}
+
+.plan-access-overlay .upgrade-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.plan-access-overlay .upgrade-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.plan-access-overlay .upgrade-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.plan-access-overlay .upgrade-button {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  transform: translateY(0);
+}
+
+.plan-access-overlay .upgrade-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Elite Features Styling */
+.elite-feature-card {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.elite-feature-icon {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animations */
+@keyframes upgradeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.plan-access-overlay .upgrade-card {
+  animation: upgradeSlideIn 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .plan-access-overlay .upgrade-card {
+    margin: 16px;
+    padding: 20px;
+    max-width: none;
+  }
+  
+  .plan-access-overlay .upgrade-title {
+    font-size: 1rem;
+  }
+  
+  .plan-access-overlay .upgrade-description {
+    font-size: 0.8rem;
+  }
+}

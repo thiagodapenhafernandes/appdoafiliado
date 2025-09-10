@@ -58,7 +58,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm font-medium">Total de Cliques</p>
-            <p class="text-3xl font-bold text-gray-900"><%= number_with_delimiter(@total_clicks) %></p>
+            <p class="text-3xl font-bold text-gray-900"><%= number_with_delimiter(@total_clicks || 0) %></p>
           </div>
           <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,12 +170,12 @@
               </tr>
             </thead>
             <tbody>
-              <% @clicks_by_referrer.sort_by { |_, v| -v }.each do |referrer, clicks| %>
+              <% (@clicks_by_referrer || {}).sort_by { |_, v| -v }.each do |referrer, clicks| %>
                 <tr class="border-b border-gray-100">
                   <td class="py-3 px-4 text-gray-900"><%= referrer %></td>
                   <td class="py-3 px-4 text-right text-gray-900"><%= number_with_delimiter(clicks) %></td>
                   <td class="py-3 px-4 text-right text-gray-600">
-                    <%= number_to_percentage((clicks.to_f / @total_clicks * 100), precision: 1) %>
+                    <%= number_to_percentage((clicks.to_f / (@total_clicks || 1) * 100), precision: 1) %>
                   </td>
                 </tr>
               <% end %>
@@ -197,12 +197,12 @@
               </tr>
             </thead>
             <tbody>
-              <% @clicks_by_region.sort_by { |_, v| -v }.each do |region, clicks| %>
+              <% (@clicks_by_region || {}).sort_by { |_, v| -v }.each do |region, clicks| %>
                 <tr class="border-b border-gray-100">
                   <td class="py-3 px-4 text-gray-900"><%= region %></td>
                   <td class="py-3 px-4 text-right text-gray-900"><%= number_with_delimiter(clicks) %></td>
                   <td class="py-3 px-4 text-right text-gray-600">
-                    <%= number_to_percentage((clicks.to_f / @total_clicks * 100), precision: 1) %>
+                    <%= number_to_percentage((clicks.to_f / (@total_clicks || 1) * 100), precision: 1) %>
                   </td>
                 </tr>
               <% end %>

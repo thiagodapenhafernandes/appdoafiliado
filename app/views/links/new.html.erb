@@ -87,24 +87,35 @@
             </div>
 
             <!-- Rastreamento Avançado -->
-            <!-- Rastreamento Avançado -->
-            <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg <%= current_user.can_access_advanced_tracking? ? 'bg-white' : 'bg-gray-50' %>">
-              <div class="flex items-center h-5 mt-1">
-                <% if current_user.can_access_advanced_tracking? %>
+            <%= plan_access_overlay('pro') do %>
+              <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg bg-white">
+                <div class="flex items-center h-5 mt-1">
                   <%= form.check_box :advanced_tracking, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" %>
-                <% else %>
-                  <input type="checkbox" disabled class="h-4 w-4 text-gray-400 border-gray-300 rounded cursor-not-allowed">
-                <% end %>
+                </div>
+                <div class="flex-1">
+                  <%= form.label :advanced_tracking, "Habilitar rastreamento avançado", class: "block text-sm font-medium text-gray-700" %>
+                  <p class="mt-1 text-sm text-green-600">✓ Inclui análise detalhada de origem, dispositivos, horários e localização dos cliques</p>
+                  <div class="mt-2 grid grid-cols-2 gap-2 text-xs text-gray-600">
+                    <div class="flex items-center">
+                      <i class="fas fa-mobile-alt mr-1"></i>
+                      <span>Tipo de dispositivo</span>
+                    </div>
+                    <div class="flex items-center">
+                      <i class="fas fa-map-marker-alt mr-1"></i>
+                      <span>Localização (cidade/país)</span>
+                    </div>
+                    <div class="flex items-center">
+                      <i class="fas fa-clock mr-1"></i>
+                      <span>Horários de pico</span>
+                    </div>
+                    <div class="flex items-center">
+                      <i class="fas fa-external-link-alt mr-1"></i>
+                      <span>Origem do tráfego</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="flex-1">
-                <%= form.label :advanced_tracking, "Habilitar rastreamento avançado", class: "block text-sm font-medium #{current_user.can_access_advanced_tracking? ? 'text-gray-700' : 'text-gray-400'}" %>
-                <% if current_user.can_access_advanced_tracking? %>
-                  <p class="mt-1 text-sm text-green-600">✓ Disponível no seu plano <%= current_user.current_plan&.name %></p>
-                <% else %>
-                  <p class="mt-1 text-sm text-gray-500">Recurso disponível nos planos Pro e Elite. Faça upgrade para acessar.</p>
-                <% end %>
-              </div>
-            </div>
+            <% end %>
 
             <!-- Link Ativo -->
             <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">

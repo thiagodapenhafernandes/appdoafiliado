@@ -73,7 +73,7 @@
       </div>
     <% end %>
 
-    <%= form_with(model: @subscription, local: true) do |form| %>
+    <%= form_with(model: @subscription, local: true, html: { id: 'new_subscription' }) do |form| %>
       <%= form.hidden_field :plan_id, value: @plan.id %>
       
       <!-- Registration form for new users -->
@@ -139,50 +139,70 @@
             </div>
           <% end %>
         </div>
-      <% end %>
-
-      <!-- Trial period options (only for paid plans) -->
-      <% if @plan.price > 0 %>
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">Opções de Assinatura</h3>
+        
+        <!-- Payment Information Section -->
+        <% if @plan.price > 0 %>
+          <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 712-2zm8-2v2H7V7a3 3 0 616 0z" clip-rule="evenodd"></path>
+              </svg>
+              <p class="text-sm text-green-700">
+                <strong>Acesso imediato!</strong> O valor de R$ <%= number_with_precision(@plan.price, precision: 2) %> será processado hoje via Stripe.
+              </p>
+            </div>
+          </div>
           
-          <div class="space-y-4">
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <%= radio_button_tag 'skip_trial', 'false', true, 
-                    id: 'trial_yes', 
-                    class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500' %>
-              </div>
-              <div class="ml-3">
-                <%= label_tag 'trial_yes', class: 'text-sm font-medium text-gray-900' do %>
-                  🎉 Começar com 14 dias grátis
-                <% end %>
-                <p class="text-sm text-gray-600">
-                  Experimente todos os recursos por 14 dias. Após esse período, 
-                  será cobrado R$ <%= number_with_precision(@plan.price, precision: 2) %>/mês.
-                </p>
-              </div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            <i class="fas fa-credit-card mr-2"></i>
+            Dados do Cartão
+          </h3>
+          
+          <div class="mb-6">
+            <!-- Stripe Elements será carregado aqui -->
+            <div id="card-element-logged" class="p-4 border border-gray-300 rounded-lg bg-white mb-3">
+              <!-- Elementos do Stripe serão inseridos aqui -->
             </div>
             
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <%= radio_button_tag 'skip_trial', 'true', false, 
-                    id: 'trial_no', 
-                    class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500' %>
-              </div>
-              <div class="ml-3">
-                <%= label_tag 'trial_no', class: 'text-sm font-medium text-gray-900' do %>
-                  🚀 Começar imediatamente (sem período de teste)
-                <% end %>
-                <p class="text-sm text-gray-600">
-                  Comece a usar todos os recursos agora mesmo. 
-                  Cobrança de R$ <%= number_with_precision(@plan.price, precision: 2) %> será processada hoje.
-                </p>
-              </div>
+            <!-- Erros do cartão serão exibidos aqui -->
+            <div id="card-errors-logged" class="text-red-600 text-sm" role="alert"></div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <!-- Payment Information Section for logged in users -->
+      <% if !@requires_registration && @plan.price > 0 %>
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 01 2 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 01 2-2zm8-2v2H7V7a3 3 0 01 6 0z" clip-rule="evenodd"></path>
+              </svg>
+              <p class="text-sm text-green-700">
+                <strong>Acesso imediato!</strong> O valor de R$ <%= number_with_precision(@plan.price, precision: 2) %> será processado hoje via Stripe.
+              </p>
             </div>
+          </div>
+          
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            <i class="fas fa-credit-card mr-2"></i>
+            Dados do Cartão
+          </h3>
+          
+          <div class="mb-6">
+            <!-- Stripe Elements será carregado aqui -->
+            <div id="card-element" class="p-4 border border-gray-300 rounded-lg bg-white mb-3">
+              <!-- Elementos do Stripe serão inseridos aqui -->
+            </div>
+            
+            <!-- Erros do cartão serão exibidos aqui -->
+            <div id="card-errors" class="text-red-600 text-sm" role="alert"></div>
           </div>
         </div>
       <% end %>
+
+      <!-- Hidden field to always skip trial -->
+      <%= hidden_field_tag 'skip_trial', 'true' %>
 
       <!-- Payment form -->
       <div class="bg-white rounded-lg shadow-lg p-6">
@@ -197,23 +217,6 @@
             <h4 class="text-xl font-semibold text-gray-800 mb-2">Plano Gratuito</h4>
             <p class="text-gray-600 mb-6">Comece a usar nossa plataforma gratuitamente.</p>
           </div>
-        <% else %>
-          <!-- Paid plan - Real Stripe integration -->
-          <div class="text-center py-8">
-            <svg class="w-16 h-16 text-blue-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-            </svg>
-            <h4 class="text-xl font-semibold text-gray-800 mb-2">Pagamento Seguro</h4>
-            <p class="text-gray-600 mb-6">
-              Processamento seguro via Stripe. Você será redirecionado para a página de pagamento.
-            </p>
-            
-            <div class="bg-blue-50 rounded-lg p-4 mb-6">
-              <p class="text-sm text-blue-800">
-                <strong>🔒 Seguro:</strong> Seus dados de pagamento são processados de forma segura pelo Stripe e não são armazenados em nossos servidores.
-              </p>
-            </div>
-          </div>
         <% end %>
         
         <div class="flex space-x-4">
@@ -221,7 +224,9 @@
             Voltar aos Planos
           <% end %>
           
-          <%= form.submit(@requires_registration ? "Criar Conta e Assinar" : "Prosseguir para Pagamento", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer") %>
+          <%= form.submit(@requires_registration ? "Criar Conta e Assinar Agora" : "Confirmar Assinatura", 
+              class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer",
+              id: "submit-button") %>
         </div>
       </div>
     <% end %>
@@ -235,3 +240,152 @@
     </div>
   </div>
 </div>
+
+<!-- Stripe Elements JavaScript -->
+<% if @plan.price > 0 %>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Procurar pelo elemento card-element (pode estar em qualquer lugar da página)
+      let cardElementContainer = document.getElementById('card-element');
+      let cardErrorsContainer = document.getElementById('card-errors');
+      
+      // Se não encontrar o primeiro, tentar o segundo (usuário logado)
+      if (!cardElementContainer) {
+        cardElementContainer = document.getElementById('card-element-logged');
+        cardErrorsContainer = document.getElementById('card-errors-logged');
+      }
+      
+      if (!cardElementContainer) {
+        console.log('Card element não encontrado - plano gratuito ou erro na página');
+        return;
+      }
+
+      console.log('Card element found, initializing Stripe...');
+      
+      // Inicializar Stripe
+      const stripe = Stripe('<%= Rails.configuration.stripe[:publishable_key] %>');
+      console.log('Stripe initialized with key:', '<%= Rails.configuration.stripe[:publishable_key] %>');
+      
+      const elements = stripe.elements();
+
+      // Criar elemento do cartão
+      const cardElement = elements.create('card', {
+        style: {
+          base: {
+            fontSize: '16px',
+            color: '#424770',
+            '::placeholder': {
+              color: '#aab7c4',
+            },
+          },
+        },
+      });
+
+      console.log('Card element created, mounting...');
+      
+      // Montar o elemento no DOM
+      cardElement.mount(cardElementContainer);
+      
+      console.log('Card element mounted successfully');
+
+      // Estado do cartão
+      let cardValid = false;
+
+      // Manipular mudanças no cartão
+      cardElement.on('change', function(event) {
+        if (event.error) {
+          cardErrorsContainer.textContent = event.error.message;
+          cardValid = false;
+        } else {
+          cardErrorsContainer.textContent = '';
+          cardValid = event.complete;
+        }
+      });
+
+      // Manipular submissão do formulário
+      const form = document.getElementById('new_subscription');
+      const submitButton = document.getElementById('submit-button');
+
+      if (!form || !submitButton) {
+        console.error('Formulário ou botão não encontrado');
+        return;
+      }
+
+      form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        console.log('Form submitted - starting validation');
+        
+        // Verificar se precisa de cartão para este plano
+        const planPrice = <%= @plan.price %>;
+        console.log('Plan price:', planPrice);
+        
+        if (planPrice <= 0) {
+          // Plano gratuito, submeter diretamente
+          console.log('Free plan - submitting directly');
+          form.submit();
+          return;
+        }
+
+        // Desabilitar botão para evitar duplo submit
+        submitButton.disabled = true;
+        submitButton.textContent = 'Processando...';
+        
+        console.log('Card valid state:', cardValid);
+
+        // Verificar se cartão está válido
+        if (!cardValid) {
+          console.log('Card not valid - showing error');
+          cardErrorsContainer.textContent = 'Por favor, preencha os dados do cartão corretamente.';
+          
+          // Reabilitar botão
+          submitButton.disabled = false;
+          submitButton.textContent = '<%= @requires_registration ? "Criar Conta e Assinar Agora" : "Confirmar Assinatura" %>';
+          return;
+        }
+
+        console.log('Creating Stripe token...');
+        
+        // Criar token do Stripe
+        try {
+          const {token, error} = await stripe.createToken(cardElement);
+          
+          console.log('Stripe response:', {token: token?.id, error: error?.message});
+
+          if (error) {
+            // Mostrar erro para o usuário
+            console.log('Stripe error:', error.message);
+            cardErrorsContainer.textContent = error.message;
+            
+            // Reabilitar botão
+            submitButton.disabled = false;
+            submitButton.textContent = '<%= @requires_registration ? "Criar Conta e Assinar Agora" : "Confirmar Assinatura" %>';
+          } else {
+            // Adicionar token ao formulário e submeter
+            console.log('Token created successfully:', token.id);
+            
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'stripe_token';
+            hiddenInput.value = token.id;
+            form.appendChild(hiddenInput);
+            
+            console.log('Token added to form, submitting...');
+            console.log('Form data before submit:', new FormData(form));
+            
+            // Submeter formulário
+            form.submit();
+          }
+        } catch (err) {
+          console.error('Erro ao criar token:', err);
+          cardErrorsContainer.textContent = 'Erro ao processar cartão. Tente novamente.';
+          
+          // Reabilitar botão
+          submitButton.disabled = false;
+          submitButton.textContent = '<%= @requires_registration ? "Criar Conta e Assinar Agora" : "Confirmar Assinatura" %>';
+        }
+      });
+    });
+  </script>
+<% end %>

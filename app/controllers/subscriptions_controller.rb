@@ -31,20 +31,64 @@ class SubscriptionsController < ApplicationController
       return
     end
     
-    # Criar assinatura via Stripe (REAL, não simulação)
     # Verificar se deve pular o período de teste baseado no parâmetro
     skip_trial = params[:skip_trial] == 'true' || params[:subscription]&.[](:skip_trial) == 'true'
-    stripe_result = StripeService.create_subscription(current_user, @plan, skip_trial: skip_trial)
     
-    if stripe_result
+    Rails.logger.info "=== SUBSCRIPTION CREATE DEBUG ==="
+    Rails.logger.info "Plan price: #{@plan.price}"
+    Rails.logger.info "Stripe token present: #{params[:stripe_token].present?}"
+    Rails.logger.info "Stripe token value: #{params[:stripe_token]}"
+    Rails.logger.info "Skip trial: #{skip_trial}"
+    Rails.logger.info "User signed in: #{user_signed_in?}"
+    Rails.logger.info "All params: #{params.inspect}"
+    Rails.logger.info "================================="
+    
+    # Para planos gratuitos, criar assinatura simples
+    if @plan.price == 0
+      @subscription = current_user.subscriptions.create!(
+        plan: @plan,
+        status: 'active',
+        current_period_start: Time.current,
+        current_period_end: 1.month.from_now
+      )
+      redirect_to dashboard_path, notice: 'Assinatura criada com sucesso!'
+      return
+    end
+    
+    # Para planos pagos, verificar se token do Stripe foi fornecido
+    if params[:stripe_token].blank?
+      flash[:alert] = 'Dados do cartão são obrigatórios para planos pagos.'
+      @requires_registration = !user_signed_in?
+      @subscription = Subscription.new(plan: @plan)
+      render :new, status: :unprocessable_entity
+      return
+    end
+    
+    # Criar assinatura via Stripe com token
+    stripe_result = StripeService.create_subscription_with_token(
+      current_user, 
+      @plan, 
+      params[:stripe_token],
+      skip_trial: skip_trial
+    )
+    
+    if stripe_result[:success]
       @subscription = stripe_result[:local_subscription]
-      @client_secret = stripe_result[:client_secret]
       
-      # Redirecionar para página de pagamento do Stripe
-      redirect_to payment_subscription_path(@subscription, client_secret: @client_secret)
+      # Se é trial, redirecionar direto para dashboard
+      if stripe_result[:local_subscription].status == 'trialing'
+        redirect_to dashboard_path, notice: 'Período de teste iniciado com sucesso!'
+      # Se precisa de pagamento confirmado, redirecionar para página de pagamento
+      elsif stripe_result[:client_secret]
+        redirect_to payment_subscription_path(@subscription, client_secret: stripe_result[:client_secret])
+      # Se pagamento foi processado com sucesso
+      else
+        redirect_to dashboard_path, notice: 'Assinatura criada com sucesso!'
+      end
     else
       @subscription = current_user.subscriptions.build(plan: @plan)
-      flash.now[:alert] = 'Erro ao processar assinatura. Tente novamente.'
+      @requires_registration = !user_signed_in?
+      flash.now[:alert] = stripe_result[:error] || 'Erro ao processar assinatura. Tente novamente.'
       render :new, status: :unprocessable_entity
     end
   end

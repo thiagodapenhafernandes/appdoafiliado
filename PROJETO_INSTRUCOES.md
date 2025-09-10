@@ -1,6 +1,6 @@
 # 🚀 Link Flow - Sistema de Afiliação e Análise de Comissões
 
-## 🆕 **ATUALIZAÇÃO v2.0 - Setembro 2025**
+## 🆕 **ATUALIZAÇÃO v2.1 - Setembro 2025**
 
 ### ✨ Principais Funcionalidades Implementadas
 - **🔄 Analytics Dual**: Sistema híbrido CSV + API Shopee com dados unificados
@@ -11,9 +11,33 @@
 - **💰 Controle de ROI**: Gestão de gastos por SubID com cálculos automáticos
 - **🔐 Sistema de Permissões**: Controle granular por plano de assinatura
 - **📱 Interface Responsiva**: Design moderno e mobile-first
+- **💳 Sistema de Assinaturas**: Integração completa com Stripe - pagamento imediato (sem trial)
+- **🎯 Formulário Unificado**: Cadastro + assinatura em uma única tela
 
 ### 🎯 Status do Projeto
 **✅ TOTALMENTE FUNCIONAL** - Todas as funcionalidades core implementadas e testadas
+
+### 🚨 ÚLTIMAS ATUALIZAÇÕES (Setembro 2025)
+- ✅ **Stripe Sync Fix**: Corrigidos problemas de validação "Nome já está em uso"
+- ✅ **Trial Removal**: Removido período de teste - todos os planos pagos agora exigem pagamento imediato
+- ✅ **Unified Payment Form**: Formulário único para cadastro de conta + assinatura
+- ✅ **Payment Flow**: Implementada validação completa do Stripe Elements
+- ✅ **Environment Config**: Todas as variáveis movidas para .env (Stripe, DB, Shopee)
+- 🔄 **Em Progresso**: Finalização do fluxo de pagamento com validação de cartão
+
+### 📊 STATUS RESUMIDO - CONSULTA RÁPIDA
+
+| Funcionalidade | Status | Última Atualização |
+|---------------|--------|-------------------|
+| 🔐 Autenticação | ✅ Funcionando | Stável |
+| 💳 Sistema de Pagamentos | 🔄 99% - Debug final | Setembro 2025 |
+| 📊 Dashboard Analytics | ✅ Funcionando | Stável |
+| 🛒 Integração Shopee | ✅ Funcionando | Stável |
+| ⚙️ Painel Admin | ✅ Funcionando | Stável |
+| 🚀 Deploy/Produção | ✅ Funcionando | v21 atual |
+| 📱 Interface Responsiva | ✅ Funcionando | Stável |
+
+**🔥 FOCO ATUAL**: Resolver último bug de validação de token Stripe no formulário de pagamento
 
 ---
 
@@ -21,15 +45,57 @@
 
 **⚠️ IMPORTANTE: Sempre usar os domínios corretos conforme o ambiente:**
 
-- **🔧 Desenvolvimento**: `https://dev.unitymob.com.br`
-  - URL de cadastro: `https://dev.unitymob.com.br/users/sign_up`
-  - Base da aplicação: `https://dev.unitymob.com.br`
+- **🔧 Desenvolvimento**: `https://dev.appdoafiliado.com.br`
+  - URL de cadastro: `https://dev.appdoafiliado.com.br/users/sign_up`
+  - Base da aplicação: `https://dev.appdoafiliado.com.br`
 
-- **🚀 Produção**: `https://app.unitymob.com.br`
-  - URL de cadastro: `https://app.unitymob.com.br/users/sign_up`  
-  - Base da aplicação: `https://app.unitymob.com.br`
+- **🚀 Produção**: `https://app.appdoafiliado.com.br`
+  - URL de cadastro: `https://app.appdoafiliado.com.br/users/sign_up`  
+  - Base da aplicação: `https://app.appdoafiliado.com.br`
 
-- **📧 Email**: `@unitymob.com.br` (para ambos os ambientes)
+- **📧 Email**: `@appdoafiliado.com.br` (para ambos os ambientes)
+
+## ⚙️ CONFIGURAÇÃO DE VARIÁVEIS DE AMBIENTE (.env)
+
+**🔥 CRÍTICO: Todas as configurações ficam no arquivo `.env` na raiz do projeto**
+
+### Stripe (Pagamentos)
+```properties
+STRIPE_PUBLISHABLE_KEY=pk_test_sua_chave_publica_stripe
+STRIPE_SECRET_KEY=sk_test_sua_chave_secreta_stripe
+STRIPE_WEBHOOK_SECRET=whsec_sua_chave_webhook_stripe
+```
+
+### Banco de Dados
+```properties
+DATABASE_URL=postgresql://postgres@localhost:5432/link_flow_development
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_NAME=link_flow_development
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=
+```
+
+### Shopee API
+```properties
+SHOPEE_APP_ID=placeholder
+SHOPEE_APP_SECRET=placeholder
+SHOPEE_REDIRECT_URI=https://dev.appdoafiliado.com.br/auth/shopee/callback
+SHOPEE_BASE_URL=https://partner.test-stable.shopeemobile.com
+```
+
+### Aplicação
+```properties
+APP_DOMAIN=dev.appdoafiliado.com.br
+APP_URL=https://dev.appdoafiliado.com.br
+RAILS_ENV=development
+SECRET_KEY_BASE=your_secret_key_base_will_be_generated
+```
+
+**⚠️ IMPORTANTE**: 
+- Sempre verificar se as variáveis estão carregadas antes de fazer alterações
+- Usar `Rails.configuration.stripe[:publishable_key]` no código, não ENV direto
+- Reiniciar servidor após mudanças no .env
 
 ## 📋 Visão Geral do Projeto
 
@@ -116,7 +182,85 @@ app/
 
 ---
 
-## 📊 Funcionalidades Core
+## � PROBLEMAS RESOLVIDOS RECENTEMENTE
+
+### Sistema de Pagamentos (Setembro 2025)
+
+#### ❌ Problemas Identificados e Resolvidos:
+1. **Stripe Sync Validation Error**: "Nome já está em uso" ao sincronizar planos
+   - **Causa**: Validação duplicada no modelo Plan
+   - **Solução**: Removidas validações conflitantes, implementado sync seguro
+
+2. **Trial Period Confusion**: Usuários queriam pagamento imediato, não trial
+   - **Causa**: Lógica complexa de trial vs pagamento imediato
+   - **Solução**: Removido trial completamente, sempre pagamento imediato
+
+3. **Formulário de Pagamento Fragmentado**: UX confusa com múltiplas etapas
+   - **Causa**: Formulários separados para conta e pagamento
+   - **Solução**: Formulário unificado em `subscriptions/new.html.erb`
+
+4. **Template Corruption**: Arquivo de view corrompido com sintaxe inválida
+   - **Causa**: Edições manuais incorretas
+   - **Solução**: Recriação completa do template com estrutura correta
+
+#### 🔄 Problema Atual em Resolução:
+**Payment Flow Bug**: "Dados do cartão são obrigatórios para planos pagos"
+- ✅ **CAUSA IDENTIFICADA**: IDs duplicados `card-element` no HTML causando conflito no JavaScript
+- ✅ **SOLUÇÃO IMPLEMENTADA**: Criados IDs únicos (`card-element` e `card-element-logged`)
+- ✅ **JavaScript Atualizado**: Lógica para detectar qual elemento usar dinamicamente
+- ✅ **Webhook Stripe Liberado**: Removida autenticação obrigatória que causava 401 Unauthorized
+- 🔄 **Status**: Testando correção completa - webhook e formulário corrigidos
+- **Próximos Passos**: 
+  1. ✅ Verificar chaves Stripe no .env (RESOLVIDO)
+  2. ✅ Corrigir JavaScript para usar `Rails.configuration.stripe[:publishable_key]`
+  3. ✅ Corrigir IDs duplicados no HTML (RESOLVIDO)
+  4. ✅ Liberar webhook Stripe da autenticação (RESOLVIDO)
+  5. 🔄 Testar fluxo completo de pagamento
+
+#### 📊 Debugging Info (Setembro 2025):
+```ruby
+# Logs mostram que usuário é criado mas pagamento falha:
+# User Create successful, mas depois:
+# "Dados do cartão são obrigatórios para planos pagos"
+# Status 422 Unprocessable Content
+
+# Investigação necessária:
+# 1. JavaScript console errors
+# 2. Network tab - token sendo enviado?
+# 3. Stripe Elements montando corretamente?
+```
+
+### Arquitetura de Pagamentos Atual
+
+#### Controller Flow (`SubscriptionsController`)
+```ruby
+def create
+  # 1. Criar usuário se não logado
+  if !user_signed_in? && params[:user].present?
+    @user = create_user_from_params
+    sign_in(@user) if @user.persisted?
+  end
+  
+  # 2. Validar token do Stripe para planos pagos
+  if @plan.price > 0 && params[:stripe_token].blank?
+    flash[:alert] = 'Dados do cartão são obrigatórios para planos pagos.'
+    render :new, status: :unprocessable_entity
+  end
+  
+  # 3. Processar pagamento via StripeService
+  stripe_result = StripeService.create_subscription_with_token(...)
+end
+```
+
+#### JavaScript Integration
+- **Stripe Elements**: Configurado para validação em tempo real
+- **Token Creation**: `stripe.createToken(cardElement)` antes do submit
+- **Validation**: Verificação de `cardValid` antes de submeter
+- **Error Handling**: Exibição de erros do Stripe na interface
+
+---
+
+## �📊 Funcionalidades Core
 
 ### 1. Sistema de Autenticação e Assinaturas
 
@@ -2327,7 +2471,60 @@ cpa = gastos / número_de_pedidos
 
 ---
 
-## 🔮 Próximas Funcionalidades Planejadas
+## � EXECUÇÃO DO PROJETO
+
+### Desenvolvimento Local
+```bash
+# 1. Instalar dependências
+bundle install
+
+# 2. Configurar banco de dados
+rails db:create db:migrate db:seed
+
+# 3. Verificar variáveis de ambiente
+# Arquivo .env deve estar configurado (ver seção ⚙️ CONFIGURAÇÃO)
+
+# 4. Executar servidor
+bundle exec rails server -p 3000
+
+# 5. Acessar aplicação
+# http://localhost:3000 (local)
+# https://dev.appdoafiliado.com.br (com túnel SSH)
+```
+
+### Deployment para Produção
+```bash
+# Deploy via Mina (configurado)
+mina deploy
+
+# Versões recentes no servidor:
+# v13-v21: Evoluções do sistema de pagamentos
+# v21: Versão atual com formulário unificado
+```
+
+### Troubleshooting Comum
+```bash
+# Verificar configuração Stripe
+rails runner "puts Rails.configuration.stripe[:publishable_key]"
+
+# Reiniciar após mudanças no .env
+bundle exec rails server -p 3000
+
+# Verificar status do banco
+rails db:migrate:status
+
+# Limpar cache se necessário
+rails tmp:clear
+```
+
+### Logs Importantes
+- **Payment Errors**: Verificar logs do controller para status 422
+- **Stripe Integration**: Logs do StripeService mostram tokens e erros
+- **Database**: Verificar migrações e seeds executados
+
+---
+
+## �🔮 Próximas Funcionalidades Planejadas
 
 ### Roadmap de Desenvolvimento
 

@@ -80,7 +80,7 @@
                     R$ <%= number_with_precision(channel_data[:avg_ticket], precision: 2, delimiter: '.', separator: ',') %>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <% roi_percentage = channel_data[:roi] %>
+                    <% roi_percentage = channel_data[:roi] || 0 %>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                 <%= roi_percentage > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
                       <%= roi_percentage > 0 ? '+' : '' %><%= number_with_precision(roi_percentage, precision: 1) %>%
@@ -194,7 +194,7 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-green-600">R$ <%= number_with_precision(subid_data[:commissions], precision: 2, delimiter: '.', separator: ',') %></div>
-                    <div class="text-xs text-gray-500"><%= number_with_precision((subid_data[:commissions] / @total_commissions * 100), precision: 1) %>% do total</div>
+                    <div class="text-xs text-gray-500"><%= @total_commissions > 0 ? number_with_precision((subid_data[:commissions] / @total_commissions * 100), precision: 1) : 0 %>% do total</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     R$ <%= number_with_precision(subid_data[:sales], precision: 2, delimiter: '.', separator: ',') %>
@@ -205,18 +205,18 @@
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <% conversion_rate = subid_data[:conversion_rate] %>
+                    <% conversion_rate = subid_data[:conversion_rate] || 0 %>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                 <%= conversion_rate > 5 ? 'bg-green-100 text-green-800' : conversion_rate > 2 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800' %>">
                       <%= number_with_precision(conversion_rate, precision: 1) %>%
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <% if subid_data[:commissions] > 100 %>
+                    <% if (subid_data[:commissions] || 0) > 100 %>
                       <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                         🚀 Alta performance
                       </span>
-                    <% elsif subid_data[:commissions] > 50 %>
+                    <% elsif (subid_data[:commissions] || 0) > 50 %>
                       <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                         📊 Performance média
                       </span>

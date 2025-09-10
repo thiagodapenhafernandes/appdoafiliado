@@ -43,7 +43,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                        <i class="fas fa-chart-line text-white text-sm"></i>
+                        <span class="text-white text-sm">L</span>
                     </div>
                     <span class="text-xl font-bold text-gray-900">Link Flow</span>
                 </div>
@@ -53,12 +53,12 @@
                     <a href="#precos" class="text-gray-600 hover:text-primary transition-colors">Preços</a>
                     <a href="#depoimentos" class="text-gray-600 hover:text-primary transition-colors">Depoimentos</a>
                     <a href="/users/sign_in" class="text-gray-600 hover:text-primary transition-colors">Login</a>
-                    <a href="#teste-gratis" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium">Teste Grátis</a>
+                    <a href="https://app.appdoafiliado.com.br/subscriptions/new?plan_id=2" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium">Assinar Pro</a>
                 </div>
                 
                 <!-- Mobile menu button -->
                 <button class="md:hidden text-gray-600" id="mobile-menu-btn">
-                    <i class="fas fa-bars text-xl"></i>
+                    <span class="text-xl">☰</span>
                 </button>
             </div>
             
@@ -69,7 +69,7 @@
                     <a href="#precos" class="text-gray-600 hover:text-primary transition-colors">Preços</a>
                     <a href="#depoimentos" class="text-gray-600 hover:text-primary transition-colors">Depoimentos</a>
                     <a href="/users/sign_in" class="text-gray-600 hover:text-primary transition-colors">Login</a>
-                    <a href="#teste-gratis" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium text-center">Teste Grátis</a>
+                    <a href="https://app.appdoafiliado.com.br/subscriptions/new?plan_id=2" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium text-center">Assinar Pro</a>
                 </div>
             </div>
         </nav>
@@ -88,27 +88,27 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                    <a href="#teste-gratis" class="bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary/90 transition-colors font-semibold text-lg shadow-lg">
-                        <i class="fas fa-rocket mr-2"></i>
-                        Comece Grátis Agora
+                    <a href="https://app.appdoafiliado.com.br/subscriptions/new?plan_id=2" class="bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary/90 transition-colors font-semibold text-lg shadow-lg">
+                        <span class="mr-2">🚀</span>
+                        Assinar Plano Pro
                     </a>
                     <a href="#demo" class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg hover:border-primary hover:text-primary transition-colors font-semibold text-lg">
-                        <i class="fas fa-play mr-2"></i>
+                        <span class="mr-2">▶️</span>
                         Ver Demonstração
                     </a>
                 </div>
                 
                 <div class="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500">
                     <div class="flex items-center">
-                        <i class="fas fa-brain text-primary mr-2"></i>
+                        <span class="mr-2">🧠</span>
                         IA para otimização automática
                     </div>
                     <div class="flex items-center">
-                        <i class="fas fa-chart-line text-accent mr-2"></i>
+                        <span class="mr-2">📈</span>
                         Analytics que preveem tendências
                     </div>
                     <div class="flex items-center">
-                        <i class="fas fa-rocket text-secondary mr-2"></i>
+                        <span class="mr-2">⚡</span>
                         Escalabilidade sem limites
                     </div>
                 </div>
@@ -128,16 +128,46 @@
                 </p>
                 
                 <div class="relative bg-primary rounded-2xl p-1 shadow-2xl">
-                    <div class="bg-gray-900 rounded-xl aspect-video flex items-center justify-center">
-                        <button class="bg-white/20 hover:bg-white/30 transition-colors rounded-full w-20 h-20 flex items-center justify-center backdrop-blur-sm">
-                            <i class="fas fa-play text-white text-2xl ml-1"></i>
-                        </button>
+                    <div class="relative bg-gray-900 rounded-xl aspect-video overflow-hidden">
+                        <!-- Video Preview Background -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-800">
+                            <!-- Dashboard Mockup -->
+                            <div class="absolute inset-4 bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="h-2 bg-white/20 rounded w-3/4"></div>
+                                    <div class="h-2 bg-white/15 rounded w-1/2"></div>
+                                    <div class="grid grid-cols-2 gap-2 mt-3">
+                                        <div class="h-8 bg-white/10 rounded flex items-center justify-center">
+                                            <span class="text-white/60">📊</span>
+                                        </div>
+                                        <div class="h-8 bg-white/10 rounded flex items-center justify-center">
+                                            <span class="text-white/60">💰</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Play Button -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <button class="bg-white/20 hover:bg-white/30 transition-colors rounded-full w-20 h-20 flex items-center justify-center backdrop-blur-sm border border-white/20 hover:scale-110 transform duration-300">
+                                <span class="text-white text-2xl ml-1">▶️</span>
+                            </button>
+                        </div>
+                        <!-- Video Duration Badge -->
+                        <div class="absolute bottom-4 right-4 bg-black/60 text-white text-sm px-2 py-1 rounded backdrop-blur-sm">
+                            <span class="mr-1">⏱️</span>3:24
+                        </div>
                     </div>
                 </div>
                 
                 <div class="mt-8 flex justify-center">
                     <div class="bg-accent/10 text-accent px-6 py-3 rounded-full font-semibold">
-                        <i class="fas fa-trophy mr-2"></i>
+                        <span class="mr-2">🏆</span>
                         97% aumentaram ROI em 30 dias
                     </div>
                 </div>
@@ -293,8 +323,30 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-chart-area text-4xl text-gray-400"></i>
+                                    <div class="h-32 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs text-gray-500">Evolução Mensal</span>
+                                            <span class="text-xs text-green-600 font-medium">+24.5%</span>
+                                        </div>
+                                        <div class="relative h-16">
+                                            <!-- Chart bars -->
+                                            <div class="absolute bottom-0 left-0 w-full flex items-end space-x-1">
+                                                <div class="bg-blue-300 w-2 h-4"></div>
+                                                <div class="bg-blue-400 w-2 h-6"></div>
+                                                <div class="bg-blue-500 w-2 h-8"></div>
+                                                <div class="bg-blue-400 w-2 h-5"></div>
+                                                <div class="bg-blue-600 w-2 h-10"></div>
+                                                <div class="bg-blue-500 w-2 h-7"></div>
+                                                <div class="bg-blue-700 w-2 h-12"></div>
+                                                <div class="bg-blue-600 w-2 h-9"></div>
+                                                <div class="bg-blue-800 w-2 h-14"></div>
+                                                <div class="bg-blue-700 w-2 h-11"></div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center mt-1">
+                                            <i class="fas fa-trending-up text-green-500 text-xs mr-1"></i>
+                                            <span class="text-xs text-gray-600">Melhor mês do ano</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -319,12 +371,18 @@
                     <!-- Testimonial 1 -->
                     <div class="bg-white rounded-xl p-8 shadow-lg">
                         <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                                M
+                            <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-br from-pink-300 to-purple-400 opacity-80"></div>
+                                <span class="relative z-10">M</span>
+                                <!-- Avatar decorations -->
+                                <div class="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full border border-white"></div>
                             </div>
                             <div class="ml-4">
                                 <div class="font-semibold text-gray-900">Marina Silva</div>
-                                <div class="text-gray-600 text-sm">Afiliada Expert</div>
+                                <div class="text-gray-600 text-sm flex items-center">
+                                    <i class="fas fa-star text-yellow-400 mr-1 text-xs"></i>
+                                    Afiliada Expert
+                                </div>
                             </div>
                         </div>
                         <p class="text-gray-600 leading-relaxed">
@@ -343,12 +401,20 @@
                     <!-- Testimonial 2 -->
                     <div class="bg-white rounded-xl p-8 shadow-lg">
                         <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-bold">
-                                R
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-br from-blue-300 to-indigo-500 opacity-80"></div>
+                                <span class="relative z-10">R</span>
+                                <!-- Professional badge -->
+                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-graduation-cap text-white text-xs"></i>
+                                </div>
                             </div>
                             <div class="ml-4">
                                 <div class="font-semibold text-gray-900">Rafael Santos</div>
-                                <div class="text-gray-600 text-sm">Mentor e Afiliado</div>
+                                <div class="text-gray-600 text-sm flex items-center">
+                                    <i class="fas fa-chalkboard-teacher text-blue-500 mr-1 text-xs"></i>
+                                    Mentor e Afiliado
+                                </div>
                             </div>
                         </div>
                         <p class="text-gray-600 leading-relaxed">
@@ -367,12 +433,20 @@
                     <!-- Testimonial 3 -->
                     <div class="bg-white rounded-xl p-8 shadow-lg">
                         <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center text-white font-bold">
-                                D
+                            <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center text-white font-bold relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-br from-emerald-300 to-teal-500 opacity-80"></div>
+                                <span class="relative z-10">D</span>
+                                <!-- Crown icon for top performer -->
+                                <div class="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-crown text-white text-xs"></i>
+                                </div>
                             </div>
                             <div class="ml-4">
                                 <div class="font-semibold text-gray-900">Daniela Costa</div>
-                                <div class="text-gray-600 text-sm">Mentora e Afiliada</div>
+                                <div class="text-gray-600 text-sm flex items-center">
+                                    <i class="fas fa-medal text-yellow-500 mr-1 text-xs"></i>
+                                    Mentora e Afiliada
+                                </div>
                             </div>
                         </div>
                         <p class="text-gray-600 leading-relaxed">
@@ -393,28 +467,48 @@
     </section>
 
     <!-- Urgency Section -->
-    <section class="py-12 bg-red-600">
-        <div class="container mx-auto px-4">
+    <section class="py-12 bg-gradient-to-r from-red-600 via-red-700 to-rose-600 relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-4 left-4 animate-pulse">
+                <i class="fas fa-bolt text-white text-6xl"></i>
+            </div>
+            <div class="absolute bottom-4 right-4 animate-bounce">
+                <i class="fas fa-fire text-yellow-300 text-4xl"></i>
+            </div>
+            <div class="absolute top-1/2 left-10 animate-pulse delay-500">
+                <i class="fas fa-clock text-white text-3xl"></i>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
             <div class="max-w-4xl mx-auto text-center">
                 <div class="flex items-center justify-center mb-4">
-                    <i class="fas fa-clock text-white text-2xl mr-3"></i>
+                    <div class="animate-pulse bg-yellow-400 rounded-full p-2 mr-3">
+                        <i class="fas fa-clock text-red-600 text-2xl"></i>
+                    </div>
                     <h3 class="text-2xl font-bold text-white">⚡ OFERTA RELÂMPAGO ⚡</h3>
+                    <div class="animate-pulse bg-yellow-400 rounded-full p-2 ml-3">
+                        <i class="fas fa-fire text-red-600 text-2xl"></i>
+                    </div>
                 </div>
                 <p class="text-xl text-white mb-6">
-                    Apenas <span class="font-bold text-yellow-300">37 vagas restantes</span> com desconto vitalício de 20%
+                    Apenas <span class="font-bold text-yellow-300 bg-yellow-300/20 px-3 py-1 rounded-full">37 vagas restantes</span> com desconto vitalício de 20%
                 </p>
                 <div class="flex justify-center items-center space-x-8 text-white">
-                    <div class="text-center">
+                    <div class="text-center bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
                         <div class="text-3xl font-bold">02</div>
-                        <div class="text-sm">DIAS</div>
+                        <div class="text-sm opacity-80">DIAS</div>
                     </div>
-                    <div class="text-center">
+                    <div class="text-2xl text-yellow-300 animate-pulse">:</div>
+                    <div class="text-center bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
                         <div class="text-3xl font-bold">14</div>
-                        <div class="text-sm">HORAS</div>
+                        <div class="text-sm opacity-80">HORAS</div>
                     </div>
-                    <div class="text-center">
+                    <div class="text-2xl text-yellow-300 animate-pulse">:</div>
+                    <div class="text-center bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
                         <div class="text-3xl font-bold">37</div>
-                        <div class="text-sm">MINUTOS</div>
+                        <div class="text-sm opacity-80">MINUTOS</div>
                     </div>
                 </div>
             </div>
@@ -452,30 +546,30 @@
                         
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-link text-blue-500 mr-3"></i>
                                 <span class="text-gray-600">15 links inteligentes</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-chart-bar text-green-500 mr-3"></i>
                                 <span class="text-gray-600">Analytics básicos + IA</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-robot text-purple-500 mr-3"></i>
                                 <span class="text-gray-600">Otimização automática</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-bell text-yellow-500 mr-3"></i>
                                 <span class="text-gray-600">Alertas preditivos</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-headset text-indigo-500 mr-3"></i>
                                 <span class="text-gray-600">Suporte prioritário</span>
                             </li>
                         </ul>
                         
-                        <button class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-semibold">
-                            Teste Grátis por 14 dias
-                        </button>
+                        <a href="https://app.appdoafiliado.com.br/subscriptions/new?plan_id=1" class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-semibold block text-center">
+                            Assinar Plano Starter
+                        </a>
                     </div>
                     
                     <!-- Pro Plan -->
@@ -499,34 +593,34 @@
                         
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-infinity text-blue-600 mr-3"></i>
                                 <span class="text-gray-600">50 links com IA avançada</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-crystal-ball text-purple-600 mr-3"></i>
                                 <span class="text-gray-600">Previsões de tendências</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-cogs text-gray-600 mr-3"></i>
                                 <span class="text-gray-600">Automação completa</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-brain text-indigo-600 mr-3"></i>
                                 <span class="text-gray-600">Analytics preditivos</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-file-chart text-green-600 mr-3"></i>
                                 <span class="text-gray-600">Relatórios personalizados</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-star text-yellow-500 mr-3"></i>
                                 <span class="text-gray-600">Suporte premium 24/7</span>
                             </li>
                         </ul>
                         
-                        <button class="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors font-semibold">
-                            Teste Grátis por 14 dias
-                        </button>
+                        <a href="https://app.appdoafiliado.com.br/subscriptions/new?plan_id=2" class="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors font-semibold block text-center">
+                            Assinar Plano Pro
+                        </a>
                     </div>
                     
                     <!-- Elite Plan -->
@@ -546,38 +640,38 @@
                         
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-crown text-yellow-500 mr-3"></i>
                                 <span class="text-gray-600">Links ilimitados + IA suprema</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-user-tie text-blue-600 mr-3"></i>
                                 <span class="text-gray-600">Consultoria estratégica mensal</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-rocket text-red-500 mr-3"></i>
                                 <span class="text-gray-600">Acesso antecipado a features</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-code text-purple-600 mr-3"></i>
                                 <span class="text-gray-600">API para automações</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-palette text-pink-500 mr-3"></i>
                                 <span class="text-gray-600">Dashboard personalizado</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-concierge-bell text-indigo-600 mr-3"></i>
                                 <span class="text-gray-600">Suporte White Glove</span>
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check text-accent mr-3"></i>
+                                <i class="fas fa-users-cog text-gray-600 mr-3"></i>
                                 <span class="text-gray-600">Análise de concorrência</span>
                             </li>
                         </ul>
                         
-                        <button class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-semibold">
-                            Teste Grátis por 14 dias
-                        </button>
+                        <a href="https://app.appdoafiliado.com.br/subscriptions/new?plan_id=3" class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-semibold block text-center">
+                            Assinar Plano Elite
+                        </a>
                     </div>
                 </div>
             </div>
@@ -597,9 +691,9 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="/users/sign_up" class="bg-white text-primary px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg">
+                    <a href="https://app.appdoafiliado.com.br/subscriptions/new?plan_id=2" class="bg-white text-primary px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg">
                         <i class="fas fa-rocket mr-2"></i>
-                        Teste Grátis por 14 dias
+                        Assinar Plano Pro
                     </a>
                     <a href="#precos" class="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary transition-colors font-semibold text-lg">
                         Ver Todos os Planos
@@ -631,72 +725,206 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-16">
+    <!-- Newsletter Section -->
+    <section class="bg-gradient-to-r from-purple-600 to-blue-600 py-16">
         <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center text-white">
+                <div class="mb-8">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📧</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Fique por dentro das novidades!</h2>
+                    <p class="text-xl text-purple-100">
+                        Receba dicas exclusivas, atualizações da plataforma e estratégias avançadas para maximizar seus ganhos
+                    </p>
+                </div>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                    <div class="flex-1 relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">✉️</span>
+                        <input type="email" placeholder="Digite seu melhor email" 
+                               class="w-full pl-12 pr-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all">
+                    </div>
+                    <button type="submit" class="bg-white text-purple-600 px-8 py-4 rounded-xl font-bold hover:bg-purple-50 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                        <span class="mr-2">🚀</span>Inscrever Grátis
+                    </button>
+                </form>
+                
+                <div class="mt-6 text-sm text-purple-200 flex items-center justify-center space-x-4">
+                    <div class="flex items-center">
+                        <span class="mr-2">✅</span>
+                        <span>100% Gratuito</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2">🛡️</span>
+                        <span>Sem Spam</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2">❌</span>
+                        <span>Cancele a qualquer momento</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><circle cx="30" cy="30" r="2"/></g></g></svg>');"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
             <div class="max-w-6xl mx-auto">
                 <div class="grid md:grid-cols-4 gap-8">
                     <!-- Company Info -->
                     <div class="col-span-1">
-                        <div class="flex items-center space-x-2 mb-4">
-                            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                                <i class="fas fa-chart-line text-white text-sm"></i>
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
+                                <span class="text-white text-lg font-bold">L</span>
                             </div>
-                            <span class="text-xl font-bold">Link Flow</span>
+                            <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Link Flow</span>
                         </div>
-                        <p class="text-gray-400 mb-6">
-                            A plataforma mais inteligente para dominar o afiliado Shopee com ciência de dados.
+                        <p class="text-gray-400 mb-6 leading-relaxed">
+                            A plataforma mais inteligente para dominar o afiliado Shopee com ciência de dados e automação avançada.
                         </p>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                                <i class="fab fa-instagram text-xl"></i>
+                        <div class="flex space-x-3">
+                            <a href="#" class="group bg-gray-800 p-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-110">
+                                <span class="block w-4 h-4 bg-current rounded"></span>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                                <i class="fab fa-youtube text-xl"></i>
+                            <a href="#" class="group bg-gray-800 p-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 transition-all duration-300 transform hover:scale-110">
+                                <span class="block w-4 h-4 bg-current rounded-full"></span>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                                <i class="fab fa-telegram text-xl"></i>
+                            <a href="#" class="group bg-gray-800 p-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-pink-500 hover:to-pink-600 transition-all duration-300 transform hover:scale-110">
+                                <span class="block w-4 h-4 bg-current rounded-md"></span>
+                            </a>
+                            <a href="#" class="group bg-gray-800 p-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-red-500 hover:to-red-600 transition-all duration-300 transform hover:scale-110">
+                                <span class="block w-4 h-4 bg-current"></span>
+                            </a>
+                            <a href="#" class="group bg-gray-800 p-3 rounded-lg text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500 transition-all duration-300 transform hover:scale-110">
+                                <span class="block w-4 h-4 bg-current rounded-lg"></span>
                             </a>
                         </div>
                     </div>
                     
+                    <!-- Produto -->
+                    <div>
+                        <h4 class="font-bold text-lg mb-6 flex items-center">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                            Produto
+                        </h4>
+                        <ul class="space-y-3">
+                            <li><a href="#funcionalidades" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-purple-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Funcionalidades
+                            </a></li>
+                            <li><a href="#precos" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-blue-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Preços
+                            </a></li>
+                            <li><a href="/users/sign_in" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-green-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Login
+                            </a></li>
+                            <li><a href="/users/sign_up" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-yellow-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Cadastro Gratuito
+                            </a></li>
+                        </ul>
+                    </div>
+                    
                     <!-- Suporte -->
                     <div>
-                        <h4 class="font-semibold mb-4">Suporte</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Central de Ajuda</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contato</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutoriais</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Status do Sistema</a></li>
+                        <h4 class="font-bold text-lg mb-6 flex items-center">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                            Suporte
+                        </h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-yellow-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Central de Ajuda
+                            </a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-red-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Contato
+                            </a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-green-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Tutoriais
+                            </a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-purple-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Status do Sistema
+                            </a></li>
                         </ul>
                     </div>
                     
                     <!-- Legal -->
                     <div>
-                        <h4 class="font-semibold mb-4">Legal</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Termos de Uso</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Política de Privacidade</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Política de Reembolso</a></li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Produto -->
-                    <div>
-                        <h4 class="font-semibold mb-4">Produto</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#funcionalidades" class="text-gray-400 hover:text-white transition-colors">Funcionalidades</a></li>
-                            <li><a href="#precos" class="text-gray-400 hover:text-white transition-colors">Preços</a></li>
-                            <li><a href="/users/sign_in" class="text-gray-400 hover:text-white transition-colors">Login</a></li>
-                            <li><a href="/users/sign_up" class="text-gray-400 hover:text-white transition-colors">Cadastro</a></li>
+                        <h4 class="font-bold text-lg mb-6 flex items-center">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                            Legal
+                        </h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-blue-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Termos de Uso
+                            </a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-purple-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Política de Privacidade
+                            </a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-green-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Política de Reembolso
+                            </a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-2 transform transition-all duration-300 flex items-center group">
+                                <span class="w-1 h-1 bg-yellow-400 rounded-full mr-2 group-hover:w-2 group-hover:h-2 transition-all duration-300"></span>
+                                Política de Cookies
+                            </a></li>
                         </ul>
                     </div>
                 </div>
                 
-                <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-                    <p class="text-gray-400">
-                        App do Afiliado · © 2025 · Todos os direitos reservados.
-                    </p>
+                <!-- Footer Bottom -->
+                <div class="border-t border-gray-800 mt-12 pt-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                        <div class="flex items-center space-x-6">
+                            <p class="text-gray-400 flex items-center">
+                                <span class="mr-2">©</span>
+                                2025 Link Flow. Todos os direitos reservados.
+                            </p>
+                            <div class="hidden md:flex items-center space-x-4 text-sm text-gray-500">
+                                <span class="flex items-center">
+                                    <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
+                                    SSL Seguro
+                                </span>
+                                <span class="flex items-center">
+                                    <span class="w-2 h-2 bg-blue-400 rounded-full mr-1"></span>
+                                    99.9% Uptime
+                                </span>
+                                <span class="flex items-center">
+                                    <span class="w-2 h-2 bg-purple-400 rounded-full mr-1"></span>
+                                    +10k Usuários
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-2 text-sm text-gray-400">
+                                <span class="w-2 h-2 bg-current rounded mr-1"></span>
+                                <span>Feito com</span>
+                                <span class="text-red-500 animate-pulse">♥</span>
+                                <span>no Brasil</span>
+                                <span class="text-green-500 ml-1">🇧🇷</span>
+                            </div>
+                            
+                            <button onclick="scrollToTop()" class="bg-gradient-to-r from-purple-600 to-blue-600 p-2 rounded-lg text-white hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-110">
+                                <span class="block w-4 h-4 border-l-2 border-t-2 border-white transform rotate-45"></span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -704,5 +932,28 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <script>
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate footer links on hover
+            const footerLinks = document.querySelectorAll('footer a');
+            footerLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(8px)';
+                });
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
