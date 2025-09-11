@@ -1,4 +1,13 @@
 class Commission < ApplicationRecord
+  # Deleta comissões por período para um usuário
+  def self.delete_by_period(user, start_date, end_date)
+    where(user_id: user.id, created_at: start_date.beginning_of_day..end_date.end_of_day).delete_all
+  end
+
+  # Deleta todas as comissões de um usuário
+  def self.delete_all_for_user(user)
+    where(user_id: user.id).delete_all
+  end
   # Relationships
   belongs_to :user
 

@@ -102,67 +102,72 @@
           <% end %>
         </div>
 
-        <!-- Heatmap horizontal responsivo -->
+        <!-- Gráfico de Barras por Hora -->
         <div class="bg-gray-50 p-4 rounded-lg">
           <h4 class="text-sm font-medium text-gray-700 mb-3">Distribuição por Hora</h4>
-          
-          <!-- Grid responsivo de 24 horas -->
-          <div class="flex flex-wrap gap-1 sm:gap-2">
-            <% (0..23).each do |hour| %>
-              <% 
-                # Usar os dados já calculados no complete_hourly_data
-                clicks = complete_hourly_data[hour] || 0
-                
-                # Determinar cor baseada na intensidade
-                max_clicks = complete_hourly_data.values.max || 10
-                intensity_percent = max_clicks > 0 ? (clicks.to_f / max_clicks * 100) : 0
-                
-                color_class = case intensity_percent
-                when 0..10   then "bg-gray-200 text-gray-600"
-                when 11..25  then "bg-blue-300 text-blue-800"
-                when 26..50  then "bg-green-400 text-green-800"
-                when 51..75  then "bg-yellow-500 text-yellow-900"
-                when 76..90  then "bg-orange-500 text-white"
-                else "bg-red-500 text-white"
-                end
-              %>
-              <div class="relative group flex-1 min-w-[2.5rem] max-w-[4rem]">
-                <div class="<%= color_class %> h-12 sm:h-14 lg:h-16 rounded-md flex flex-col items-center justify-center text-xs font-medium transition-transform hover:scale-105 cursor-pointer shadow-sm w-full">
-                  <!-- Hora (responsiva) -->
-                  <div class="text-xs font-bold hidden sm:block"><%= sprintf("%02d", hour) %>h</div>
-                  <div class="text-xs font-bold sm:hidden"><%= hour %></div>
-                  <!-- Número de cliques -->
-                  <div class="text-sm sm:text-lg font-bold"><%= clicks %></div>
-                </div>
-                
-                <!-- Tooltip melhorado -->
-                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
-                  <div class="bg-gray-900 text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap">
-                    <div class="font-semibold"><%= sprintf("%02d:00 - %02d:59", hour, hour) %></div>
-                    <div><%= clicks %> cliques únicos</div>
-                    <div class="text-gray-300">
-                      <%= case hour
-                      when 0..5   then "😴 Madrugada"
-                      when 6..11  then "🌅 Manhã"
-                      when 12..17 then "☀️ Tarde"
-                      else "🌙 Noite"
-                      end %>
-                    </div>
-                  </div>
-                  <!-- Seta do tooltip -->
-                  <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                </div>
-              </div>
-            <% end %>
+          <div id="hourlyBarChartWrapper">
+            <canvas id="hourlyBarChart" height="120"></canvas>
           </div>
-          
-          <!-- Legenda responsiva -->
           <div class="mt-3 text-center">
             <p class="text-xs text-gray-500">
               <%= using_real_data ? "📊 Dados reais dos últimos 30 dias (#{total_displayed_clicks} cliques)" : "📋 Dados simulados - conecte suas análises para ver dados reais (#{total_displayed_clicks} cliques de exemplo)" %>
             </p>
           </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+          // Suporte a Turbo/Hotwire e destruição correta do gráfico
+          function renderHourlyBarChart() {
+            // Remove canvas antigo se existir
+            var wrapper = document.getElementById('hourlyBarChartWrapper');
+            if (!wrapper) return;
+            var oldCanvas = document.getElementById('hourlyBarChart');
+            if (oldCanvas) {
+              if (window.hourlyBarChartInstance) {
+                window.hourlyBarChartInstance.destroy();
+                window.hourlyBarChartInstance = null;
+              }
+              wrapper.removeChild(oldCanvas);
+            }
+            // Cria novo canvas
+            var canvas = document.createElement('canvas');
+            canvas.id = 'hourlyBarChart';
+            canvas.height = 120;
+            wrapper.appendChild(canvas);
+            var ctx = canvas.getContext('2d');
+            var hourlyData = <%= raw((0..23).map { |h| complete_hourly_data[h] || 0 }.to_json) %>;
+            var labels = <%= raw((0..23).map { |h| sprintf("%02d:00", h) }.to_json) %>;
+            window.hourlyBarChartInstance = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Cliques por Hora',
+                  data: hourlyData,
+                  backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                  borderColor: 'rgba(54, 162, 235, 1)',
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { display: false }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                  }
+                }
+              }
+            });
+          }
+          document.addEventListener('turbo:load', renderHourlyBarChart);
+          document.addEventListener('DOMContentLoaded', renderHourlyBarChart);
+        </script>
 
         <!-- Insights automáticos -->
         <div class="bg-blue-50 p-4 rounded-lg">

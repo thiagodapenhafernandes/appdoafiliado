@@ -1,0 +1,36 @@
+<% content_for :title, 'Importações de Cliques Shopee' %>
+
+<h1>Importações de Cliques Shopee</h1>
+
+<%= link_to 'Voltar para Análise de Cliques', clicks_analytics_path, class: 'btn btn-secondary mb-3' %>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Arquivo</th>
+      <th>Usuário</th>
+      <th>Data/Hora</th>
+      <th>Qtd. Cliques</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @imports.each do |import| %>
+      <tr>
+        <td><%= import.id %></td>
+        <td><%= import.filename %></td>
+        <td><%= import.user&.email || 'N/A' %></td>
+        <td><%= l(import.created_at, format: :short) %></td>
+        <td><%= import.website_clicks.size %></td>
+        <td>
+          <%= button_to 'Excluir', delete_clicks_import_path(import), method: :delete, data: { confirm: 'Tem certeza que deseja excluir esta importação e todos os cliques associados?' }, class: 'btn btn-danger btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @imports.empty? %>
+  <div class="alert alert-info mt-3">Nenhuma importação encontrada.</div>
+<% end %>

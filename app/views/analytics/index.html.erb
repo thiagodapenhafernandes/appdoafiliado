@@ -100,6 +100,25 @@
             Mês passado
           <% end %>
         </div>
+        <!-- Deletar Comissões -->
+        <div class="flex flex-col ml-8">
+          <label class="text-sm font-medium text-red-700 mb-1">Deletar Comissões</label>
+          <div class="flex gap-2">
+            <form method="post" action="<%= destroy_commissions_by_period_path(tab: params[:tab]) %>" onsubmit="return confirm('Tem certeza que deseja deletar as comissões deste período? Esta ação não pode ser desfeita!')">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <input type="date" name="start_date" value="<%= params[:start_date] %>" required class="border border-gray-300 rounded-md px-2 py-1 text-xs">
+              <input type="date" name="end_date" value="<%= params[:end_date] %>" required class="border border-gray-300 rounded-md px-2 py-1 text-xs">
+              <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">Deletar Período</button>
+              <input type="hidden" name="_method" value="delete">
+            </form>
+            <form method="post" action="<%= destroy_all_commissions_path(tab: params[:tab]) %>" onsubmit="return confirm('Tem certeza que deseja deletar TODAS as comissões? Esta ação não pode ser desfeita!')">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <button type="submit" class="bg-red-800 hover:bg-red-900 text-white px-3 py-1 rounded text-xs font-bold transition-colors">Deletar TODAS</button>
+              <input type="hidden" name="_method" value="delete">
+            </form>
+          </div>
+          <span class="text-xs text-gray-500 mt-1">Atenção: ação irreversível!</span>
+        </div>
       </div>
     </form>
     

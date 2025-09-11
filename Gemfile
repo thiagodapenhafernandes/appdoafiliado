@@ -1,3 +1,6 @@
+# Paginação
+gem "will_paginate", github: "mislav/will_paginate"
+gem "bootstrap-will_paginate"
 source "https://rubygems.org"
 
 ruby "3.3.5"

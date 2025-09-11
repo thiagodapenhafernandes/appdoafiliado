@@ -33,6 +33,7 @@
               </svg>
               Ver Dados do Banco
             <% end %>
+            <%= button_to 'Persistir no Banco', persist_clicks_csv_to_db_path(file_id: params[:file_id]), method: :post, class: 'bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded transition-colors flex items-center', data: { confirm: 'Deseja realmente importar e salvar esses cliques no banco?' } %>
           <% else %>
             <%= link_to clicks_analytics_import_csv_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors flex items-center" do %>
               <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +42,109 @@
               Importar CSV
             <% end %>
           <% end %>
+          <%= link_to 'Ver Importações', clicks_analytics_imports_path, class: 'bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-colors flex items-center' %>
         </div>
+      </div>
+      <!-- Filtro de Data -->
+      <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <form method="get" action="<%= clicks_analytics_path %>" class="flex flex-wrap items-end gap-4">
+          <%# Mantém o parâmetro from_csv na URL ao filtrar %>
+          <% if params[:from_csv] %>
+            <input type="hidden" name="from_csv" value="true">
+            <% if params[:file_id] %>
+              <input type="hidden" name="file_id" value="<%= params[:file_id] %>">
+            <% end %>
+          <% end %>
+          <div class="flex flex-col">
+            <label for="start_date" class="text-sm font-medium text-gray-700 mb-1">Data Inicial</label>
+            <input type="date" id="start_date" name="start_date" value="<%= params[:start_date] %>" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+          </div>
+          <div class="flex flex-col">
+            <label for="end_date" class="text-sm font-medium text-gray-700 mb-1">Data Final</label>
+            <input type="date" id="end_date" name="end_date" value="<%= params[:end_date] %>" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+          </div>
+          <div class="flex flex-col">
+            <label for="sub_id" class="text-sm font-medium text-gray-700 mb-1">Sub_id</label>
+            <input type="text" id="sub_id" name="sub_id" value="<%= params[:sub_id] %>" placeholder="Pesquisar por sub_id" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+          </div>
+          <div class="flex flex-col">
+            <label for="click_id" class="text-sm font-medium text-gray-700 mb-1">ID dos Cliques</label>
+            <input type="text" id="click_id" name="click_id" value="<%= params[:click_id] %>" placeholder="Pesquisar por ID de clique" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+          </div>
+          <div class="flex flex-col">
+            <label for="region" class="text-sm font-medium text-gray-700 mb-1">Região dos Cliques</label>
+            <input type="text" id="region" name="region" value="<%= params[:region] %>" placeholder="Pesquisar por região de clique" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+          </div>
+          <div class="flex flex-col">
+            <label for="referrer" class="text-sm font-medium text-gray-700 mb-1">Referenciador</label>
+            <input type="text" id="referrer" name="referrer" value="<%= params[:referrer] %>" placeholder="Pesquisar por referenciador" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+          </div>
+          <div class="flex gap-2 mt-6">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center">Pesquisar</button>
+            <%= link_to clicks_analytics_path(file_id: params[:file_id], from_csv: true), class: "bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center" do %>Limpar<% end %>
+            <%= link_to '#', class: "bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center", onclick: "window.print(); return false;" do %>Exportar<% end %>
+          </div>
+        </form>
+    <% if @from_csv && @filtered_csv_data %>
+      <div class="bg-white rounded-lg shadow p-4 mb-8">
+        <h2 class="text-lg font-semibold mb-4">Relatório de cliques</h2>
+        <div class="mb-2 text-sm text-gray-700">
+          Total de registros: <%= @filtered_csv_data.try(:total_entries) || @filtered_csv_data.size %>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID dos Cliques</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Período dos Cliques</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Região dos Cliques</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Sub_id</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Referenciador</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @filtered_csv_data.each do |row| %>
+                <tr>
+                  <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row[:click_id] %></td>
+                  <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row[:click_time].strftime('%d/%m/%Y %H:%M:%S') %></td>
+                  <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row[:region].presence || 'Não informado' %></td>
+                  <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row[:sub_id].presence || 'Não informado' %></td>
+                  <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row[:referrer].presence || 'Não informado' %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <% if @filtered_csv_data.respond_to?(:total_pages) && @filtered_csv_data.total_pages > 1 %>
+            <div class="mt-4">
+              <%= will_paginate @filtered_csv_data, renderer: WillPaginate::ActionView::LinkRenderer, class: 'pagination flex gap-2 justify-center' %>
+            </div>
+          <% end %>
+          <% if @filtered_csv_data.empty? %>
+            <div class="text-center text-gray-500 py-8">Nenhum clique encontrado para os filtros selecionados.</div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+          <!-- Deletar Cliques -->
+          <div class="flex flex-col ml-8">
+            <label class="text-sm font-medium text-red-700 mb-1">Deletar Cliques</label>
+            <div class="flex gap-2">
+              <form method="post" action="<%= destroy_clicks_by_period_path %>" onsubmit="return confirm('Tem certeza que deseja deletar os cliques deste período? Esta ação não pode ser desfeita!')">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <input type="date" name="start_date" value="<%= params[:start_date] %>" required class="border border-gray-300 rounded-md px-2 py-1 text-xs">
+                <input type="date" name="end_date" value="<%= params[:end_date] %>" required class="border border-gray-300 rounded-md px-2 py-1 text-xs">
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">Deletar Período</button>
+                <input type="hidden" name="_method" value="delete">
+              </form>
+              <form method="post" action="<%= destroy_all_clicks_path %>" onsubmit="return confirm('Tem certeza que deseja deletar TODOS os cliques? Esta ação não pode ser desfeita!')">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <button type="submit" class="bg-red-800 hover:bg-red-900 text-white px-3 py-1 rounded text-xs font-bold transition-colors">Deletar TODOS</button>
+                <input type="hidden" name="_method" value="delete">
+              </form>
+            </div>
+            <span class="text-xs text-gray-500 mt-1">Atenção: ação irreversível!</span>
+          </div>
+        </form>
       </div>
       <% if @date_range_info && @date_range_info[:formatted_range] %>
         <p class="text-sm text-gray-500">
@@ -51,70 +154,108 @@
       <% end %>
     </div>
 
-    <!-- KPI Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <!-- Total Clicks -->
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-600 text-sm font-medium">Total de Cliques</p>
-            <p class="text-3xl font-bold text-gray-900"><%= number_with_delimiter(@total_clicks || 0) %></p>
-          </div>
-          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.122 2.122"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
 
-      <!-- Top Fonte -->
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-600 text-sm font-medium">Principal Fonte</p>
-            <p class="text-lg font-bold text-gray-900"><%= @top_referrer ? @top_referrer[0] : 'N/A' %></p>
-            <p class="text-sm text-gray-500"><%= @top_referrer ? "#{@top_referrer[1]} cliques" : '' %></p>
-          </div>
-          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-          </div>
-        </div>
+    <!-- Tabela detalhada de cliques filtrados -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+      <h2 class="text-lg font-semibold mb-4">Relatório de cliques</h2>
+      <div class="mb-2 text-sm text-gray-700">
+        Total de registros: <%= @clicks.try(:total_entries) || @clicks.size %>
       </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID dos Cliques</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Período dos Cliques</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Região dos Cliques</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Sub_id</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Referenciador</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @clicks.each do |row| %>
+              <tr>
+                <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row.click_id %></td>
+                <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row.click_time.strftime('%d/%m/%Y %H:%M:%S') if row.click_time %></td>
+                <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row.region.presence || 'Não informado' %></td>
+                <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row.sub_id.presence || 'Não informado' %></td>
+                <td class="px-4 py-2 whitespace-nowrap text-gray-900"><%= row.referrer.presence || 'Não informado' %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <% if @clicks.respond_to?(:total_pages) && @clicks.total_pages > 1 %>
+          <div class="mt-4">
+            <%= will_paginate @clicks, renderer: WillPaginate::ActionView::LinkRenderer, class: 'pagination flex gap-2 justify-center' %>
+          </div>
+        <% end %>
+        <% if @clicks.empty? %>
+          <div class="text-center text-gray-500 py-8">Nenhum clique encontrado para os filtros selecionados.</div>
+        <% end %>
+      </div>
+    </div>
 
-      <!-- Top Região -->
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-600 text-sm font-medium">Principal Região</p>
-            <p class="text-lg font-bold text-gray-900"><%= @top_region ? @top_region[0] : 'N/A' %></p>
-            <p class="text-sm text-gray-500"><%= @top_region ? "#{@top_region[1]} cliques" : '' %></p>
-          </div>
-          <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
 
-      <!-- Horário de Pico -->
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-600 text-sm font-medium">Horário de Pico</p>
-            <p class="text-2xl font-bold text-gray-900"><%= @peak_hour || 'N/A' %></p>
-          </div>
-          <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
+
+    <!-- Tabelas detalhadas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Referrers Table -->
+      <% if (@clicks_by_referrer || {}).present? %>
+        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Desempenho por Fonte</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead>
+                <tr class="border-b border-gray-200">
+                  <th class="text-left py-3 px-4 font-medium text-gray-900">Fonte</th>
+                  <th class="text-right py-3 px-4 font-medium text-gray-900">Cliques</th>
+                  <th class="text-right py-3 px-4 font-medium text-gray-900">%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% (@clicks_by_referrer || {}).sort_by { |_, v| -v }.each do |referrer, clicks| %>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4 text-gray-900"><%= referrer %></td>
+                    <td class="py-3 px-4 text-right text-gray-900"><%= number_with_delimiter(clicks) %></td>
+                    <td class="py-3 px-4 text-right text-gray-600">
+                      <%= number_to_percentage((clicks.to_f / (@total_clicks || 1) * 100), precision: 1) %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
+      <% end %>
+
+      <!-- Regions Table -->
+      <% if (@clicks_by_region || {}).present? %>
+        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Desempenho por Região</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead>
+                <tr class="border-b border-gray-200">
+                  <th class="text-left py-3 px-4 font-medium text-gray-900">Região</th>
+                  <th class="text-right py-3 px-4 font-medium text-gray-900">Cliques</th>
+                  <th class="text-right py-3 px-4 font-medium text-gray-900">%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% (@clicks_by_region || {}).sort_by { |_, v| -v }.each do |region, clicks| %>
+                  <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4 text-gray-900"><%= region %></td>
+                    <td class="py-3 px-4 text-right text-gray-900"><%= number_with_delimiter(clicks) %></td>
+                    <td class="py-3 px-4 text-right text-gray-600">
+                      <%= number_to_percentage((clicks.to_f / (@total_clicks || 1) * 100), precision: 1) %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <!-- Charts Row 1 -->
@@ -213,6 +354,32 @@
     </div>
   </div>
 </div>
+    <!-- Cliques por SubID (Campanha) -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Cliques por Campanha (SubID)</h2>
+      <% if @clicks_by_sub_id.present? %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Campanha (SubID)</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Cliques</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @clicks_by_sub_id.sort_by { |subid, count| -count }.each do |subid, count| %>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-gray-900"><%= subid.presence || 'Não informado' %></td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right font-semibold text-gray-900"><%= number_with_delimiter(count) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-gray-500 text-center py-6">Nenhum clique registrado para campanhas neste período.</div>
+      <% end %>
+    </div>
 
 <!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -268,7 +435,7 @@
   // Referrer Chart
   const referrerCtx = document.getElementById('referrerChart').getContext('2d');
   new Chart(referrerCtx, {
-    type: 'doughnut',
+  type: 'bar',
     data: <%= raw @referrer_chart_data.to_json %>,
     options: {
       responsive: true,
@@ -284,7 +451,7 @@
   // Region Chart
   const regionCtx = document.getElementById('regionChart').getContext('2d');
   new Chart(regionCtx, {
-    type: 'doughnut',
+  type: 'bar',
     data: <%= raw @region_chart_data.to_json %>,
     options: {
       responsive: true,

@@ -1,4 +1,64 @@
 class AnalyticsController < ApplicationController
+  # Cruzamento de dados: Cliques x Comissões por SubID
+  def subid_cross_analysis
+    # Período filtrado
+    if params[:start_date].present? && params[:end_date].present?
+      start_date = Date.parse(params[:start_date])
+      end_date = Date.parse(params[:end_date])
+    else
+      start_date = 30.days.ago.to_date
+      end_date = Date.current
+    end
+
+    # Cliques por sub_id
+    clicks_by_subid = WebsiteClick.clicks_with_sub_id(current_user, start_date.beginning_of_day, end_date.end_of_day)
+
+    # Comissões por sub_id
+    commissions = current_user.all_commissions_unified.where.not(order_status: 'cancelled')
+    commissions = commissions.where(order_date: start_date.beginning_of_day..end_date.end_of_day)
+    commissions_by_subid = commissions.group(:sub_id1).select('sub_id1, COUNT(*) as orders, SUM(affiliate_commission) as total_commission, SUM(purchase_value) as total_sales').to_a
+    commissions_hash = commissions_by_subid.index_by { |c| c.sub_id1.presence || 'Não informado' }
+
+    # Montar resultado cruzado
+    @subid_cross_data = clicks_by_subid.map do |subid, clicks|
+      subid_key = subid.presence || 'Não informado'
+      comm = commissions_hash[subid_key]
+      orders = comm&.orders.to_i
+      total_commission = comm&.total_commission.to_f
+      total_sales = comm&.total_sales.to_f
+      conversion = clicks > 0 ? (orders.to_f / clicks * 100).round(2) : 0
+      # Buscar gastos reais com ads para este SubID
+      ad_spend = current_user.subid_ad_spends.for_subid(subid).sum(:ad_spend)
+      roi = ad_spend > 0 ? ((total_commission - ad_spend) / ad_spend * 100).round(2) : nil
+      {
+        subid: subid_key,
+        clicks: clicks,
+        orders: orders,
+        conversion: conversion,
+        commission: total_commission,
+        sales: total_sales,
+        ad_spend: ad_spend,
+        roi: roi
+      }
+    end.sort_by { |h| -h[:commission] }
+  end
+  # Deleta comissões por período
+  def destroy_commissions_by_period
+    if params[:start_date].present? && params[:end_date].present?
+      Commission.delete_by_period(current_user, params[:start_date].to_date, params[:end_date].to_date)
+      flash[:success] = "Comissões do período #{params[:start_date]} a #{params[:end_date]} deletadas com sucesso."
+    else
+      flash[:error] = "Informe a data inicial e final para deletar por período."
+    end
+    redirect_to analytics_path(tab: params[:tab], start_date: params[:start_date], end_date: params[:end_date])
+  end
+
+  # Deleta todas as comissões do usuário
+  def destroy_all_commissions
+    Commission.delete_all_for_user(current_user)
+    flash[:success] = "Todas as comissões foram deletadas com sucesso."
+    redirect_to analytics_path(tab: params[:tab])
+  end
   before_action :authenticate_user!
   before_action :check_analytics_access, only: [:performance, :conversion]
   before_action :check_pdf_export_access, only: [:export_pdf]
