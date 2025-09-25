@@ -53,6 +53,10 @@ Rails.application.routes.draw do
     resources :users do
       member do
         patch :change_role
+        post :sync_stripe
+      end
+      collection do
+        post :sync_all_stripe
       end
     end
     resources :settings do

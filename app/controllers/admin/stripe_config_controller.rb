@@ -31,6 +31,7 @@ class Admin::StripeConfigController < Admin::BaseController
       Rails.logger.info "Testing webhook processing..."
       
       # Simular evento de assinatura criada
+      require 'ostruct'
       test_event = OpenStruct.new(
         type: 'customer.subscription.created',
         data: OpenStruct.new(
@@ -38,12 +39,13 @@ class Admin::StripeConfigController < Admin::BaseController
             id: 'sub_test_' + Time.current.to_i.to_s,
             customer: 'cus_test_123',
             status: 'active',
-            current_period_start: Time.current.to_i,
-            current_period_end: 1.month.from_now.to_i,
+            created: Time.current.to_i,
             items: OpenStruct.new(
               data: [
                 OpenStruct.new(
-                  price: OpenStruct.new(id: 'price_test_123')
+                  price: OpenStruct.new(id: 'price_test_123'),
+                  current_period_start: Time.current.to_i,
+                  current_period_end: 1.month.from_now.to_i
                 )
               ]
             )
@@ -140,18 +142,31 @@ class Admin::StripeConfigController < Admin::BaseController
       subscriptions = Stripe::Subscription.list(
         limit: 20,
         status: 'all',
-        expand: ['data.customer', 'data.items.data.price.product']
+        expand: ['data.customer', 'data.items.data.price']
       )
       
       subscriptions.data.map do |sub|
+        price = sub.items.data.first&.price
+        # Buscar o produto separadamente se necessário
+        plan_name = if price&.product.is_a?(String)
+          begin
+            product = Stripe::Product.retrieve(price.product)
+            product.name
+          rescue Stripe::StripeError
+            "Produto #{price.product}"
+          end
+        else
+          price&.product&.name || 'Desconhecido'
+        end
+
         {
           id: sub.id,
           customer_email: sub.customer.email,
           status: sub.status,
           trial_end: sub.trial_end ? Time.at(sub.trial_end) : nil,
           current_period_end: Time.at(sub.current_period_end),
-          plan_name: sub.items.data.first&.price&.product&.name,
-          amount: sub.items.data.first&.price&.unit_amount,
+          plan_name: plan_name,
+          amount: price&.unit_amount,
           metadata: sub.metadata
         }
       end
