@@ -295,10 +295,10 @@
               <!-- Admin Panel (only for admins) -->
               <% if current_user&.admin? || current_user&.super_admin? %>
                 <div class="border-t border-gray-200 my-4 mx-2"></div>
-                <%= link_to admin_dashboard_index_path, class: "group flex items-center px-3 py-3 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 hover:text-red-700 transition-all duration-200" do %>
+                <%= link_to admin_dashboard_index_path, class: "group flex items-center px-3 py-3 text-sm font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 transition-all duration-200 shadow-md" do %>
                   <i class="fas fa-shield-alt mr-3 w-5 h-5 text-center"></i>
                   Painel Admin
-                  <span class="ml-auto bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Admin</span>
+                  <span class="ml-auto bg-red-800 text-red-100 text-xs px-2 py-1 rounded-full font-medium">Admin</span>
                 <% end %>
               <% end %>
             </nav>

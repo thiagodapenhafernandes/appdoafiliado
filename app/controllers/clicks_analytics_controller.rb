@@ -197,7 +197,7 @@ class ClicksAnalyticsController < ApplicationController
 
   def process_database_analytics_data
     # Análise tradicional do banco de dados
-    @clicks = current_user.website_clicks.includes(:device)
+  @clicks = current_user.website_clicks
     
     # Filtros de data
     if params[:start_date].present? && params[:end_date].present?
@@ -241,7 +241,7 @@ class ClicksAnalyticsController < ApplicationController
 
     # Horário de pico
     @peak_hour = find_peak_hour(hourly_data)
-    
+
     # Variáveis compatíveis com a view existente
     @clicks_by_referrer = referrer_data
     @clicks_by_region = region_data

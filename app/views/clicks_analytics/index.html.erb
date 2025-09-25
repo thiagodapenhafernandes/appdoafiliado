@@ -1,5 +1,63 @@
 <div class="min-h-screen bg-gray-50 p-6">
   <div class="max-w-7xl mx-auto">
+    <!-- Filtros e Relatório Detalhado -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Relatório de cliques</h2>
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1">Data Inicial</label>
+          <input type="date" class="w-full border-gray-300 rounded-lg text-sm px-3 py-2" name="start_date" value="<%= params[:start_date] %>">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1">Data Final</label>
+          <input type="date" class="w-full border-gray-300 rounded-lg text-sm px-3 py-2" name="end_date" value="<%= params[:end_date] %>">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1">Sub_id</label>
+          <input type="text" class="w-full border-gray-300 rounded-lg text-sm px-3 py-2" name="sub_id" placeholder="Pesquisar por sub_id" value="<%= params[:sub_id] %>">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1">ID dos Cliques</label>
+          <input type="text" class="w-full border-gray-300 rounded-lg text-sm px-3 py-2" name="click_id" placeholder="Pesquisar por ID de clique" value="<%= params[:click_id] %>">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1">Região dos Cliques</label>
+          <input type="text" class="w-full border-gray-300 rounded-lg text-sm px-3 py-2" name="region" placeholder="Pesquisar por região" value="<%= params[:region] %>">
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2 mb-4">
+        <button class="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition">Pesquisar</button>
+        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition">Limpar</button>
+        <button class="bg-accent text-white px-4 py-2 rounded-lg font-medium hover:bg-accent/90 transition">Exportar</button>
+        <button class="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-medium hover:bg-red-200 transition">Deletar Período</button>
+        <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">Deletar TODOS</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-xs">
+          <thead>
+            <tr class="border-b border-gray-200 bg-gray-50">
+              <th class="py-2 px-3 text-left font-semibold text-gray-700">ID dos Cliques</th>
+              <th class="py-2 px-3 text-left font-semibold text-gray-700">Período dos Cliques</th>
+              <th class="py-2 px-3 text-left font-semibold text-gray-700">Região dos Cliques</th>
+              <th class="py-2 px-3 text-left font-semibold text-gray-700">Sub_id</th>
+              <th class="py-2 px-3 text-left font-semibold text-gray-700">Referenciador</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% (@csv_data || @clicks || []).each do |click| %>
+              <tr class="border-b border-gray-100">
+                <td class="py-2 px-3 text-gray-900"><%= click[:click_id] || click.click_id %></td>
+                <td class="py-2 px-3 text-gray-900"><%= (click[:click_time] || click.click_time).try(:strftime, '%d/%m/%Y %H:%M:%S') %></td>
+                <td class="py-2 px-3 text-gray-900"><%= click[:region] || click.region %></td>
+                <td class="py-2 px-3 text-gray-900"><%= click[:sub_id] || click.sub_id %></td>
+                <td class="py-2 px-3 text-gray-900"><%= click[:referrer] || click.referrer %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="text-xs text-gray-500 mt-2">Total de registros: <%= (@csv_data || @clicks || []).size %></div>
+      </div>
+    </div>
     <!-- Header -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-4">
@@ -435,15 +493,17 @@
   // Referrer Chart
   const referrerCtx = document.getElementById('referrerChart').getContext('2d');
   new Chart(referrerCtx, {
-  type: 'bar',
+    type: 'bar',
     data: <%= raw @referrer_chart_data.to_json %>,
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'bottom'
-        }
+        legend: { display: false }
+      },
+      scales: {
+        x: { beginAtZero: true },
+        y: { beginAtZero: true }
       }
     }
   });
@@ -451,15 +511,17 @@
   // Region Chart
   const regionCtx = document.getElementById('regionChart').getContext('2d');
   new Chart(regionCtx, {
-  type: 'bar',
+    type: 'bar',
     data: <%= raw @region_chart_data.to_json %>,
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'bottom'
-        }
+        legend: { display: false }
+      },
+      scales: {
+        x: { beginAtZero: true },
+        y: { beginAtZero: true }
       }
     }
   });

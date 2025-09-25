@@ -319,8 +319,22 @@ class StripeService
       user.subscriptions.find_or_create_by(stripe_subscription_id: stripe_subscription.id) do |subscription|
         subscription.plan = plan
         subscription.status = stripe_subscription.status
-        subscription.current_period_start = Time.at(stripe_subscription.current_period_start)
-        subscription.current_period_end = Time.at(stripe_subscription.current_period_end)
+
+        # Get period dates from subscription items if available
+        if stripe_subscription.items&.data&.any?
+          subscription_item = stripe_subscription.items.data.first
+          if subscription_item.respond_to?(:current_period_start)
+            subscription.current_period_start = Time.at(subscription_item.current_period_start)
+            subscription.current_period_end = Time.at(subscription_item.current_period_end)
+          else
+            # Fallback to subscription created time and estimate period
+            subscription.current_period_start = Time.at(stripe_subscription.created)
+            subscription.current_period_end = Time.at(stripe_subscription.created) + 30.days
+          end
+        else
+          subscription.current_period_start = Time.at(stripe_subscription.created)
+          subscription.current_period_end = Time.at(stripe_subscription.created) + 30.days
+        end
       end
     end
 
@@ -328,10 +342,29 @@ class StripeService
       subscription = Subscription.find_by(stripe_subscription_id: stripe_subscription.id)
       return unless subscription
 
+      # Get period dates from subscription items if available
+      current_period_start = nil
+      current_period_end = nil
+
+      if stripe_subscription.items&.data&.any?
+        subscription_item = stripe_subscription.items.data.first
+        if subscription_item.respond_to?(:current_period_start)
+          current_period_start = subscription_item.current_period_start
+          current_period_end = subscription_item.current_period_end
+        else
+          # Fallback to subscription created time and estimate period
+          current_period_start = stripe_subscription.created
+          current_period_end = stripe_subscription.created + 30.days.to_i
+        end
+      else
+        current_period_start = stripe_subscription.created
+        current_period_end = stripe_subscription.created + 30.days.to_i
+      end
+
       subscription.update(
         status: stripe_subscription.status,
-        current_period_start: Time.at(stripe_subscription.current_period_start),
-        current_period_end: Time.at(stripe_subscription.current_period_end)
+        current_period_start: Time.at(current_period_start),
+        current_period_end: Time.at(current_period_end)
       )
     end
 
@@ -346,14 +379,36 @@ class StripeService
     end
 
     def handle_payment_succeeded(invoice)
-      subscription = Subscription.find_by(stripe_subscription_id: invoice.subscription)
+      # Access subscription ID from parent object based on Stripe API structure
+      subscription_id = nil
+
+      if invoice.respond_to?(:subscription) && invoice.subscription
+        subscription_id = invoice.subscription
+      elsif invoice.parent && invoice.parent.respond_to?(:subscription_details)
+        subscription_id = invoice.parent.subscription_details.subscription
+      end
+
+      return unless subscription_id
+
+      subscription = Subscription.find_by(stripe_subscription_id: subscription_id)
       return unless subscription
 
       subscription.update(status: 'active')
     end
 
     def handle_payment_failed(invoice)
-      subscription = Subscription.find_by(stripe_subscription_id: invoice.subscription)
+      # Access subscription ID from parent object based on Stripe API structure
+      subscription_id = nil
+
+      if invoice.respond_to?(:subscription) && invoice.subscription
+        subscription_id = invoice.subscription
+      elsif invoice.parent && invoice.parent.respond_to?(:subscription_details)
+        subscription_id = invoice.parent.subscription_details.subscription
+      end
+
+      return unless subscription_id
+
+      subscription = Subscription.find_by(stripe_subscription_id: subscription_id)
       return unless subscription
 
       subscription.update(status: 'past_due')
