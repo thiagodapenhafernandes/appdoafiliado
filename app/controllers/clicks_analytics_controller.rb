@@ -202,7 +202,7 @@ class ClicksAnalyticsController < ApplicationController
 
   def process_database_analytics_data
     # Análise tradicional do banco de dados
-    @clicks = current_user.website_clicks.includes(:device)
+  @clicks = current_user.website_clicks
     
     # Filtros de data
     if params[:start_date].present? && params[:end_date].present?
@@ -241,8 +241,14 @@ class ClicksAnalyticsController < ApplicationController
     @hourly_chart_data = format_hourly_chart_data(hourly_data)
     @daily_chart_data = format_daily_chart_data(daily_data)
 
-    # Horário de pico
-    @peak_hour = find_peak_hour(hourly_data)
+  # Horário de pico
+  @peak_hour = find_peak_hour(hourly_data)
+
+  # Variáveis compatíveis com a view existente
+  @clicks_by_referrer = referrer_data
+  @clicks_by_region = region_data
+  @clicks_by_hour = hourly_data
+  @clicks_by_day = daily_data
   end
 
   def get_data_period_info(start_date, end_date)

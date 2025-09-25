@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_05_204921) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_10_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -284,6 +284,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_05_204921) do
     t.index ["subscription_id"], name: "index_users_on_subscription_id"
   end
 
+  create_table "website_click_imports", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "file_name", null: false
+    t.datetime "imported_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_website_click_imports_on_user_id"
+  end
+
   create_table "website_clicks", force: :cascade do |t|
     t.string "click_id"
     t.datetime "click_time"
@@ -293,7 +302,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_05_204921) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "website_click_import_id"
+    t.index ["user_id", "click_id"], name: "index_website_clicks_on_user_id_and_click_id", unique: true
     t.index ["user_id"], name: "index_website_clicks_on_user_id"
+    t.index ["website_click_import_id"], name: "index_website_clicks_on_website_click_import_id"
   end
 
   add_foreign_key "affiliate_conversions", "users"
@@ -307,5 +319,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_05_204921) do
   add_foreign_key "subscriptions", "plans"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "subscriptions"
+  add_foreign_key "website_click_imports", "users"
   add_foreign_key "website_clicks", "users"
+  add_foreign_key "website_clicks", "website_click_imports"
 end
