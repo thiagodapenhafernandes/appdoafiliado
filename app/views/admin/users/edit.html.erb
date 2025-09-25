@@ -1,0 +1,165 @@
+<div class="bg-white shadow-sm rounded-lg">
+  <div class="px-4 py-5 sm:p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Editar Usuário
+        </h3>
+        <p class="mt-1 text-sm text-gray-500">
+          Altere as informações do usuário abaixo.
+        </p>
+      </div>
+      <%= link_to "Voltar", admin_user_path(@user),
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+    </div>
+
+    <%= form_with(model: [:admin, @user], local: true, class: "space-y-6") do |form| %>
+      <% if @user.errors.any? %>
+        <div class="rounded-md bg-red-50 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                <%= pluralize(@user.errors.count, "erro") %> encontrado<%= @user.errors.count > 1 ? 's' : '' %>:
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                  <% @user.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+          <%= form.label :first_name, "Nome", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.text_field :first_name, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :last_name, "Sobrenome", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.text_field :last_name, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-4">
+          <%= form.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.email_field :email, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-2">
+          <%= form.label :role, "Role", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= form.select :role,
+                options_for_select([
+                  ['Usuário', 'user'],
+                  ['Admin', 'admin'],
+                  ['Super Admin', 'super_admin']
+                ], @user.role),
+                { prompt: 'Selecione...' },
+                { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" } %>
+          </div>
+        </div>
+
+        <% if current_user.super_admin? %>
+          <div class="sm:col-span-6">
+            <fieldset>
+              <legend class="text-sm font-medium text-gray-700">Status da conta</legend>
+              <div class="mt-4 space-y-4">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <%= form.check_box :confirmed_at,
+                        { checked: @user.confirmed?, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" },
+                        @user.confirmed? ? Time.current : nil, nil %>
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <%= form.label :confirmed_at, "Conta confirmada", class: "font-medium text-gray-700" %>
+                    <p class="text-gray-500">O usuário poderá fazer login na aplicação.</p>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        <% end %>
+
+        <% if @user.trial_ends_at.present? %>
+          <div class="sm:col-span-3">
+            <%= form.label :trial_ends_at, "Trial termina em", class: "block text-sm font-medium text-gray-700" %>
+            <div class="mt-1">
+              <%= form.datetime_local_field :trial_ends_at,
+                  value: @user.trial_ends_at&.strftime("%Y-%m-%dT%H:%M"),
+                  class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">
+              <% if @user.on_trial? %>
+                Trial ativo - <%= pluralize(@user.trial_days_remaining, 'dia') %> restante(s)
+              <% else %>
+                Trial expirado
+              <% end %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="pt-5">
+        <div class="flex justify-end space-x-3">
+          <%= link_to "Cancelar", admin_user_path(@user),
+              class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= form.submit "Salvar alterações",
+              class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @user.current_subscription.present? %>
+  <div class="mt-8 bg-white shadow-sm rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">
+        Gerenciar Assinatura
+      </h3>
+      <div class="mt-2 max-w-xl text-sm text-gray-500">
+        <p>Assinatura atual: <strong><%= @user.current_subscription.plan.name %></strong></p>
+        <p>Status: <strong><%= @user.current_subscription.status&.humanize %></strong></p>
+        <% if @user.current_subscription.current_period_end %>
+          <p>Próxima cobrança: <strong><%= @user.current_subscription.current_period_end.strftime("%d/%m/%Y") %></strong></p>
+        <% end %>
+      </div>
+      <div class="mt-5">
+        <% if @user.current_subscription.status == 'active' %>
+          <%= link_to "Cancelar Assinatura", "#",
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
+              data: { confirm: "Tem certeza que deseja cancelar a assinatura?" } %>
+        <% end %>
+        <% if @user.stripe_customer_id.present? %>
+          <%= link_to "Sincronizar Stripe", sync_stripe_admin_user_path(@user),
+              method: :post,
+              data: { confirm: "Isso irá buscar e atualizar as assinaturas do usuário no Stripe. Continuar?" },
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
+          <a href="https://dashboard.stripe.com/customers/<%= @user.stripe_customer_id %>"
+             target="_blank"
+             class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Ver no Stripe
+            <svg class="ml-2 -mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

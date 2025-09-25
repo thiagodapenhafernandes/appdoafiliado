@@ -446,5 +446,137 @@ class StripeService
 
       Rails.logger.info "Payment method attached for user: #{user.email}"
     end
+
+    def sync_user_subscriptions(user)
+      return { success: false, error: 'Stripe não configurado' } unless stripe_configured?
+      return { success: false, error: 'Usuário não possui Stripe Customer ID' } unless user.stripe_customer_id.present?
+
+      begin
+        # Buscar todas as assinaturas do cliente no Stripe
+        stripe_subscriptions = Stripe::Subscription.list(
+          customer: user.stripe_customer_id,
+          status: 'all',
+          limit: 100
+        )
+
+        synced_count = 0
+        updated_count = 0
+
+        stripe_subscriptions.data.each do |stripe_sub|
+          # Buscar o plano local pelo price_id
+          price_id = stripe_sub.items.data.first&.price&.id
+          next unless price_id
+
+          plan = Plan.find_by(stripe_price_id: price_id)
+          next unless plan
+
+          # Buscar ou criar assinatura local
+          local_subscription = user.subscriptions.find_or_initialize_by(
+            stripe_subscription_id: stripe_sub.id
+          )
+
+          if local_subscription.new_record?
+            synced_count += 1
+          else
+            updated_count += 1
+          end
+
+          # Obter dados de período
+          current_period_start = nil
+          current_period_end = nil
+
+          if stripe_sub.items&.data&.any?
+            subscription_item = stripe_sub.items.data.first
+            if subscription_item.respond_to?(:current_period_start)
+              current_period_start = subscription_item.current_period_start
+              current_period_end = subscription_item.current_period_end
+            else
+              current_period_start = stripe_sub.created
+              current_period_end = stripe_sub.created + 30.days.to_i
+            end
+          else
+            current_period_start = stripe_sub.created
+            current_period_end = stripe_sub.created + 30.days.to_i
+          end
+
+          # Atualizar dados da assinatura local
+          local_subscription.assign_attributes(
+            plan: plan,
+            status: stripe_sub.status,
+            current_period_start: Time.at(current_period_start),
+            current_period_end: Time.at(current_period_end),
+            canceled_at: stripe_sub.canceled_at ? Time.at(stripe_sub.canceled_at) : nil
+          )
+
+          local_subscription.save!
+        end
+
+        {
+          success: true,
+          synced_count: synced_count,
+          updated_count: updated_count,
+          message: "#{synced_count} novas assinaturas sincronizadas, #{updated_count} assinaturas atualizadas"
+        }
+
+      rescue Stripe::StripeError => e
+        Rails.logger.error "Erro ao sincronizar assinaturas do usuário #{user.id}: #{e.message}"
+        { success: false, error: e.message }
+      rescue StandardError => e
+        Rails.logger.error "Erro inesperado ao sincronizar assinaturas: #{e.message}"
+        { success: false, error: e.message }
+      end
+    end
+
+    def sync_all_users_subscriptions
+      return { success: false, error: 'Stripe não configurado' } unless stripe_configured?
+
+      total_users = 0
+      synced_users = 0
+      errors = []
+
+      User.where.not(stripe_customer_id: nil).find_each do |user|
+        total_users += 1
+        result = sync_user_subscriptions(user)
+
+        if result[:success]
+          synced_users += 1
+        else
+          errors << "Usuário #{user.email}: #{result[:error]}"
+        end
+      end
+
+      {
+        success: true,
+        total_users: total_users,
+        synced_users: synced_users,
+        errors: errors,
+        message: "#{synced_users}/#{total_users} usuários sincronizados com sucesso"
+      }
+    end
+
+    def get_stripe_subscription_details(stripe_subscription_id)
+      return nil unless stripe_configured?
+
+      begin
+        stripe_sub = Stripe::Subscription.retrieve(stripe_subscription_id, {
+          expand: ['customer', 'items.data.price.product']
+        })
+
+        {
+          id: stripe_sub.id,
+          status: stripe_sub.status,
+          customer_email: stripe_sub.customer.email,
+          plan_name: stripe_sub.items.data.first&.price&.product&.name || 'Produto não encontrado',
+          amount: stripe_sub.items.data.first&.price&.unit_amount,
+          current_period_start: Time.at(stripe_sub.current_period_start),
+          current_period_end: Time.at(stripe_sub.current_period_end),
+          canceled_at: stripe_sub.canceled_at ? Time.at(stripe_sub.canceled_at) : nil,
+          trial_end: stripe_sub.trial_end ? Time.at(stripe_sub.trial_end) : nil
+        }
+      rescue Stripe::StripeError => e
+        Rails.logger.error "Erro ao buscar detalhes da assinatura: #{e.message}"
+        nil
+      end
+    end
   end
 end
