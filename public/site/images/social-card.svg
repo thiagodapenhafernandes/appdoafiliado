@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="App do Afiliado">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ee4d2d"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" rx="32"/>
+  <g fill="#ffffff">
+    <text x="80" y="180" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="700">App do Afiliado</text>
+    <text x="80" y="250" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="500">Links inteligentes e análises automáticas para afiliados Shopee</text>
+    <text x="80" y="340" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="26">• Descubra em segundos quais campanhas dão lucro</text>
+    <text x="80" y="390" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="26">• Evite links quebrados com redirecionamento inteligente</text>
+    <text x="80" y="440" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="26">• Visualize vendas e subIDs automaticamente</text>
+  </g>
+  <circle cx="960" cy="165" r="90" fill="#ffffff" opacity="0.15"/>
+  <circle cx="1030" cy="300" r="140" fill="#ffffff" opacity="0.08"/>
+  <circle cx="910" cy="420" r="120" fill="#ffffff" opacity="0.05"/>
+</svg>
