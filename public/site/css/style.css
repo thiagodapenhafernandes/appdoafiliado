@@ -80,13 +80,13 @@ html {
 
 /* Button effects */
 .btn-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, #ee4d2d 0%, #f97316 100%);
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 10px 25px rgba(238, 77, 45, 0.25);
 }
 
 .btn-secondary {
@@ -110,7 +110,7 @@ html {
 
 /* Gradient text */
 .gradient-text {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, #ee4d2d 0%, #f97316 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -142,12 +142,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #6366f1;
+    background: #ee4d2d;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4f46e5;
+    background: #f97316;
 }
 
 /* Responsive design improvements */
@@ -182,7 +182,7 @@ html {
 
 /* Accessibility improvements */
 .focus\:outline-none:focus {
-    outline: 2px solid #6366f1;
+    outline: 2px solid #ee4d2d;
     outline-offset: 2px;
 }
 
@@ -195,7 +195,7 @@ html {
 
 /* Video overlay */
 .video-overlay {
-    background: linear-gradient(45deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+    background: linear-gradient(45deg, rgba(238, 77, 45, 0.9), rgba(249, 115, 22, 0.9));
 }
 
 .video-play-btn {

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App do Afiliado - A Plataforma Completa para Afiliados Shopee</title>
     <meta name="description" content="Centralize e otimize seu negócio de afiliado Shopee com gerenciamento completo de links, analytics detalhados e integração total com a plataforma.">
-    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,11 +23,10 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#ee4d2d',
-                        secondary: '#111827',
-                        accent: '#f97316',
-                        sky: '#0ea5e9',
-                        dark: '#0f172a'
+                        primary: '#3b82f6',
+                        secondary: '#1f2937',
+                        accent: '#10b981',
+                        dark: '#1f2937'
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif']
@@ -43,15 +41,18 @@
     <header class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <nav class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="index.html" class="flex items-center" aria-label="App do Afiliado">
-                    <img src="images/logo-light.svg" alt="App do Afiliado" class="h-10 w-auto">
-                </a>
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">App do Afiliado</span>
+                </div>
                 
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#funcionalidades" class="text-gray-600 hover:text-primary transition-colors">Funcionalidades</a>
                     <a href="#precos" class="text-gray-600 hover:text-primary transition-colors">Preços</a>
                     <a href="#depoimentos" class="text-gray-600 hover:text-primary transition-colors">Depoimentos</a>
-                    <a href="https://app.appdoafiliado.com.br/" class="text-gray-600 hover:text-primary transition-colors" target="_blank" rel="noopener">Login</a>
+                    <a href="/users/sign_in" class="text-gray-600 hover:text-primary transition-colors">Login</a>
                     <a href="#teste-gratis" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium">Teste Grátis</a>
                 </div>
                 
@@ -67,7 +68,7 @@
                     <a href="#funcionalidades" class="text-gray-600 hover:text-primary transition-colors">Funcionalidades</a>
                     <a href="#precos" class="text-gray-600 hover:text-primary transition-colors">Preços</a>
                     <a href="#depoimentos" class="text-gray-600 hover:text-primary transition-colors">Depoimentos</a>
-                    <a href="https://app.appdoafiliado.com.br/" class="text-gray-600 hover:text-primary transition-colors" target="_blank" rel="noopener">Login</a>
+                    <a href="/users/sign_in" class="text-gray-600 hover:text-primary transition-colors">Login</a>
                     <a href="#teste-gratis" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium text-center">Teste Grátis</a>
                 </div>
             </div>
@@ -79,21 +80,21 @@
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                    Ganhe mais como <span class="text-primary">afiliado Shopee</span> com links inteligentes e análises automáticas
+                    Centralize e otimize seu <span class="text-primary">negócio de afiliado Shopee</span> em uma só plataforma
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
-                    Chega de perder tempo criando planilhas e arriscando dinheiro em campanhas sem retorno.
-                    O App do Afiliado mostra exatamente quais campanhas dão lucro — e mantém seus links sempre ativos, mesmo quando um produto esgota.
+                    Gerencie seus links de afiliado, monitore comissões e cliques, e tenha controle total
+                    das suas campanhas na Shopee com analytics detalhados.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
                     <a href="#teste-gratis" class="bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary/90 transition-colors font-semibold text-lg shadow-lg">
                         <i class="fas fa-rocket mr-2"></i>
-                        Teste grátis por 14 dias
+                        Comece Grátis Agora
                     </a>
-                    <a href="#como-funciona" class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg hover:border-primary hover:text-primary transition-colors font-semibold text-lg">
-                        <i class="fas fa-route mr-2"></i>
-                        Veja o passo a passo do App
+                    <a href="#demo" class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg hover:border-primary hover:text-primary transition-colors font-semibold text-lg">
+                        <i class="fas fa-play mr-2"></i>
+                        Ver Demonstração
                     </a>
                 </div>
                 
@@ -116,42 +117,16 @@
     </section>
 
     <!-- Demo Video Section -->
-    <section id="como-funciona" class="py-20 bg-white">
+    <section id="demo" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    📊 Veja como o App do Afiliado simplifica sua vida em poucos cliques
+                    📊 Veja o App do Afiliado em ação em 3 minutos!
                 </h2>
                 <p class="text-xl text-gray-600 mb-12">
-                    Só precisa subir a planilha de vendas da Shopee e deixar que a plataforma traduza tudo em gráficos claros, mostrando onde você lucra e onde está perdendo dinheiro.
+                    Descubra como centralizar e otimizar suas campanhas de afiliado na Shopee
                 </p>
-                <div class="grid md:grid-cols-3 gap-6 mb-12 text-left">
-                    <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-                        <div class="flex items-center text-primary font-semibold mb-2">
-                            <i class="fas fa-upload mr-2"></i>
-                            Passo 1
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Envie sua planilha da Shopee</h3>
-                        <p class="text-gray-600">Faça upload do CSV oficial ou conecte a API para manter tudo atualizado automaticamente.</p>
-                    </div>
-                    <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-                        <div class="flex items-center text-primary font-semibold mb-2">
-                            <i class="fas fa-chart-pie mr-2"></i>
-                            Passo 2
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Visualize seus resultados</h3>
-                        <p class="text-gray-600">O App já organiza as vendas por subID e destaca quais campanhas geram lucro ou prejuízo.</p>
-                    </div>
-                    <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-                        <div class="flex items-center text-primary font-semibold mb-2">
-                            <i class="fas fa-bolt mr-2"></i>
-                            Passo 3
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Ajuste suas campanhas rápido</h3>
-                        <p class="text-gray-600">Edite links inteligentes sem alterar nada no Meta Ads ou TikTok Ads e mantenha seus anúncios ativos.</p>
-                    </div>
-                </div>
-
+                
                 <div class="relative bg-primary rounded-2xl p-1 shadow-2xl">
                     <div class="bg-white rounded-xl aspect-video p-8">
                         <!-- Dashboard Header -->
@@ -217,8 +192,8 @@
                 
                 <div class="mt-8 flex justify-center">
                     <div class="bg-accent/10 text-accent px-6 py-3 rounded-full font-semibold">
-                        <i class="fas fa-flag mr-2"></i>
-                        Estamos abrindo as primeiras 100 vagas para afiliados fundadores
+                        <i class="fas fa-users mr-2"></i>
+                        Centenas de afiliados confiam na plataforma
                     </div>
                 </div>
             </div>
@@ -242,10 +217,11 @@
                             <i class="fas fa-link text-primary text-xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-4">
-                            Links inteligentes que nunca quebram suas campanhas
+                            Gerenciamento Centralizado de Links
                         </h3>
                         <p class="text-gray-600 leading-relaxed">
-                            Automatize o redirecionamento dos seus links para evitar anúncios rejeitados quando um produto esgota. O App do Afiliado mantém tudo ativo enquanto você foca nas vendas.
+                            Crie, organize e monitore todos os seus links de afiliado em um só lugar.
+                            Tenha controle total sobre suas campanhas com URLs inteligentes e rastreamento detalhado.
                         </p>
                     </div>
                     
@@ -255,10 +231,11 @@
                             <i class="fas fa-chart-bar text-secondary text-xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-4">
-                            Análise automática das vendas por subID
+                            Analytics Detalhados de Performance
                         </h3>
                         <p class="text-gray-600 leading-relaxed">
-                            Suba o arquivo da Shopee e receba relatórios claros com subIDs, cliques e comissões organizados automaticamente. Nada de planilha manual ou fórmulas quebradas.
+                            Monitore cliques, conversões e comissões em tempo real. Acompanhe o desempenho
+                            de cada link e identifique quais estratégias estão funcionando melhor.
                         </p>
                     </div>
                     
@@ -268,10 +245,11 @@
                             <i class="fab fa-shopify text-accent text-xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-4">
-                            Descubra quais campanhas dão lucro em segundos
+                            Integração Completa com Shopee
                         </h3>
                         <p class="text-gray-600 leading-relaxed">
-                            O painel destaca automaticamente anúncios lucrativos e pontos de atenção. Você sabe onde investir mais e onde pausar antes de perder dinheiro.
+                            Importe suas comissões diretamente da Shopee via CSV ou API. Mantenha todos
+                            os dados organizados e tenha visão completa do seu negócio de afiliação.
                         </p>
                     </div>
                 </div>
@@ -295,12 +273,13 @@
                         <!-- Feature 1 -->
                         <div class="flex items-start space-x-4">
                             <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-upload text-primary text-xl"></i>
+                                <i class="fas fa-link text-primary text-xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Suba sua planilha da Shopee em segundos</h3>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Links Personalizados e Rastreamento</h3>
                                 <p class="text-gray-600">
-                                    Conecte o CSV oficial ou a API da Shopee e tenha todos os dados importados automaticamente, sem fórmulas complexas ou risco de erro humano.
+                                    Crie links únicos para cada campanha, monitore cliques em tempo real
+                                    e acompanhe a performance de cada estratégia com dados precisos.
                                 </p>
                             </div>
                         </div>
@@ -308,12 +287,13 @@
                         <!-- Feature 2 -->
                         <div class="flex items-start space-x-4">
                             <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-chart-pie text-secondary text-xl"></i>
+                                <i class="fas fa-chart-line text-secondary text-xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Veja resultados organizados por subID</h3>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Dashboard de Comissões Completo</h3>
                                 <p class="text-gray-600">
-                                    Painéis automáticos mostram cliques, vendas e comissões por subID, destacando qual campanha traz lucro real e qual precisa ser pausada.
+                                    Visualize todas as suas comissões da Shopee em gráficos intuitivos.
+                                    Acompanhe seu crescimento e identifique padrões de performance.
                                 </p>
                             </div>
                         </div>
@@ -321,12 +301,13 @@
                         <!-- Feature 3 -->
                         <div class="flex items-start space-x-4">
                             <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-link text-accent text-xl"></i>
+                                <i class="fas fa-upload text-accent text-xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Atualize links sem mexer nos anúncios</h3>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Importação Flexível de Dados</h3>
                                 <p class="text-gray-600">
-                                    Ajuste ofertas, troque produtos e mantenha os anúncios rodando. Os links inteligentes cuidam do redirecionamento enquanto suas campanhas continuam ativas.
+                                    Importe suas comissões via CSV ou conecte-se diretamente à API da Shopee.
+                                    Mantenha todos os dados atualizados automaticamente.
                                 </p>
                             </div>
                         </div>
@@ -334,12 +315,13 @@
                         <!-- Feature 4 -->
                         <div class="flex items-start space-x-4">
                             <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-bolt text-purple-600 text-xl"></i>
+                                <i class="fas fa-mobile-alt text-purple-600 text-xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Identifique lucro e prejuízo em minutos</h3>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Acesso Mobile e Responsivo</h3>
                                 <p class="text-gray-600">
-                                    Alertas automáticos apontam mudanças de performance, para você investir mais no que converte e cortar desperdícios antes que afetem o caixa.
+                                    Acompanhe suas campanhas de qualquer lugar. Interface otimizada para
+                                    desktop, tablet e smartphone com sincronização em tempo real.
                                 </p>
                             </div>
                         </div>
@@ -429,7 +411,8 @@
                             </div>
                         </div>
                         <p class="text-gray-600 leading-relaxed">
-                            "Antes eu passava horas montando planilhas manuais. Agora sei em segundos qual campanha dá lucro e qual está me fazendo perder dinheiro."
+                            "O App do Afiliado organizou completamente meu trabalho como afiliada. Agora tenho controle
+                            total dos meus links e posso ver exatamente qual estratégia está trazendo mais resultados."
                         </p>
                         <div class="mt-4 flex text-yellow-400">
                             <i class="fas fa-star"></i>
@@ -452,7 +435,8 @@
                             </div>
                         </div>
                         <p class="text-gray-600 leading-relaxed">
-                            "O recurso de link inteligente salvou meu investimento em tráfego quando um produto esgotou. Os anúncios seguiram ativos enquanto eu trocava a oferta."
+                            "Finalmente encontrei uma ferramenta que centraliza tudo! O dashboard de comissões
+                            é muito claro e a importação via CSV funciona perfeitamente."
                         </p>
                         <div class="mt-4 flex text-yellow-400">
                             <i class="fas fa-star"></i>
@@ -475,7 +459,8 @@
                             </div>
                         </div>
                         <p class="text-gray-600 leading-relaxed">
-                            "O comparativo por subID me mostra onde colocar mais verba. Nunca tive tanta clareza sobre meus números como agora."
+                            "Recomendo para todas as minhas alunas. É uma ferramenta séria que ajuda a organizar
+                            e profissionalizar o trabalho de afiliação na Shopee."
                         </p>
                         <div class="mt-4 flex text-yellow-400">
                             <i class="fas fa-star"></i>
@@ -486,43 +471,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Founders Offer Section -->
-    <section class="py-16 bg-gradient-to-r from-primary/5 via-white to-accent/10">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <span class="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full font-semibold mb-6">
-                    <i class="fas fa-bolt mr-2"></i>
-                    Oferta para os primeiros 100 afiliados
-                </span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Ganhe desconto vitalício e acesso antecipado às novas integrações
-                </h2>
-                <p class="text-xl text-gray-600 mb-8">
-                    Ao entrar agora, você garante preço especial para sempre e participa do grupo que vai testar a integração direta com a API da Shopee e outras funcionalidades antes de todo mundo.
-                </p>
-                <div class="grid md:grid-cols-3 gap-6 text-left">
-                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Desconto vitalício</h3>
-                        <p class="text-gray-600">Valor reduzido que permanece mesmo após o lançamento oficial dos próximos módulos.</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Roadmap liberado</h3>
-                        <p class="text-gray-600">Vote nas funcionalidades prioritárias e acompanhe a implementação de cada etapa.</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Comunidade fechada</h3>
-                        <p class="text-gray-600">Tire dúvidas direto com o time e troque estratégias com outros afiliados Shopee.</p>
-                    </div>
-                </div>
-                <a href="#teste-gratis" class="inline-flex items-center mt-10 bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary/90 transition-colors font-semibold text-lg shadow-lg">
-                    <i class="fas fa-flag-checkered mr-3"></i>
-                    Quero ser afiliado fundador
-                </a>
             </div>
         </div>
     </section>
@@ -556,23 +504,23 @@
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Gestão de links inteligentes ilimitados</span>
+                                <span class="text-gray-600">15 links de redirecionamento</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Resumo automático das vendas por subID</span>
+                                <span class="text-gray-600">Análise de comissões e cliques na Shopee</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Alertas quando um link estiver inativo</span>
+                                <span class="text-gray-600">Estatísticas básicas</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Exportação rápida em CSV</span>
+                                <span class="text-gray-600">Rastreamento básico</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Suporte por e-mail em até 24h</span>
+                                <span class="text-gray-600">Suporte via WhatsApp</span>
                             </li>
                         </ul>
 
@@ -600,23 +548,23 @@
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Comparativo de campanhas por subID</span>
+                                <span class="text-gray-600">50 links de redirecionamento</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Relatórios detalhados de lucro vs investimento</span>
+                                <span class="text-gray-600">Análise de comissões e cliques na Shopee</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Links dinâmicos com múltiplos destinos</span>
+                                <span class="text-gray-600">Estatísticas avançadas</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Alertas em tempo real via Telegram ou e-mail</span>
+                                <span class="text-gray-600">Rastreamento avançado</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Suporte prioritário com SLA de 4h</span>
+                                <span class="text-gray-600">Suporte via WhatsApp</span>
                             </li>
                         </ul>
 
@@ -640,23 +588,27 @@
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Tudo do plano Pro + integração com a API da Shopee</span>
+                                <span class="text-gray-600">Links ilimitados</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Automação completa de links conforme estoque e preço</span>
+                                <span class="text-gray-600">Análise de comissões e cliques na Shopee</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Painéis personalizados para times e clientes</span>
+                                <span class="text-gray-600">Estatísticas avançadas</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Acesso à equipe de implementação dedicada</span>
+                                <span class="text-gray-600">Rastreamento avançado</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check text-accent mr-3"></i>
-                                <span class="text-gray-600">Suporte estratégico individual</span>
+                                <span class="text-gray-600">Suporte via WhatsApp</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-accent mr-3"></i>
+                                <span class="text-gray-600">Suporte estratégico</span>
                             </li>
                         </ul>
 
@@ -675,14 +627,15 @@
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-                    🚀 Garanta sua vaga entre os 100 afiliados fundadores
+                    🚀 Comece hoje e transforme seu negócio de afiliação!
                 </h2>
                 <p class="text-xl text-white/90 mb-8 leading-relaxed">
-                    Teste gratuitamente por 14 dias, veja suas vendas organizadas automaticamente e ajude a moldar as próximas funcionalidades do App do Afiliado.
+                    Teste gratuitamente por 14 dias e descubra como ter controle total
+                    sobre suas campanhas da Shopee com dados precisos e organizados.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="https://app.appdoafiliado.com.br/users/sign_up" class="bg-white text-primary px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg" target="_blank" rel="noopener">
+                    <a href="/users/sign_up" class="bg-white text-primary px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg">
                         <i class="fas fa-rocket mr-2"></i>
                         Teste Grátis por 14 dias<br>
                         <small class="text-sm opacity-75">5 links grátis no período</small>
@@ -725,7 +678,10 @@
                     <!-- Company Info -->
                     <div class="col-span-1">
                         <div class="flex items-center space-x-2 mb-4">
-                            <img src="images/logo-dark.svg" alt="App do Afiliado" class="h-10 w-auto">
+                            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-line text-white text-sm"></i>
+                            </div>
+                            <span class="text-xl font-bold">App do Afiliado</span>
                         </div>
                         <p class="text-gray-400 mb-6">
                             A plataforma completa para centralizar e otimizar seu negócio de afiliado Shopee.
@@ -747,10 +703,10 @@
                     <div>
                         <h4 class="font-semibold mb-4">Suporte</h4>
                         <ul class="space-y-2">
-                            <li><a href="ajuda.html" class="text-gray-400 hover:text-white transition-colors">Central de Ajuda</a></li>
-                            <li><a href="contato.html" class="text-gray-400 hover:text-white transition-colors">Contato</a></li>
-                            <li><a href="tutoriais.html" class="text-gray-400 hover:text-white transition-colors">Tutoriais</a></li>
-                            <li><a href="status.html" class="text-gray-400 hover:text-white transition-colors">Status do Sistema</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Central de Ajuda</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contato</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutoriais</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Status do Sistema</a></li>
                         </ul>
                     </div>
                     
@@ -758,9 +714,9 @@
                     <div>
                         <h4 class="font-semibold mb-4">Legal</h4>
                         <ul class="space-y-2">
-                            <li><a href="termos.html" class="text-gray-400 hover:text-white transition-colors">Termos de Uso</a></li>
-                            <li><a href="privacidade.html" class="text-gray-400 hover:text-white transition-colors">Política de Privacidade</a></li>
-                            <li><a href="reembolso.html" class="text-gray-400 hover:text-white transition-colors">Política de Reembolso</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Termos de Uso</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Política de Privacidade</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Política de Reembolso</a></li>
                         </ul>
                     </div>
                     
@@ -770,15 +726,15 @@
                         <ul class="space-y-2">
                             <li><a href="#funcionalidades" class="text-gray-400 hover:text-white transition-colors">Funcionalidades</a></li>
                             <li><a href="#precos" class="text-gray-400 hover:text-white transition-colors">Preços</a></li>
-                            <li><a href="https://app.appdoafiliado.com.br/" class="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener">Login</a></li>
-                            <li><a href="https://app.appdoafiliado.com.br/users/sign_up" class="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener">Cadastro</a></li>
+                            <li><a href="/users/sign_in" class="text-gray-400 hover:text-white transition-colors">Login</a></li>
+                            <li><a href="/users/sign_up" class="text-gray-400 hover:text-white transition-colors">Cadastro</a></li>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="border-t border-gray-800 mt-12 pt-8 text-center">
                     <p class="text-gray-400">
-                        App do Afiliado · © 2025 · Abrindo as primeiras 100 vagas para afiliados fundadores. Todos os direitos reservados.
+                        App do Afiliado · © 2025 · Todos os direitos reservados.
                     </p>
                 </div>
             </div>

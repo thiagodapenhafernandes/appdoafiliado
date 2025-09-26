@@ -43,9 +43,9 @@
     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <h4 class="text-sm font-medium text-blue-900">Uso do Plano <%= current_user.current_plan.name %></h4>
+          <h4 class="text-sm font-medium text-blue-900">Uso do Plano <%= current_user.on_trial? && !current_user.current_subscription ? 'Trial Grátis (14 dias)' : current_user.current_plan.name %></h4>
           <div class="mt-2 flex items-center space-x-4 text-sm text-blue-700">
-            <span>Links: <%= current_user.links.count %>/<%= current_user.current_plan.max_links == -1 ? '∞' : current_user.current_plan.max_links %></span>
+            <span>Links: <%= current_user.links.count %>/<%= current_user.max_links_allowed == -1 ? '∞' : current_user.max_links_allowed %></span>
             <span>•</span>
             <span>Analytics: <%= current_user.can_access_advanced_analytics? ? 'Avançados' : 'Básicos' %></span>
             <span>•</span>

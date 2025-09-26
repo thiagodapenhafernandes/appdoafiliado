@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status da Plataforma · App do Afiliado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1f2937',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="images/logo-light.svg" alt="App do Afiliado" class="h-10 w-auto">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Status da Plataforma</h1>
+                    <p class="text-gray-500 text-sm">Monitoramento em tempo real</p>
+                </div>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <a href="index.html" class="text-primary font-semibold hover:underline">← Voltar para a página inicial</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <section class="max-w-5xl mx-auto space-y-10">
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-md p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Situação geral</h2>
+                        <p class="text-gray-600">Todos os sistemas estão operando normalmente.</p>
+                    </div>
+                    <span class="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold mt-4 md:mt-0">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        100% operacional
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white border border-gray-100 rounded-2xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Importação de dados</h3>
+                    <p class="text-gray-600 mb-2">Status: <span class="text-green-600 font-semibold">OK</span></p>
+                    <p class="text-sm text-gray-500">Último processamento concluído há 12 minutos.</p>
+                </div>
+                <div class="bg-white border border-gray-100 rounded-2xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Links inteligentes</h3>
+                    <p class="text-gray-600 mb-2">Status: <span class="text-green-600 font-semibold">OK</span></p>
+                    <p class="text-sm text-gray-500">Monitoramento contínuo com checks a cada 60 segundos.</p>
+                </div>
+                <div class="bg-white border border-gray-100 rounded-2xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Dashboard de relatórios</h3>
+                    <p class="text-gray-600 mb-2">Status: <span class="text-green-600 font-semibold">OK</span></p>
+                    <p class="text-sm text-gray-500">Sem incidentes registrados nas últimas 24h.</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-md p-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Histórico recente</h3>
+                <ul class="space-y-3 text-gray-600 text-sm">
+                    <li><span class="font-semibold text-gray-900">12/02/2025 08:30</span> · Atualização concluída do módulo de alertas em tempo real.</li>
+                    <li><span class="font-semibold text-gray-900">10/02/2025 22:10</span> · Manutenção preventiva sem impacto para os usuários.</li>
+                    <li><span class="font-semibold text-gray-900">03/02/2025 14:55</span> · Instabilidade na API da Shopee concluída com sucesso (30 minutos).</li>
+                </ul>
+            </div>
+
+            <div class="bg-primary/5 border border-primary/20 rounded-2xl p-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Notificações pró-ativas</h3>
+                <p class="text-gray-600 mb-4">Cadastre-se para receber alertas de manutenção e atualizações relevantes diretamente no seu e-mail.</p>
+                <form class="md:flex md:space-x-4 space-y-4 md:space-y-0">
+                    <input type="email" placeholder="Seu melhor e-mail" class="flex-1 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary" required>
+                    <button type="submit" class="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">Quero ser avisado</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-8">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>App do Afiliado · Status operacional · © 2025</p>
+        </div>
+    </footer>
+</body>
+</html>

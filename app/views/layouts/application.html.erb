@@ -20,17 +20,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/site/images/favicon.svg">
+    <%= favicon_link_tag 'favicon.svg', type: 'image/svg+xml' %>
     
     <style>
       body { font-family: 'Inter', sans-serif; }
       
       /* Custom App Colors */
       :root {
-        --primary: #6366f1;
-        --secondary: #f59e0b;
-        --accent: #10b981;
-        --dark: #1f2937;
+        --primary: #ee4d2d;
+        --secondary: #0ea5e9;
+        --accent: #f97316;
+        --dark: #111827;
       }
       
       .bg-primary { background-color: var(--primary); }
@@ -43,11 +43,11 @@
       
       /* Gradient backgrounds */
       .gradient-primary {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #ee4d2d 0%, #f97316 100%);
       }
       
       .gradient-secondary {
-        background: linear-gradient(135deg, #f59e0b 0%, #10b981 100%);
+        background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
       }
     </style>
   </head>
@@ -61,11 +61,8 @@
           <div class="flex flex-col h-full pt-5 bg-white shadow-xl border-r border-gray-200">
             <!-- Logo -->
             <div class="flex items-center flex-shrink-0 px-4 mb-8">
-              <%= link_to root_path, class: "flex items-center space-x-2" do %>
-                <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-                  <i class="fas fa-chart-line text-white text-sm"></i>
-                </div>
-                <span class="text-xl font-bold text-gray-900">App do Afiliado</span>
+              <%= link_to root_path, class: "flex items-center" do %>
+                <%= image_tag 'logo-light.svg', alt: 'App do Afiliado', class: 'h-9 w-auto' %>
               <% end %>
             </div>
             
@@ -319,11 +316,8 @@
             
             <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
               <div class="flex-shrink-0 flex items-center px-4 mb-8">
-                <%= link_to root_path, class: "flex items-center space-x-2" do %>
-                  <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-                    <i class="fas fa-chart-line text-white text-sm"></i>
-                  </div>
-                  <span class="text-xl font-bold text-gray-900">App do Afiliado</span>
+                <%= link_to root_path, class: "flex items-center" do %>
+                  <%= image_tag 'logo-light.svg', alt: 'App do Afiliado', class: 'h-9 w-auto' %>
                 <% end %>
               </div>
               
@@ -448,11 +442,8 @@
                 <i class="fas fa-bars text-xl"></i>
               </button>
               
-              <div class="flex items-center space-x-2">
-                <div class="w-6 h-6 gradient-primary rounded flex items-center justify-center">
-                  <i class="fas fa-chart-line text-white text-xs"></i>
-                </div>
-                <span class="text-lg font-bold text-gray-900">App do Afiliado</span>
+              <div class="flex items-center">
+                <%= image_tag 'logo-light.svg', alt: 'App do Afiliado', class: 'h-8 w-auto' %>
               </div>
               
               <div class="w-8"></div>
@@ -475,7 +466,10 @@
                     <% when plans_path %>
                       <i class="fas fa-gem text-secondary mr-2"></i>Planos & Preços
                     <% else %>
-                      <i class="fas fa-chart-line text-primary mr-2"></i>App do Afiliado
+                      <span class="inline-flex items-center space-x-2">
+                        <%= image_tag 'logo-mark.svg', alt: '', class: 'h-6 w-auto', aria_hidden: true %>
+                        <span>App do Afiliado</span>
+                      </span>
                     <% end %>
                   <% end %>
                 </h1>
@@ -546,12 +540,9 @@
       <nav class="bg-white shadow-lg border-b border-gray-200">
         <div class="container mx-auto px-4">
           <div class="flex justify-between items-center py-4">
-            <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-                <i class="fas fa-chart-line text-white text-sm"></i>
-              </div>
-              <%= link_to root_path, class: "text-xl font-bold text-gray-900" do %>
-                App do Afiliado
+            <div class="flex items-center">
+              <%= link_to root_path, class: "flex items-center" do %>
+                <%= image_tag 'logo-light.svg', alt: 'App do Afiliado', class: 'h-10 w-auto' %>
               <% end %>
             </div>
             

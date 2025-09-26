@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Marca App do Afiliado">
+  <defs>
+    <linearGradient id="markGradient" x1="12" y1="52" x2="52" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ee4d2d"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="glowGradient" x1="0" y1="0" x2="0" y2="64">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="32" cy="32" r="26" fill="url(#markGradient)" />
+  <circle cx="32" cy="32" r="26" fill="url(#glowGradient)" />
+
+  <path d="M18 38 L28 28 L34 34 L46 22" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M40 22 H46 V28" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="18" cy="38" r="3" fill="#ffffff" />
+</svg>

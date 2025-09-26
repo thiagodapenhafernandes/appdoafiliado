@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Ajuda · App do Afiliado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1f2937',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="images/logo-light.svg" alt="App do Afiliado" class="h-10 w-auto">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Central de Ajuda</h1>
+                    <p class="text-gray-500 text-sm">App do Afiliado</p>
+                </div>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <a href="index.html" class="text-primary font-semibold hover:underline">← Voltar para a página inicial</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <section class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl border border-gray-100">
+            <div class="p-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Encontre respostas rápidas</h2>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    Reunimos as dúvidas mais frequentes dos afiliados Shopee para ajudar você a configurar, analisar e otimizar suas campanhas com o App do Afiliado. Use as seções abaixo para navegar pelos temas principais.
+                </p>
+
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Primeiros passos</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>• Como conectar sua planilha da Shopee via CSV ou API.</li>
+                            <li>• Como criar seu primeiro link inteligente.</li>
+                            <li>• Dicas para testar o período gratuito de 14 dias.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Análise de desempenho</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>• Como interpretar os gráficos de lucro vs investimento.</li>
+                            <li>• Como identificar subIDs que merecem mais verba.</li>
+                            <li>• Configurando alertas automáticos para links inativos.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Automação de links</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>• Atualização rápida de links sem alterar campanhas.</li>
+                            <li>• Redirecionamentos condicionais por disponibilidade e preço.</li>
+                            <li>• Boas práticas para manter campanhas no ar 24/7.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-10 bg-primary/5 border border-primary/20 rounded-xl p-6">
+                    <h4 class="text-lg font-semibold text-primary mb-2">Não encontrou o que precisava?</h4>
+                    <p class="text-gray-600 mb-4">Nossa equipe responde em até 24h úteis. Envie sua dúvida e receba orientação personalizada.</p>
+                    <a href="contato.html" class="inline-flex items-center bg-primary text-white px-5 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Falar com o suporte
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-8">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>App do Afiliado · Central de Ajuda · © 2025</p>
+        </div>
+    </footer>
+</body>
+</html>
