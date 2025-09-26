@@ -46,7 +46,14 @@ class User < ApplicationRecord
   end
 
   def active_subscription?
-    subscription&.active? || on_trial?
+    sub = current_subscription
+
+    if sub.present?
+      return true unless sub.respond_to?(:status)
+      return true if %w[active trialing].include?(sub.status)
+    end
+
+    on_trial?
   end
 
   def current_subscription
