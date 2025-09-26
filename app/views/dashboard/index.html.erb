@@ -52,7 +52,7 @@
           </div>
         </div>
         <% unless current_user.can_access_advanced_analytics? %>
-          <%= link_to "Upgrade", plans_path, class: "inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition-colors" do %>
+          <%= link_to plans_path, class: "inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition-colors" do %>
             <i class="fas fa-arrow-up-right-from-square text-xs"></i>
             <span>Conhecer planos Pro e Elite</span>
           <% end %>
