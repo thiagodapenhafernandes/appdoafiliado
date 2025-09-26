@@ -87,7 +87,7 @@
             </div>
 
             <!-- Rastreamento Avançado -->
-            <%= plan_access_overlay('pro') do %>
+            <% if current_user.can_access_advanced_tracking? %>
               <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg bg-white">
                 <div class="flex items-center h-5 mt-1">
                   <%= form.check_box :advanced_tracking, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" %>
@@ -114,6 +114,20 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            <% else %>
+              <div class="space-y-3">
+                <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                  <input type="checkbox" disabled class="h-4 w-4 text-gray-400 border-gray-300 rounded cursor-not-allowed mt-1">
+                  <div class="flex-1">
+                    <span class="block text-sm font-medium text-gray-400">Habilitar rastreamento avançado</span>
+                    <p class="mt-1 text-sm text-gray-500">Monitore subIDs, dispositivo e origem do clique automaticamente quando fizer upgrade.</p>
+                  </div>
+                </div>
+                <%= render 'shared/plan_gate',
+                    title: 'Rastreamento avançado disponível nos planos Pro e Elite',
+                    message: 'Automatize tags de subID, acompanhe campanhas e receba alertas de desempenho avançado.',
+                    cta_label: 'Conhecer planos Pro e Elite' %>
               </div>
             <% end %>
 

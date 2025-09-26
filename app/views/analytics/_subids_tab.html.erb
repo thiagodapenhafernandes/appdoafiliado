@@ -1,3 +1,14 @@
+<% can_edit_ad_spend = current_user.can_access_advanced_analytics? %>
+
+<% unless can_edit_ad_spend %>
+  <div class="mb-6">
+    <%= render 'shared/plan_gate',
+        title: 'Edite gasto em ads e ROI nos planos Pro e Elite',
+        message: 'Informe o investimento por subID para calcular ROI e CPA automaticamente. Faça upgrade para registrar seus gastos diretamente na tabela.',
+        cta_label: 'Conhecer planos Pro e Elite' %>
+  </div>
+<% end %>
+
 <!-- Resumo de SubIDs -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
   <div class="bg-white shadow rounded-lg p-6 border-l-4 border-cyan-500">
@@ -221,13 +232,19 @@
               <div class="text-sm text-gray-500">pedidos</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="editable-ad-spend" data-subid="<%= subid.present? ? subid : 'Não informado' %>" data-value="<%= data[:ad_spend] || 0 %>">
-                <div class="ad-spend-display text-sm text-gray-900 cursor-pointer hover:bg-gray-100 p-1 rounded">
-                  R$ <span class="ad-spend-value"><%= number_with_precision(data[:ad_spend] || 0, precision: 2, delimiter: '.', separator: ',') %></span>
+              <% ad_spend_value = data[:ad_spend] || 0 %>
+              <div class="editable-ad-spend" 
+                   data-subid="<%= subid.present? ? subid : 'Não informado' %>" 
+                   data-value="<%= ad_spend_value %>"
+                   data-editable="<%= can_edit_ad_spend %>">
+                <div class="ad-spend-display text-sm text-gray-900 <%= can_edit_ad_spend ? 'cursor-pointer hover:bg-gray-100' : '' %> p-1 rounded">
+                  R$ <span class="ad-spend-value"><%= number_with_precision(ad_spend_value, precision: 2, delimiter: '.', separator: ',') %></span>
                 </div>
-                <input type="number" class="ad-spend-input hidden w-full text-sm border-gray-300 rounded px-2 py-1" step="0.01" min="0">
+                <% if can_edit_ad_spend %>
+                  <input type="number" class="ad-spend-input hidden w-full text-sm border-gray-300 rounded px-2 py-1" step="0.01" min="0">
+                <% end %>
               </div>
-              <% cpa = data[:orders] > 0 && data[:ad_spend] ? data[:ad_spend] / data[:orders] : 0 %>
+              <% cpa = data[:orders] > 0 && ad_spend_value ? ad_spend_value / data[:orders] : 0 %>
               <div class="text-sm text-gray-500">CPA: R$ <span class="cpa-value"><%= number_with_precision(cpa, precision: 2, delimiter: '.', separator: ',') %></span></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
@@ -268,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const editableAdSpends = document.querySelectorAll('.editable-ad-spend');
   
   editableAdSpends.forEach(function(editable) {
+    if (editable.dataset.editable !== 'true') { return; }
     const display = editable.querySelector('.ad-spend-display');
     const input = editable.querySelector('.ad-spend-input');
     const valueSpan = editable.querySelector('.ad-spend-value');

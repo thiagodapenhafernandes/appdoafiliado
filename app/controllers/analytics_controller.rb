@@ -60,7 +60,7 @@ class AnalyticsController < ApplicationController
     redirect_to analytics_path(tab: params[:tab])
   end
   before_action :authenticate_user!
-  before_action :check_analytics_access, only: [:performance, :conversion]
+  before_action :set_advanced_analytics_flag, only: [:performance, :conversion]
   before_action :check_pdf_export_access, only: [:export_pdf]
   
   def index
@@ -105,6 +105,8 @@ class AnalyticsController < ApplicationController
   end
 
   def performance
+    return if @advanced_analytics_locked
+
     # Analisar dados com filtro de período se especificado
     @commissions = current_user.commissions.where.not(order_status: 'cancelled')
     
@@ -123,6 +125,8 @@ class AnalyticsController < ApplicationController
   end
 
   def conversion
+    return if @advanced_analytics_locked
+
     # Analisar dados com filtro de período se especificado
     @commissions = current_user.commissions.where.not(order_status: 'cancelled')
     
@@ -519,10 +523,8 @@ class AnalyticsController < ApplicationController
     end
   end
 
-  def check_analytics_access
-    unless current_user.can_access_advanced_analytics?
-      redirect_to plans_path, alert: 'Análises avançadas estão disponíveis apenas nos planos Pro e Elite. Faça upgrade para acessar!'
-    end
+  def set_advanced_analytics_flag
+    @advanced_analytics_locked = !current_user.can_access_advanced_analytics?
   end
 
   def check_pdf_export_access

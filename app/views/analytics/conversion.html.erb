@@ -1,5 +1,22 @@
 <% content_for :title, "Análise de Conversão" %>
 
+<% if @advanced_analytics_locked %>
+  <div class="space-y-6">
+    <%= render 'shared/plan_gate',
+        title: 'Funil de conversão disponível nos planos Pro e Elite',
+        message: 'Visualize cada etapa do funil, calcule ROI real e atribuição de campanhas de tráfego com relatórios avançados.',
+        cta_label: 'Conhecer planos Pro e Elite' %>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+      <h2 class="text-lg font-semibold text-gray-900 mb-3">Benefícios do upgrade</h2>
+      <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+        <li>Funil completo do clique à compra com taxa de conversão por etapa</li>
+        <li>Análise de ROI considerando investimento em tráfego por subID</li>
+        <li>Atribuição de vendas para entender quais anúncios geram lucro</li>
+      </ul>
+    </div>
+  </div>
+<% else %>
+
 <div class="space-y-6">
   <!-- Header -->
   <div class="flex items-center justify-between">
@@ -464,4 +481,6 @@
       </div>
     </div>
   </div>
+<% end %>
+
 </div>

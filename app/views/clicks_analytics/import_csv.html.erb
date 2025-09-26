@@ -1,5 +1,21 @@
 <div class="min-h-screen bg-gray-50 p-6">
   <div class="max-w-4xl mx-auto">
+    <% if @advanced_tracking_locked %>
+      <div class="space-y-6">
+        <%= render 'shared/plan_gate',
+            title: 'Importação avançada de cliques disponível para Pro e Elite',
+            message: 'Envie o CSV oficial da Shopee e consolide métricas de canais em um só lugar quando faz upgrade para Pro ou Elite.',
+            cta_label: 'Conhecer planos Pro e Elite' %>
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <h2 class="text-lg font-semibold text-gray-900 mb-3">Como funciona a importação</h2>
+          <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
+            <li>Baixe o relatório "Cliques do Website" no Shopee Affiliate.</li>
+            <li>Faça upload do CSV aqui para ver gráficos por origem, horário e região.</li>
+            <li>Combine subIDs com seus investimentos para enxergar ROI real.</li>
+          </ol>
+        </div>
+      </div>
+    <% else %>
     <!-- Header -->
     <div class="mb-8">
       <div class="flex items-center justify-between">
@@ -116,5 +132,6 @@
         </div>
       </div>
     </div>
+    <% end %>
   </div>
 </div>
