@@ -88,23 +88,31 @@
 
             <!-- Rastreamento Avançado -->
             <!-- Rastreamento Avançado -->
-            <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg <%= current_user.can_access_advanced_tracking? ? 'bg-white' : 'bg-gray-50' %>">
-              <div class="flex items-center h-5 mt-1">
-                <% if current_user.can_access_advanced_tracking? %>
+            <% if current_user.can_access_advanced_tracking? %>
+              <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">
+                <div class="flex items-center h-5 mt-1">
                   <%= form.check_box :advanced_tracking, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" %>
-                <% else %>
-                  <input type="checkbox" disabled class="h-4 w-4 text-gray-400 border-gray-300 rounded cursor-not-allowed">
-                <% end %>
-              </div>
-              <div class="flex-1">
-                <%= form.label :advanced_tracking, "Habilitar rastreamento avançado", class: "block text-sm font-medium #{current_user.can_access_advanced_tracking? ? 'text-gray-700' : 'text-gray-400'}" %>
-                <% if current_user.can_access_advanced_tracking? %>
+                </div>
+                <div class="flex-1">
+                  <%= form.label :advanced_tracking, "Habilitar rastreamento avançado", class: "block text-sm font-medium text-gray-700" %>
                   <p class="mt-1 text-sm text-green-600">✓ Disponível no seu plano <%= current_user.current_plan&.name %></p>
-                <% else %>
-                  <p class="mt-1 text-sm text-gray-500">Recurso disponível nos planos Pro e Elite. Faça upgrade para acessar.</p>
-                <% end %>
+                </div>
               </div>
-            </div>
+            <% else %>
+              <div class="space-y-3">
+                <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                  <input type="checkbox" disabled class="h-4 w-4 text-gray-400 border-gray-300 rounded cursor-not-allowed mt-1">
+                  <div class="flex-1">
+                    <span class="block text-sm font-medium text-gray-400">Habilitar rastreamento avançado</span>
+                    <p class="mt-1 text-sm text-gray-500">Monitore subIDs, dispositivo e origem do clique automaticamente quando fizer upgrade.</p>
+                  </div>
+                </div>
+                <%= render 'shared/plan_gate',
+                    title: 'Rastreamento avançado disponível nos planos Pro e Elite',
+                    message: 'Automatize tags de subID, acompanhe campanhas e receba alertas de desempenho avançado.',
+                    cta_label: 'Conhecer planos Pro e Elite' %>
+              </div>
+            <% end %>
 
             <!-- Link Ativo -->
             <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">

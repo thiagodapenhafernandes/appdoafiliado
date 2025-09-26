@@ -2,12 +2,14 @@ require 'csv'
 
 class ClicksAnalyticsController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_advanced_tracking_access, only: [:index]
-  
-  # Debug method execution
   before_action :log_action_execution
 
   def index
+    unless current_user.can_access_advanced_tracking?
+      @advanced_tracking_locked = true
+      return
+    end
+
     # Verificar se estamos analisando dados de CSV carregado
     if params[:from_csv] == 'true' && (session[:csv_analytics_file_id] || params[:file_id])
       @from_csv = true
@@ -25,14 +27,21 @@ class ClicksAnalyticsController < ApplicationController
   end
 
   def import_csv
-  end
-  
-  def process_csv_upload
     unless current_user.can_access_advanced_tracking?
-      redirect_to dashboard_path, alert: 'Analytics de cliques avançados estão disponíveis apenas nos planos Pro e Elite. Faça upgrade para acessar!'
+      if request.post?
+        redirect_to plans_path, alert: 'Importação avançada de cliques está disponível apenas nos planos Pro e Elite. Faça upgrade para acessar!'
+      else
+        @advanced_tracking_locked = true
+      end
       return
     end
 
+    return unless request.post?
+
+    process_csv_upload
+  end
+
+  def process_csv_upload
     # Limpar arquivos temporários antigos
     cleanup_old_csv_files
 
@@ -373,23 +382,6 @@ class ClicksAnalyticsController < ApplicationController
     Rails.logger.info "🔥 ACTION EXECUTADA: #{action_name} - MÉTODO: #{request.method}"
   end
 
-  def check_advanced_tracking_access
-    puts "=== VERIFICAÇÃO DE ACESSO ==="
-    puts "User ID: #{current_user.id}"
-    puts "On trial?: #{current_user.on_trial?}"
-    puts "Trial ends at: #{current_user.trial_ends_at}"
-    puts "Current plan: #{current_user.current_plan&.name}"
-    puts "Can access advanced tracking?: #{current_user.can_access_advanced_tracking?}"
-    puts "=========================="
-    
-    unless current_user.can_access_advanced_tracking?
-      puts "ACESSO NEGADO - REDIRECIONANDO"
-      redirect_to dashboard_path, alert: 'Analytics de cliques avançados estão disponíveis apenas nos planos Pro e Elite. Faça upgrade para acessar!'
-    else
-      puts "ACESSO LIBERADO"
-    end
-  end
-  
   def cleanup_old_csv_files
     # Limpar arquivos temporários mais antigos que 2 horas
     Dir.glob(Rails.root.join('tmp', 'csv_analytics_*.json')).each do |file_path|
