@@ -63,13 +63,25 @@ class User < ApplicationRecord
     current_subscription&.plan
   end
 
+  def max_links_allowed
+    # Para usuários em trial sem assinatura, limite de 5 links
+    if on_trial? && !current_subscription
+      return 5
+    end
+
+    current_plan_obj = current_plan
+    return -1 if current_plan_obj&.max_links == -1 # Unlimited
+
+    current_plan_obj&.max_links || 0
+  end
+
   def can_create_links?
     return false unless active_subscription? || on_trial?
-    
-    current_plan_obj = current_plan
-    return true if current_plan_obj&.max_links == -1 # Unlimited
-    
-    links.count < (current_plan_obj&.max_links || 0)
+
+    max_allowed = max_links_allowed
+    return true if max_allowed == -1 # Unlimited
+
+    links.count < max_allowed
   end
 
   # Controle de acesso às funcionalidades avançadas

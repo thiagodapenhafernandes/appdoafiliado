@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutoriais · App do Afiliado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1f2937',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="images/logo-light.svg" alt="App do Afiliado" class="h-10 w-auto">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Tutoriais passo a passo</h1>
+                    <p class="text-gray-500 text-sm">Aprenda a dominar o App do Afiliado</p>
+                </div>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <a href="index.html" class="text-primary font-semibold hover:underline">← Voltar para a página inicial</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <section class="grid lg:grid-cols-3 gap-8">
+            <article class="bg-white border border-gray-100 rounded-2xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">1. Primeiro acesso e importação de dados</h2>
+                <p class="text-gray-600 mb-4">Veja como ativar sua conta, conectar a planilha da Shopee e revisar os primeiros gráficos gerados automaticamente.</p>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• Criação de conta e configuração do trial.</li>
+                    <li>• Upload do CSV padrão da Shopee.</li>
+                    <li>• Conferência dos dados e subIDs importados.</li>
+                </ul>
+            </article>
+
+            <article class="bg-white border border-gray-100 rounded-2xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">2. Links inteligentes na prática</h2>
+                <p class="text-gray-600 mb-4">Aprenda a criar links dinâmicos que redirecionam automaticamente quando um produto esgota ou entra em promoção.</p>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• Ajustes em campanhas sem alterar anúncios.</li>
+                    <li>• Redirecionamento condicional por estoque.</li>
+                    <li>• Modelos prontos para Meta Ads e TikTok Ads.</li>
+                </ul>
+            </article>
+
+            <article class="bg-white border border-gray-100 rounded-2xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">3. Leitura dos relatórios</h2>
+                <p class="text-gray-600 mb-4">Entenda como interpretar gráficos, alertas e indicadores para escalar campanhas lucrativas com segurança.</p>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• Identificação de subIDs lucrativos.</li>
+                    <li>• Alertas de prejuízo e campanhas críticas.</li>
+                    <li>• Exportação de relatórios para times e clientes.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="mt-12 bg-primary/5 border border-primary/20 rounded-2xl p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Novos tutoriais toda semana</h2>
+            <p class="text-gray-600 mb-4">Inscreva-se para receber conteúdos práticos, estudos de caso e checklists que ajudam afiliados Shopee a escalar resultados.</p>
+            <form class="md:flex md:space-x-4 space-y-4 md:space-y-0">
+                <input type="email" placeholder="Seu melhor e-mail" class="flex-1 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary" required>
+                <button type="submit" class="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">Quero receber novidades</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-8">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>App do Afiliado · Biblioteca de tutoriais · © 2025</p>
+        </div>
+    </footer>
+</body>
+</html>
