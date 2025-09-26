@@ -55,15 +55,9 @@
           Status da conta
         </dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <% if @user.confirmed? %>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              Confirmada
-            </span>
-          <% else %>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-              Não confirmada
-            </span>
-          <% end %>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            Ativa
+          </span>
         </dd>
       </div>
       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -72,14 +66,6 @@
         </dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
           <%= @user.created_at.strftime("%d/%m/%Y às %H:%M") %>
-        </dd>
-      </div>
-      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">
-          Último login
-        </dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <%= @user.last_sign_in_at&.strftime("%d/%m/%Y às %H:%M") || "Nunca" %>
         </dd>
       </div>
       <% if @user.current_subscription %>
@@ -146,7 +132,7 @@
     </div>
     <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
       <div class="flex flex-wrap gap-3">
-        <%= link_to "Sincronizar Assinaturas", sync_stripe_admin_user_path(@user),
+        <%= button_to "Sincronizar Assinaturas", sync_stripe_admin_user_path(@user),
             method: :post,
             data: { confirm: "Isso irá buscar e atualizar as assinaturas do usuário no Stripe. Continuar?" },
             class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
