@@ -14,26 +14,27 @@ class LinksController < ApplicationController
   end
 
   def new
-    @link = current_user.links.build
-    @request = request
-    
-    unless current_user.can_create_links?
-      limit = current_user.max_links_allowed
-      plan_name = current_user.on_trial? && !current_user.current_subscription ? 'Trial Grátis' : current_user.current_plan.name
-      redirect_to links_path, alert: "Você atingiu o limite de #{limit} links do plano #{plan_name}."
-    end
-  end
-
-  def create
-    @link = current_user.links.build(link_params)
-    @request = request
-
     unless current_user.can_create_links?
       limit = current_user.max_links_allowed
       plan_name = current_user.on_trial? && !current_user.current_subscription ? 'Trial Grátis' : current_user.current_plan.name
       redirect_to links_path, alert: "Você atingiu o limite de #{limit} links do plano #{plan_name}."
       return
     end
+
+    @link = current_user.links.build
+    @request = request
+  end
+
+  def create
+    unless current_user.can_create_links?
+      limit = current_user.max_links_allowed
+      plan_name = current_user.on_trial? && !current_user.current_subscription ? 'Trial Grátis' : current_user.current_plan.name
+      redirect_to links_path, alert: "Você atingiu o limite de #{limit} links do plano #{plan_name}."
+      return
+    end
+
+    @link = current_user.links.build(link_params)
+    @request = request
 
     if @link.save
       redirect_to @link, notice: 'Link criado com sucesso!'
