@@ -172,12 +172,25 @@ class Admin::StripeConfigController < Admin::BaseController
           price&.product&.name || 'Desconhecido'
         end
 
+        # Get period end from subscription items if available
+        current_period_end = nil
+        if sub.items&.data&.any?
+          subscription_item = sub.items.data.first
+          if subscription_item.respond_to?(:current_period_end)
+            current_period_end = subscription_item.current_period_end
+          else
+            current_period_end = sub.created + 30.days.to_i
+          end
+        else
+          current_period_end = sub.created + 30.days.to_i
+        end
+
         {
           id: sub.id,
           customer_email: sub.customer.email,
           status: sub.status,
           trial_end: sub.trial_end ? Time.at(sub.trial_end) : nil,
-          current_period_end: Time.at(sub.current_period_end),
+          current_period_end: current_period_end ? Time.at(current_period_end) : nil,
           plan_name: plan_name,
           amount: price&.unit_amount,
           metadata: sub.metadata
