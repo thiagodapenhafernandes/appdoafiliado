@@ -15,68 +15,26 @@ end
 
 puts "Super Admin created: #{super_admin.email} (Password: admin123)"
 
-# Create Plans
-puts "Creating plans..."
+puts "Configuring single plan..."
 
-plans_data = [
-  {
-    name: "Afiliado Starter",
-    description: "Para iniciantes",
-    price_cents: 5990, # R$ 59,90
-    max_links: 15,
-    popular: false,
-    features: [
-      "15 links de redirecionamento",
-      "Análise de comissões e cliques na Shopee",
-      "Estatísticas básicas",
-      "Rastreamento básico",
-      "Suporte via WhatsApp"
-    ]
-  },
-  {
-    name: "Afiliado Pro",
-    description: "Mais popular",
-    price_cents: 9790, # R$ 97,90
-    max_links: 50,
-    popular: true,
-    features: [
-      "50 links de redirecionamento",
-      "Análise de comissões e cliques na Shopee",
-      "Estatísticas avançadas",
-      "Rastreamento avançado",
-      "Suporte via WhatsApp"
-    ]
-  },
-  {
-    name: "Afiliado Elite",
-    description: "Para Experts",
-    price_cents: 14790, # R$ 147,90
-    max_links: -1, # Ilimitado
-    popular: false,
-    features: [
-      "Links ilimitados",
-      "Análise de comissões e cliques na Shopee",
-      "Estatísticas avançadas",
-      "Rastreamento avançado",
-      "Suporte via WhatsApp",
-      "Suporte estratégico"
-    ]
-  }
+default_plan = Plan.find_or_initialize_by(name: Plan::DEFAULT_PLAN_NAME)
+default_plan.description = "Acesso completo ao LinkFlow com todos os recursos liberados."
+default_plan.price_cents = 4700 # R$ 47,00
+default_plan.currency = 'BRL'
+default_plan.max_links = -1 # Ilimitado
+default_plan.popular = true
+default_plan.features = [
+  "Links ilimitados",
+  "Analytics avançado em tempo real",
+  "Importação de cliques e comissões via CSV",
+  "Rastreamento avançado com SubIDs",
+  "Exportação de relatórios em PDF",
+  "Suporte estratégico prioritário"
 ]
+default_plan.active = true
+default_plan.save!
 
-plans_data.each do |plan_data|
-  plan = Plan.find_or_create_by(name: plan_data[:name]) do |p|
-    p.description = plan_data[:description]
-    p.price_cents = plan_data[:price_cents]
-    p.currency = 'BRL'
-    p.max_links = plan_data[:max_links]
-    p.popular = plan_data[:popular]
-    p.features = plan_data[:features]
-    p.active = true
-  end
-  
-  puts "✅ Plan '#{plan.name}' created/updated"
-end
+puts "✅ Plano '#{default_plan.name}' configurado (#{default_plan.price_formatted}/mês)"
 
 # Create default settings
 puts "\nCreating default settings..."
@@ -123,4 +81,27 @@ default_settings.each do |setting_data|
   puts "✅ Setting '#{setting.key}' = '#{setting.value}'"
 end
 
+# Create full access user account
+puts "\nCreating full access account..."
+
+full_access_user = User.find_or_initialize_by(email: 'conta@appdoafiliado.com')
+full_access_user.first_name = 'Conta'
+full_access_user.last_name = 'Completa'
+full_access_user.password = 'linkflow123'
+full_access_user.password_confirmation = 'linkflow123'
+full_access_user.role ||= 'user'
+full_access_user.save!
+
+subscription = full_access_user.subscriptions.find_or_initialize_by(plan: default_plan)
+subscription.status ||= 'active'
+subscription.current_period_start ||= Time.current
+subscription.current_period_end ||= 30.days.from_now
+subscription.trial_ends_at = nil
+subscription.save!
+
+if full_access_user.subscription_id != subscription.id
+  full_access_user.update(subscription: subscription)
+end
+
+puts "✅ Conta completa disponível: #{full_access_user.email} (senha: linkflow123)"
 puts "Seeds completed!"

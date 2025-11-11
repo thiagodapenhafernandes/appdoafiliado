@@ -5,7 +5,7 @@ class ClicksAnalyticsController < ApplicationController
   before_action :log_action_execution
 
   def index
-    unless current_user.can_access_advanced_tracking?
+    unless current_user.can_access_clicks_analytics?
       @advanced_tracking_locked = true
       return
     end
@@ -27,9 +27,9 @@ class ClicksAnalyticsController < ApplicationController
   end
 
   def import_csv
-    unless current_user.can_access_advanced_tracking?
+    unless current_user.can_access_clicks_analytics?
       if request.post?
-        redirect_to plans_path, alert: 'Importação avançada de cliques está disponível apenas nos planos Pro e Elite. Faça upgrade para acessar!'
+        redirect_to plans_path, alert: 'Importação de cliques faz parte do Plano Completo. Assine para liberar o recurso.'
       else
         @advanced_tracking_locked = true
       end

@@ -80,60 +80,24 @@
                       <%= current_user.email %>
                     </p>
                     <p class="text-xs text-gray-500">
+                      <% plan = current_user.current_subscription&.plan || current_user.chosen_plan || Plan.default %>
+                      <% plan_label = plan&.name || Plan::DEFAULT_PLAN_NAME %>
+                      <% has_access = current_user.active_subscription? || current_user.on_trial? %>
                       <% if current_user.on_trial? %>
                         <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
                           <i class="fas fa-clock mr-1"></i>
                           Teste: <%= pluralize(current_user.trial_days_remaining, 'dia') %>
                         </span>
-                        <% if current_user.chosen_plan %>
-                          <% plan_name = current_user.chosen_plan.name %>
-                          <% 
-                            case plan_name
-                            when 'Afiliado Starter'
-                              badge_class = 'bg-blue-100 text-blue-700'
-                              icon = 'fas fa-rocket'
-                            when 'Afiliado Pro'
-                              badge_class = 'bg-purple-100 text-purple-700'
-                              icon = 'fas fa-star'
-                            when 'Afiliado Elite'
-                              badge_class = 'bg-yellow-100 text-yellow-700'
-                              icon = 'fas fa-crown'
-                            else
-                              badge_class = 'bg-gray-100 text-gray-600'
-                              icon = 'fas fa-star'
-                            end
-                          %>
-                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= badge_class %> ml-1">
-                            <i class="<%= icon %> mr-1"></i>
-                            <%= plan_name.gsub('Afiliado ', '') %>
-                          </span>
-                        <% end %>
-                      <% elsif current_user.current_subscription %>
-                        <% plan_name = current_user.current_subscription.plan.name %>
-                        <% 
-                          case plan_name
-                          when 'Afiliado Starter'
-                            badge_class = 'bg-blue-100 text-blue-700'
-                            icon = 'fas fa-rocket'
-                          when 'Afiliado Pro'
-                            badge_class = 'bg-purple-100 text-purple-700'
-                            icon = 'fas fa-star'
-                          when 'Afiliado Elite'
-                            badge_class = 'bg-yellow-100 text-yellow-700'
-                            icon = 'fas fa-crown'
-                          else
-                            badge_class = 'bg-primary/10 text-primary'
-                            icon = 'fas fa-star'
-                          end
-                        %>
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= badge_class %>">
-                          <i class="<%= icon %> mr-1"></i>
-                          <%= plan_name.gsub('Afiliado ', '') %>
+                      <% end %>
+                      <% if has_access %>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary ml-1">
+                          <i class="fas fa-star mr-1"></i>
+                          <%= plan_label %>
                         </span>
                       <% else %>
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                          <i class="fas fa-user mr-1"></i>
-                          Usuário Básico
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 ml-1">
+                          <i class="fas fa-unlock mr-1"></i>
+                          Ative o Plano Completo
                         </span>
                       <% end %>
                     </p>
@@ -199,7 +163,7 @@
                     <% end %>
                   <% end %>
                   
-                  <% if current_user.can_access_advanced_tracking? %>
+                  <% if current_user.can_access_clicks_analytics? %>
                     <%= link_to clicks_analytics_path, 
                         class: "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 #{ 
                           request.path.start_with?('/clicks_analytics') ? 
@@ -217,7 +181,7 @@
                     <div class="group flex items-center px-3 py-2 text-sm font-medium text-gray-400 rounded-lg cursor-not-allowed bg-gray-50/50">
                       <i class="fas fa-lock mr-3 w-4 h-4 text-center"></i>
                       Análise de Cliques
-                      <span class="ml-auto bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full font-medium">Pro/Elite</span>
+                      <span class="ml-auto bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full font-medium">Plano Completo</span>
                     </div>
                   <% end %>
                 </div>
@@ -250,7 +214,7 @@
                     'text-gray-600 hover:bg-gray-50 hover:text-secondary' 
                   }" do %>
                 <i class="fas fa-gem mr-3 w-5 h-5 text-center"></i>
-                Planos & Preços
+                Plano Completo
                 <% if request.path.start_with?(plans_path) %>
                   <i class="fas fa-chevron-right ml-auto text-xs"></i>
                 <% end %>
@@ -263,7 +227,7 @@
               <a href="#" class="group flex items-center px-3 py-3 text-sm font-medium text-gray-400 rounded-lg cursor-not-allowed bg-gray-50/50">
                 <i class="fas fa-code mr-3 w-5 h-5 text-center"></i>
                 API & Webhooks
-                <span class="ml-auto bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full font-medium">Pro</span>
+                <span class="ml-auto bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full font-medium">Em breve</span>
               </a>
 
               <!-- Integrations -->
@@ -335,60 +299,24 @@
                         <%= current_user.email %>
                       </p>
                       <p class="text-xs text-gray-500">
+                        <% plan = current_user.current_subscription&.plan || current_user.chosen_plan || Plan.default %>
+                        <% plan_label = plan&.name || Plan::DEFAULT_PLAN_NAME %>
+                        <% has_access = current_user.active_subscription? || current_user.on_trial? %>
                         <% if current_user.on_trial? %>
                           <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
                             <i class="fas fa-clock mr-1"></i>
                             Teste: <%= pluralize(current_user.trial_days_remaining, 'dia') %>
                           </span>
-                          <% if current_user.chosen_plan %>
-                            <% plan_name = current_user.chosen_plan.name %>
-                            <% 
-                              case plan_name
-                              when 'Afiliado Starter'
-                                badge_class = 'bg-blue-100 text-blue-700'
-                                icon = 'fas fa-rocket'
-                              when 'Afiliado Pro'
-                                badge_class = 'bg-purple-100 text-purple-700'
-                                icon = 'fas fa-star'
-                              when 'Afiliado Elite'
-                                badge_class = 'bg-yellow-100 text-yellow-700'
-                                icon = 'fas fa-crown'
-                              else
-                                badge_class = 'bg-gray-100 text-gray-600'
-                                icon = 'fas fa-star'
-                              end
-                            %>
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= badge_class %> ml-1">
-                              <i class="<%= icon %> mr-1"></i>
-                              <%= plan_name.gsub('Afiliado ', '') %>
-                            </span>
-                          <% end %>
-                        <% elsif current_user.current_subscription %>
-                          <% plan_name = current_user.current_subscription.plan.name %>
-                          <% 
-                            case plan_name
-                            when 'Afiliado Starter'
-                              badge_class = 'bg-blue-100 text-blue-700'
-                              icon = 'fas fa-rocket'
-                            when 'Afiliado Pro'
-                              badge_class = 'bg-purple-100 text-purple-700'
-                              icon = 'fas fa-star'
-                            when 'Afiliado Elite'
-                              badge_class = 'bg-yellow-100 text-yellow-700'
-                              icon = 'fas fa-crown'
-                            else
-                              badge_class = 'bg-primary/10 text-primary'
-                              icon = 'fas fa-star'
-                            end
-                          %>
-                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= badge_class %>">
-                            <i class="<%= icon %> mr-1"></i>
-                            <%= plan_name.gsub('Afiliado ', '') %>
+                        <% end %>
+                        <% if has_access %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary ml-1">
+                            <i class="fas fa-star mr-1"></i>
+                            <%= plan_label %>
                           </span>
                         <% else %>
-                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                            <i class="fas fa-user mr-1"></i>
-                            Usuário Básico
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 ml-1">
+                            <i class="fas fa-unlock mr-1"></i>
+                            Ative o Plano Completo
                           </span>
                         <% end %>
                       </p>
@@ -411,7 +339,7 @@
 
                 <%= link_to plans_path, class: "group flex items-center px-3 py-3 text-base font-medium rounded-lg #{ request.path.start_with?(plans_path) ? 'bg-secondary/10 text-secondary border border-secondary/20' : 'text-gray-600 hover:bg-gray-50 hover:text-secondary' }" do %>
                   <i class="fas fa-gem mr-4 w-6 h-6 text-center"></i>
-                  Planos
+                  Plano Completo
                 <% end %>
 
                 <%= link_to edit_user_registration_path, class: "group flex items-center px-3 py-3 text-base font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-primary" do %>
@@ -464,7 +392,7 @@
                     <% when links_path %>
                       <i class="fas fa-link text-primary mr-2"></i>Meus Links
                     <% when plans_path %>
-                      <i class="fas fa-gem text-secondary mr-2"></i>Planos & Preços
+                      <i class="fas fa-gem text-secondary mr-2"></i>Plano Completo
                     <% else %>
                       <span class="inline-flex items-center space-x-2">
                         <%= image_tag 'logo-mark.svg', alt: '', class: 'h-6 w-auto', aria_hidden: true %>
@@ -488,7 +416,7 @@
                     <div class="bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 flex items-center">
                       <i class="fas fa-star text-primary mr-2"></i>
                       <span class="text-sm font-medium text-primary">
-                        Plano <%= current_user.current_subscription.plan.name %>
+                        <%= current_user.current_subscription.plan.name %>
                       </span>
                     </div>
                   <% else %>
@@ -549,7 +477,7 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
               <%= link_to plans_path, class: "text-gray-700 hover:text-primary font-medium transition-colors" do %>
-                Planos
+                Plano Completo
               <% end %>
               
               <%= link_to new_user_session_path, class: "text-gray-700 hover:text-primary transition-colors font-medium" do %>
@@ -575,7 +503,7 @@
           <div id="mobile-nav-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
             <div class="px-2 pt-2 pb-3 space-y-1">
               <%= link_to plans_path, class: "block px-3 py-2 text-gray-700 hover:text-primary font-medium transition-colors" do %>
-                Planos
+                Plano Completo
               <% end %>
               
               <%= link_to new_user_session_path, class: "block px-3 py-2 text-gray-700 hover:text-primary transition-colors font-medium" do %>

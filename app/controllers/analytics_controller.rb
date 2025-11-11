@@ -62,6 +62,11 @@ class AnalyticsController < ApplicationController
   end
 
   def import_csv
+    unless current_user.can_import_commission_csv?
+      redirect_to analytics_path, alert: 'Importação de CSV faz parte do Plano Completo. Ative sua assinatura para continuar.'
+      return
+    end
+
     if request.post? && params[:csv_file].present?
       file = params[:csv_file]
       
@@ -428,9 +433,9 @@ class AnalyticsController < ApplicationController
   end
 
   def check_pdf_export_access
-    unless current_user.can_export_pdf?
-      redirect_to plans_path, alert: 'Exportação de relatórios em PDF está disponível apenas nos planos Pro e Elite. Faça upgrade para acessar!'
-    end
+    return if current_user.can_export_pdf?
+
+    redirect_to plans_path, alert: 'Exportação de relatórios em PDF faz parte do Plano Completo de R$ 47/mês. Assine para liberar.'
   end
 
   # Métodos para análise de performance
