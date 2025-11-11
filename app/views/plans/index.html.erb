@@ -3,11 +3,10 @@
   <div class="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <div class="text-center mb-8 sm:mb-12">
       <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-        Escolha o Plano Perfeito
+        Plano Completo LinkFlow
       </h1>
       <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-        Transforme seus links em ferramentas poderosas de marketing e análise. 
-        Comece gratuitamente e escale conforme seu negócio cresce.
+        Todos os recursos liberados por R$ 47/mês. Sem níveis ou limitações escondidas — apenas o que você precisa para vender todos os dias.
       </p>
     </div>
 
@@ -35,18 +34,11 @@
     <% end %>
 
     <!-- Plans grid -->
-    <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        <% @plans.each_with_index do |plan, index| %>
-          <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 <%= 'ring-4 ring-blue-500 relative scale-105' if index == 1 %>">
-            <% if index == 1 %>
-              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
-                  🔥 Mais Popular
-                </span>
-              </div>
-            <% end %>
-            
+    <div class="max-w-4xl mx-auto">
+      <% if @plans.any? %>
+        <div class="grid grid-cols-1 gap-6 lg:gap-8">
+          <% @plans.each do |plan| %>
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 ring-4 ring-blue-500/20">
             <div class="p-6 lg:p-8">
               <div class="text-center mb-6">
                 <h3 class="text-xl lg:text-2xl font-bold text-gray-800 mb-2"><%= plan.name %></h3>
@@ -56,9 +48,8 @@
                   <% if plan.price == 0 %>
                     <span class="text-3xl lg:text-4xl font-bold text-gray-800">Gratuito</span>
                   <% else %>
-                    <span class="text-lg text-gray-500">R$</span>
-                    <span class="text-3xl lg:text-4xl font-bold text-gray-800"><%= plan.price.to_i %></span>
-                    <span class="text-gray-600">/mês</span>
+                    <span class="text-3xl lg:text-4xl font-bold text-gray-800"><%= number_to_currency(plan.price, unit: 'R$', separator: ',', delimiter: '.') %></span>
+                    <span class="text-gray-600 text-base">/mês</span>
                   <% end %>
                 </div>
               </div>
@@ -109,8 +100,13 @@
               </div>
             </div>
           </div>
-        <% end %>
-      </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="bg-white rounded-xl shadow p-8 text-center text-gray-600">
+          Nenhum plano configurado no momento.
+        </div>
+      <% end %>
     </div>
 
     <!-- Benefits section -->

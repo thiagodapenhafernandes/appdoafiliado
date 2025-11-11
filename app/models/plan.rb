@@ -1,4 +1,6 @@
 class Plan < ApplicationRecord
+  DEFAULT_PLAN_NAME = 'Plano Completo'.freeze
+
   # Relationships
   has_many :subscriptions, dependent: :destroy
   has_many :users, through: :subscriptions
@@ -28,16 +30,8 @@ class Plan < ApplicationRecord
     max_links == -1
   end
 
-  def self.starter
-    find_by(name: "Afiliado Starter")
-  end
-
-  def self.pro
-    find_by(name: "Afiliado Pro")
-  end
-
-  def self.elite
-    find_by(name: "Afiliado Elite")
+  def self.default
+    find_by(name: DEFAULT_PLAN_NAME) || order(:price_cents).first
   end
 
   # Método para sincronização sem validações conflitantes

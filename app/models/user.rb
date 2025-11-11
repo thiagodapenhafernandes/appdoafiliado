@@ -61,7 +61,8 @@ class User < ApplicationRecord
   end
 
   def current_plan
-    return Plan.pro if on_trial? # Durante o trial, usuário tem acesso ao plano Pro
+    trial_plan = Plan.default
+    return trial_plan if on_trial? && trial_plan.present?
     current_subscription&.plan
   end
 
@@ -93,33 +94,31 @@ class User < ApplicationRecord
 
   # Controle de acesso às funcionalidades avançadas
   def can_access_advanced_analytics?
-    plan = current_plan
-    return false unless plan
-    ['Afiliado Pro', 'Afiliado Elite'].include?(plan.name)
+    current_plan.present?
   end
 
   def can_access_advanced_tracking?
-    plan = current_plan
-    return false unless plan
-    ['Afiliado Pro', 'Afiliado Elite'].include?(plan.name)
+    current_plan.present?
+  end
+
+  def can_import_commission_csv?
+    active_subscription? || on_trial?
+  end
+
+  def can_access_clicks_analytics?
+    active_subscription? || on_trial?
   end
 
   def can_export_pdf?
-    plan = current_plan
-    return false unless plan
-    ['Afiliado Pro', 'Afiliado Elite'].include?(plan.name)
+    current_plan.present?
   end
 
   def can_access_strategic_support?
-    plan = current_plan
-    return false unless plan
-    plan.name == 'Afiliado Elite'
+    current_plan.present?
   end
 
   def has_basic_analytics_only?
-    plan = current_plan
-    return true unless plan
-    plan.name == 'Afiliado Starter'
+    current_plan.blank?
   end
 
   # Shopee Integration methods

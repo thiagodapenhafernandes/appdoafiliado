@@ -5,8 +5,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     build_resource({})
-    @selected_plan = params[:plan].present? ? Plan.find_by(id: params[:plan]) : Plan.pro
-    @selected_plan ||= Plan.pro # fallback to Pro plan
+    @selected_plan = params[:plan].present? ? Plan.find_by(id: params[:plan]) : Plan.default
+    @selected_plan ||= Plan.default
     @simple_signup = params[:simple] == 'true'
     yield resource if block_given?
     respond_with resource
@@ -14,7 +14,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    @selected_plan = Plan.find_by(id: params[:plan_id]) || Plan.pro
+    @selected_plan = Plan.find_by(id: params[:plan_id]) || Plan.default
     
     build_resource(sign_up_params)
     

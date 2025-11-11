@@ -54,7 +54,7 @@
         <% unless current_user.can_access_advanced_analytics? %>
           <%= link_to plans_path, class: "inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition-colors" do %>
             <i class="fas fa-arrow-up-right-from-square text-xs"></i>
-            <span>Conhecer planos Pro e Elite</span>
+            <span>Ver Plano Completo</span>
           <% end %>
         <% end %>
       </div>
@@ -208,9 +208,9 @@
           </div>
         <% else %>
           <%= render 'shared/plan_gate',
-              title: 'Monitoramento por origem disponível nos planos Pro e Elite',
+              title: 'Monitoramento por origem disponível no Plano Completo',
               message: 'Descubra quais canais trazem mais cliques, CTR e receita agrupados por origem quando faz upgrade para Pro ou Elite.',
-              cta_label: 'Conhecer planos Pro e Elite'
+              cta_label: 'Ver Plano Completo'
           %>
         <% end %>
       </div>
@@ -239,9 +239,9 @@
           </div>
         <% else %>
           <%= render 'shared/plan_gate',
-              title: 'Horários de pico liberados para Pro e Elite',
+              title: 'Horários de pico fazem parte do Plano Completo',
               message: 'Identifique automaticamente os horários mais lucrativos e ajuste seus anúncios quando faz upgrade para os planos avançados.',
-              cta_label: 'Conhecer planos Pro e Elite'
+              cta_label: 'Ver Plano Completo'
           %>
         <% end %>
       </div>
